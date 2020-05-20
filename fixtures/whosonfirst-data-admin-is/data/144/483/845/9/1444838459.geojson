@@ -1,0 +1,69 @@
+{
+  "id": 1444838459,
+  "type": "Feature",
+  "properties": {
+    "edtf:cessation":"uuuu",
+    "edtf:inception":"uuuu",
+    "geom:area":0.0,
+    "geom:area_square_m":0.0,
+    "geom:bbox":"-21.7584810984,64.1561351853,-21.7584810984,64.1561351853",
+    "geom:latitude":64.156135,
+    "geom:longitude":-21.758481,
+    "iso:country":"IS",
+    "lbl:bbox":"-21.7634810984,64.1511351853,-21.7534810984,64.1611351853",
+    "lbl:latitude":64.156135,
+    "lbl:longitude":-21.758481,
+    "lbl:max_zoom":18.0,
+    "mz:hierarchy_label":1,
+    "mz:is_current":1,
+    "mz:is_funky":0,
+    "mz:is_hard_boundary":0,
+    "mz:is_landuse_aoi":0,
+    "mz:is_official":1,
+    "mz:max_zoom":18.0,
+    "mz:min_zoom":14.0,
+    "mz:tier_metro":30,
+    "name:eng_x_preferred":[
+        "Stadir"
+    ],
+    "name:isl_x_preferred":[
+        "Sta\u00f0ir"
+    ],
+    "src:geom":"whosonfirst",
+    "src:lbl_centroid":"whosonfirst",
+    "wof:belongsto":[
+        102191581,
+        101751753,
+        85633249,
+        85672493
+    ],
+    "wof:breaches":[],
+    "wof:country":"IS",
+    "wof:geomhash":"983c3a4b126db7f54ff6998f54371271",
+    "wof:hierarchy":[
+        {
+            "continent_id":102191581,
+            "country_id":85633249,
+            "locality_id":101751753,
+            "neighbourhood_id":1444838459,
+            "region_id":85672493
+        }
+    ],
+    "wof:id":1444838459,
+    "wof:lastmodified":1566720476,
+    "wof:name":"Stadir",
+    "wof:parent_id":101751753,
+    "wof:placetype":"neighbourhood",
+    "wof:repo":"whosonfirst-data-admin-is",
+    "wof:superseded_by":[],
+    "wof:supersedes":[],
+    "wof:tags":[]
+},
+  "bbox": [
+    -21.75848109843483,
+    64.1561351852906,
+    -21.75848109843483,
+    64.1561351852906
+],
+  "geometry": {"coordinates":[-21.75848109843483,64.15613518529059],"type":"Point"}
+}

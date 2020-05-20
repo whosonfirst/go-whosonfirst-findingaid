@@ -3,21 +3,25 @@ package repo
 import (
 	"context"
 	"fmt"
-	_ "github.com/whosonfirst/go-whosonfirst-index-git"
-	_ "log"
+	_ "github.com/whosonfirst/go-whosonfirst-index/fs"	
 	"testing"
 )
 
-func TestGitFindingAid(t *testing.T) {
-
-	repo := "whosonfirst-data-admin-is"
-	repo_url := fmt.Sprintf("https://github.com/whosonfirst-data/%s.git", repo)
-
-	wof_id := int64(1444838459)
+func TestFindingAid(t *testing.T) {
 
 	ctx := context.Background()
+	
+	wof_id := int64(1444838459)
 
-	fa, err := NewRepoFindingAid(ctx, "repo:///?cache=gocache://&indexer=git://")
+	repo := "whosonfirst-data-admin-is"	
+	repo_url := fmt.Sprintf("../fixtures/%s", repo)
+	
+	cache_uri := "gocache://"
+	indexer_uri := "repo://"
+	
+	fa_uri := fmt.Sprintf("repo:///?cache=%s&indexer=%s", cache_uri, indexer_uri)
+	
+	fa, err := NewRepoFindingAid(ctx, fa_uri)
 
 	if err != nil {
 		t.Fatal(err)
