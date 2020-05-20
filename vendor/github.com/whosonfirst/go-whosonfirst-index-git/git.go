@@ -100,7 +100,7 @@ func (d *GitDriver) IndexURI(ctx context.Context, index_cb index.IndexerFunc, ur
 		return err
 	}
 
-	tree.Files().ForEach(func(f *object.File) error {
+	err = tree.Files().ForEach(func(f *object.File) error {
 
 		select {
 		case <-ctx.Done():
@@ -127,6 +127,10 @@ func (d *GitDriver) IndexURI(ctx context.Context, index_cb index.IndexerFunc, ur
 		ctx := index.AssignPathContext(ctx, f.Name)
 		return index_cb(ctx, fh)
 	})
+
+	if err != nil {
+		return err
+	}
 
 	return nil
 }

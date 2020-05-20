@@ -116,7 +116,9 @@ func (fa *RepoFindingAid) indexSource(ctx context.Context, source string) error 
 
 		sr := strings.NewReader(repo)
 		sr_fh := ioutil.NopCloser(sr)
-			
+
+		// maybe do this in a Go routine?
+		
 		_, err = fa.cache.Set(ctx, str_id, sr_fh)
 
 		if err != nil {
