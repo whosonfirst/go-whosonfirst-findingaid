@@ -124,49 +124,61 @@ func (fa *RepoFindingAid) Index(ctx context.Context, sources ...string) error {
 	return nil
 }
 
+func (fa *RepoFindingAid) IndexReader(ctx context.Context, fh io.Reader) error {
+
+	var f *geojson_feature
+
+	dec := json.NewDecoder(fh)
+	err := dec.Decode(&f)
+
+	if err != nil {
+		return err
+	}
+
+	path, err := uri.Id2RelPath(f.Properties.ID)
+
+	if err != nil {
+		return err
+	}
+
+	rsp := &FindingAidResponse{
+		ID:   f.Properties.ID,
+		Repo: f.Properties.Repo,
+		Path: path,
+	}
+
+	enc, err := json.Marshal(rsp)
+
+	if err != nil {
+		return err
+	}
+
+	br := bytes.NewReader(enc)
+	br_cl := ioutil.NopCloser(br)
+
+	str_id := strconv.FormatInt(f.Properties.ID, 10)
+
+	_, err = fa.cache.Set(ctx, str_id, br_cl)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func (fa *RepoFindingAid) indexSource(ctx context.Context, source string) error {
 
 	cb := func(ctx context.Context, fh io.Reader, args ...interface{}) error {
 
-		var f *geojson_feature
-
-		dec := json.NewDecoder(fh)
-		err := dec.Decode(&f)
-
-		if err != nil {
-			return err
+		select {
+		case <-ctx.Done():
+			return nil
+		default:
+			// pass
 		}
 
-		path, err := uri.Id2RelPath(f.Properties.ID)
-
-		if err != nil {
-			return err
-		}
-
-		rsp := &FindingAidResponse{
-			ID:   f.Properties.ID,
-			Repo: f.Properties.Repo,
-			Path: path,
-		}
-
-		enc, err := json.Marshal(rsp)
-
-		if err != nil {
-			return err
-		}
-
-		br := bytes.NewReader(enc)
-		br_cl := ioutil.NopCloser(br)
-
-		str_id := strconv.FormatInt(f.Properties.ID, 10)
-
-		_, err = fa.cache.Set(ctx, str_id, br_cl)
-
-		if err != nil {
-			return err
-		}
-
-		return nil
+		return fa.IndexReader(ctx, fh)
 	}
 
 	idx, err := index.NewIndexer(fa.indexer_uri, cb)
