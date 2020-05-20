@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	_ "github.com/whosonfirst/go-whosonfirst-index/fs"
+	"github.com/whosonfirst/go-whosonfirst-uri"
 	"testing"
 )
 
@@ -13,8 +14,14 @@ func TestFindingAid(t *testing.T) {
 
 	wof_id := int64(1444838459)
 
-	repo := "whosonfirst-data-admin-is"
-	repo_url := fmt.Sprintf("../fixtures/%s", repo)
+	wof_path, err := uri.Id2RelPath(wof_id)
+
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	wof_repo := "whosonfirst-data-admin-is"
+	repo_url := fmt.Sprintf("../fixtures/%s", wof_repo)
 
 	cache_uri := "gocache://"
 	indexer_uri := "repo://"
@@ -41,7 +48,11 @@ func TestFindingAid(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	if rsp.Repo != repo {
+	if rsp.Repo != wof_repo {
 		t.Fatal("Invalid repo")
+	}
+
+	if rsp.Path != wof_path {
+		t.Fatal("Invalid path")
 	}
 }
