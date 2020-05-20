@@ -1,8 +1,10 @@
-package git
+package repo
 
 import (
-	"fmt"
 	"context"
+	"fmt"
+	_ "github.com/whosonfirst/go-whosonfirst-index-git"
+	_ "log"
 	"testing"
 )
 
@@ -12,10 +14,10 @@ func TestGitFindingAid(t *testing.T) {
 	repo_url := fmt.Sprintf("https://github.com/whosonfirst-data/%s.git", repo)
 
 	wof_id := int64(1444838459)
-	
+
 	ctx := context.Background()
 
-	fa, err := NewRepoFindingAid(ctx)
+	fa, err := NewRepoFindingAid(ctx, "repo:///?cache=gocache://&indexer=git://")
 
 	if err != nil {
 		t.Fatal(err)
@@ -27,13 +29,15 @@ func TestGitFindingAid(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	has_repo, err := fa.LookupID(ctx, wof_id)
+	var rsp FindingAidResponse
+
+	err = fa.LookupID(ctx, wof_id, &rsp)
 
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	if has_repo != repo {
+	if rsp.Repo != repo {
 		t.Fatal("Invalid repo")
 	}
 }
