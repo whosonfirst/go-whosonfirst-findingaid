@@ -2,6 +2,12 @@
 github.com/aaronland/go-roster
 # github.com/patrickmn/go-cache v2.1.0+incompatible
 github.com/patrickmn/go-cache
+# github.com/tidwall/gjson v1.6.0
+github.com/tidwall/gjson
+# github.com/tidwall/match v1.0.1
+github.com/tidwall/match
+# github.com/tidwall/pretty v1.0.0
+github.com/tidwall/pretty
 # github.com/whosonfirst/go-cache v0.1.0
 github.com/whosonfirst/go-cache
 # github.com/whosonfirst/go-whosonfirst-crawl v0.2.0
