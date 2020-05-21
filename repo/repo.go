@@ -5,11 +5,11 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"github.com/tidwall/gjson"
 	"github.com/whosonfirst/go-cache"
 	"github.com/whosonfirst/go-whosonfirst-findingaid"
 	"github.com/whosonfirst/go-whosonfirst-index"
 	"github.com/whosonfirst/go-whosonfirst-uri"
-	"github.com/tidwall/gjson"
 	"io"
 	"io/ioutil"
 	_ "log"
@@ -127,18 +127,18 @@ func (fa *RepoFindingAid) Index(ctx context.Context, sources ...string) error {
 
 func (fa *RepoFindingAid) IndexReader(ctx context.Context, fh io.Reader) error {
 
-     /*
-	var f *geojson_feature
+	/*
+		var f *geojson_feature
 
-	dec := json.NewDecoder(fh)
-	err := dec.Decode(&f)
+		dec := json.NewDecoder(fh)
+		err := dec.Decode(&f)
 
-	if err != nil {
-		return err
-	}
+		if err != nil {
+			return err
+		}
 
-	wof_id := f.Properties.ID
-	wof_repo := f.Properties.Repo
+		wof_id := f.Properties.ID
+		wof_repo := f.Properties.Repo
 
 	*/
 
@@ -148,15 +148,15 @@ func (fa *RepoFindingAid) IndexReader(ctx context.Context, fh io.Reader) error {
 		return err
 	}
 
-	id_rsp := json.GetBytes(body, "properties.wof:id")
+	id_rsp := gjson.GetBytes(body, "properties.wof:id")
 
-	if !id_rsp.Exists(){
+	if !id_rsp.Exists() {
 		return errors.New("Missing wof:id")
 	}
 
-	repo_rsp := json.GetBytes(body, "properties.wof:repo")
+	repo_rsp := gjson.GetBytes(body, "properties.wof:repo")
 
-	if !repo_rsp {
+	if !repo_rsp.Exists() {
 		return errors.New("Missing wof:repo")
 	}
 
@@ -184,7 +184,7 @@ func (fa *RepoFindingAid) IndexReader(ctx context.Context, fh io.Reader) error {
 	br := bytes.NewReader(enc)
 	br_cl := ioutil.NopCloser(br)
 
-	str_id := strconv.FormatInt(f.Properties.ID, 10)
+	str_id := strconv.FormatInt(wof_id, 10)
 
 	_, err = fa.cache.Set(ctx, str_id, br_cl)
 
