@@ -9,6 +9,7 @@ import (
 	"github.com/whosonfirst/go-whosonfirst-findingaid"
 	"github.com/whosonfirst/go-whosonfirst-index"
 	"github.com/whosonfirst/go-whosonfirst-uri"
+	"github.com/tidwall/gjson"
 	"io"
 	"io/ioutil"
 	_ "log"
@@ -126,6 +127,7 @@ func (fa *RepoFindingAid) Index(ctx context.Context, sources ...string) error {
 
 func (fa *RepoFindingAid) IndexReader(ctx context.Context, fh io.Reader) error {
 
+     /*
 	var f *geojson_feature
 
 	dec := json.NewDecoder(fh)
@@ -135,15 +137,41 @@ func (fa *RepoFindingAid) IndexReader(ctx context.Context, fh io.Reader) error {
 		return err
 	}
 
-	path, err := uri.Id2RelPath(f.Properties.ID)
+	wof_id := f.Properties.ID
+	wof_repo := f.Properties.Repo
+
+	*/
+
+	body, err := ioutil.ReadAll(fh)
+
+	if err != nil {
+		return err
+	}
+
+	id_rsp := json.GetBytes(body, "properties.wof:id")
+
+	if !id_rsp.Exists(){
+		return errors.New("Missing wof:id")
+	}
+
+	repo_rsp := json.GetBytes(body, "properties.wof:repo")
+
+	if !repo_rsp {
+		return errors.New("Missing wof:repo")
+	}
+
+	wof_id := id_rsp.Int()
+	wof_repo := repo_rsp.String()
+
+	path, err := uri.Id2RelPath(wof_id)
 
 	if err != nil {
 		return err
 	}
 
 	rsp := &FindingAidResponse{
-		ID:   f.Properties.ID,
-		Repo: f.Properties.Repo,
+		ID:   wof_id,
+		Repo: wof_repo,
 		Path: path,
 	}
 
