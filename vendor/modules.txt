@@ -1,18 +1,30 @@
+# github.com/aaronland/go-http-server v0.0.5
+github.com/aaronland/go-http-server
 # github.com/aaronland/go-roster v0.0.2
 github.com/aaronland/go-roster
+# github.com/aws/aws-lambda-go v1.10.0
+github.com/aws/aws-lambda-go/events
+github.com/aws/aws-lambda-go/lambda
+github.com/aws/aws-lambda-go/lambda/handlertrace
+github.com/aws/aws-lambda-go/lambda/messages
+github.com/aws/aws-lambda-go/lambdacontext
 # github.com/patrickmn/go-cache v2.1.0+incompatible
 github.com/patrickmn/go-cache
-# github.com/tidwall/gjson v1.6.0
+# github.com/tidwall/gjson v1.6.1
 github.com/tidwall/gjson
 # github.com/tidwall/match v1.0.1
 github.com/tidwall/match
-# github.com/tidwall/pretty v1.0.0
+# github.com/tidwall/pretty v1.0.2
 github.com/tidwall/pretty
-# github.com/whosonfirst/go-cache v0.1.0
+# github.com/whosonfirst/algnhsa v0.1.0
+github.com/whosonfirst/algnhsa
+# github.com/whosonfirst/go-cache v0.2.0
 github.com/whosonfirst/go-cache
-# github.com/whosonfirst/go-whosonfirst-crawl v0.2.0
+# github.com/whosonfirst/go-reader v0.2.0
+github.com/whosonfirst/go-reader
+# github.com/whosonfirst/go-whosonfirst-crawl v0.2.1
 github.com/whosonfirst/go-whosonfirst-crawl
-# github.com/whosonfirst/go-whosonfirst-index v0.2.3
+# github.com/whosonfirst/go-whosonfirst-index v0.3.2
 github.com/whosonfirst/go-whosonfirst-index
 github.com/whosonfirst/go-whosonfirst-index/fs
 # github.com/whosonfirst/go-whosonfirst-log v0.1.0
@@ -20,7 +32,7 @@ github.com/whosonfirst/go-whosonfirst-log
 # github.com/whosonfirst/go-whosonfirst-sources v0.1.0
 github.com/whosonfirst/go-whosonfirst-sources
 github.com/whosonfirst/go-whosonfirst-sources/sources
-# github.com/whosonfirst/go-whosonfirst-uri v0.1.0
+# github.com/whosonfirst/go-whosonfirst-uri v0.2.0
 github.com/whosonfirst/go-whosonfirst-uri
-# github.com/whosonfirst/walk v0.0.0-20160803014805-c0a349674b73
+# github.com/whosonfirst/walk v0.0.1
 github.com/whosonfirst/walk
