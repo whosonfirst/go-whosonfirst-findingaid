@@ -12,6 +12,8 @@ github.com/aws/aws-lambda-go/lambdacontext
 github.com/patrickmn/go-cache
 # github.com/rs/cors v1.7.0
 github.com/rs/cors
+# github.com/sfomuseum/go-flags v0.4.2
+github.com/sfomuseum/go-flags/flagset
 # github.com/tidwall/gjson v1.6.1
 github.com/tidwall/gjson
 # github.com/tidwall/match v1.0.1

@@ -2,9 +2,9 @@ package main
 
 import (
 	"context"
-	"flag"
 	"github.com/aaronland/go-http-server"
 	"github.com/rs/cors"
+	"github.com/sfomuseum/go-flags/flagset"
 	"github.com/whosonfirst/go-reader"
 	_ "github.com/whosonfirst/go-reader-http"
 	"github.com/whosonfirst/go-whosonfirst-findingaid/http"
@@ -14,10 +14,18 @@ import (
 
 func main() {
 
-	server_uri := flag.String("server-uri", "http://localhost:8080", "A valid aaronland/go-http-server URI")
-	reader_uri := flag.String("reader-uri", "", "A valid whosonfirst/go-reader URI")
+	fs := flagset.NewFlagSet("findingaid")
 
-	flag.Parse()
+	server_uri := fs.String("server-uri", "http://localhost:8080", "A valid aaronland/go-http-server URI")
+	reader_uri := fs.String("reader-uri", "", "A valid whosonfirst/go-reader URI")
+
+	flagset.Parse(fs)
+
+	err := flagset.SetFlagsFromEnvVarsWithFeedback(fs, "FINDINGAID", true)
+
+	if err != nil {
+		log.Fatalf("Failed to set flags, %v", err)
+	}
 
 	ctx := context.Background()
 
