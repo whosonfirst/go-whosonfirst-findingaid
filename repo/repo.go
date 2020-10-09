@@ -133,7 +133,7 @@ func (fa *RepoFindingAid) IndexReader(ctx context.Context, fh io.Reader) error {
 	// that aren't properly encoded so we'll hand off to gjson instead
 	// https://github.com/whosonfirst-data/whosonfirst-data/issues/1845
 	// (20200521/thisisaaronland)
-	
+
 	/*
 		var f *geojson_feature
 
