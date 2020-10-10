@@ -6,11 +6,63 @@ import (
 	"github.com/rs/cors"
 	"github.com/sfomuseum/go-flags/flagset"
 	"github.com/whosonfirst/go-reader"
+	"github.com/whosonfirst/go-whosonfirst-index"
+	"github.com/whosonfirst/go-cache"		
 	_ "github.com/whosonfirst/go-reader-http"
 	"github.com/whosonfirst/go-whosonfirst-findingaid/http"
 	"log"
+	"io"
+	"errors"
 	go_http "net/http"
 )
+
+type NullIndexer struct {
+	index.Driver
+}
+
+func (i *NullIndexer) Open(string) error {
+	return nil
+}
+
+func IndexURI(context.Context, index.IndexerFunc, string) error {
+	return nil
+}
+
+type HTTPCache struct {
+	cache.Cache
+}
+
+func (c *HTTPCache) Name() string {
+	return "http"
+}
+
+func (c *HTTPCache) Get(key string) (io.ReadCloser, error) {
+	return nil, errors.New("Not implemented")
+}
+
+func (c *HTTPCache) Set(key string, fh io.ReadCloser) (io.ReadCloser, error) {
+	return fh, nil
+}
+
+func (c *HTTPCache) Unset(string) error {
+	return nil
+}
+
+func (c *HTTPCache) Hits() int64 {
+	return 0
+}
+
+func (c *HTTPCache) Misses() int64 {
+	return 0
+}
+
+func (c *HTTPCache) Evictions() int64 {
+	return 0
+}
+
+func (c *HTTPCache) Size() int64 {
+	return 0
+}
 
 func main() {
 
