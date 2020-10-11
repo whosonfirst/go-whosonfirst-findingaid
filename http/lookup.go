@@ -2,21 +2,14 @@ package http
 
 import (
 	"encoding/json"
-	"github.com/tidwall/gjson"
-	"github.com/whosonfirst/go-reader"
+	"github.com/whosonfirst/go-whosonfirst-findingaid"
+	"github.com/whosonfirst/go-whosonfirst-findingaid/repo"
 	"github.com/whosonfirst/go-whosonfirst-uri"
-	"io/ioutil"
 	_ "log"
 	go_http "net/http"
 )
 
-type LookupResponse struct {
-	Id   int64  `json:"id"`
-	URI  string `json:"uri"`
-	Repo string `json:"repo"`
-}
-
-func LookupHandler(r reader.Reader) (go_http.Handler, error) {
+func LookupHandler(fa findingaid.FindingAid) (go_http.Handler, error) {
 
 	fn := func(rsp go_http.ResponseWriter, req *go_http.Request) {
 
@@ -42,46 +35,19 @@ func LookupHandler(r reader.Reader) (go_http.Handler, error) {
 			return
 		}
 
-		rel_path, err := uri.Id2RelPath(id)
+		var fa_rsp repo.FindingAidResponse
+
+		err = fa.LookupID(ctx, id, &rsp)
 
 		if err != nil {
 			go_http.Error(rsp, err.Error(), go_http.StatusBadRequest)
 			return
 		}
 
-		fh, err := r.Read(ctx, rel_path)
-
-		if err != nil {
-			go_http.Error(rsp, err.Error(), go_http.StatusInternalServerError)
-			return
-		}
-
-		body, err := ioutil.ReadAll(fh)
-
-		if err != nil {
-			go_http.Error(rsp, err.Error(), go_http.StatusInternalServerError)
-			return
-		}
-
-		repo_rsp := gjson.GetBytes(body, "properties.wof:repo")
-
-		if !repo_rsp.Exists() {
-			go_http.Error(rsp, "Invalid WOF record", go_http.StatusInternalServerError)
-			return
-		}
-
-		repo := repo_rsp.String()
-
-		lookup_rsp := LookupResponse{
-			Id:   id,
-			URI:  rel_path,
-			Repo: repo,
-		}
-
 		rsp.Header().Set("Content-type", "application/json")
 
 		enc := json.NewEncoder(rsp)
-		err = enc.Encode(lookup_rsp)
+		err = enc.Encode(fa_rsp)
 
 		if err != nil {
 			go_http.Error(rsp, err.Error(), go_http.StatusInternalServerError)
