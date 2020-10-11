@@ -21,7 +21,7 @@ func main() {
 
 	server_uri := fs.String("server-uri", "http://localhost:8080", "A valid aaronland/go-http-server URI")
 
-	cache_uri := fs.String("cache-uri", "reader://", "...")
+	cache_uri := fs.String("cache-uri", "readercache://?reader=http://data.whosonfirst.org&cache=gocache://", "...")
 	indexer_uri := fs.String("indexer-uri", "null://", "...")
 
 	flagset.Parse(fs)
@@ -35,6 +35,7 @@ func main() {
 	ctx := context.Background()
 
 	fa_q := url.Values{}
+
 	fa_q.Set("cache", *cache_uri)
 	fa_q.Set("indexer", *indexer_uri)
 

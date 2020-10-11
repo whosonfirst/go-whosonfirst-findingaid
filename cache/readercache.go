@@ -13,39 +13,74 @@ import (
 	"github.com/whosonfirst/go-whosonfirst-uri"
 	"io"
 	"io/ioutil"
+	"net/url"
 	"strconv"
 )
 
 func init() {
 	ctx := context.Background()
-	wof_cache.RegisterCache(ctx, "reader", NewReaderCache)
+	wof_cache.RegisterCache(ctx, "readercache", NewReaderCache)
 }
 
 type ReaderCache struct {
 	wof_cache.Cache
 	reader reader.Reader
+	cache  wof_cache.Cache
 }
 
 func NewReaderCache(ctx context.Context, uri string) (wof_cache.Cache, error) {
 
-	r, err := reader.NewReader(ctx, "https://data.whosonfirst.org")
+	u, err := url.Parse(uri)
 
 	if err != nil {
 		return nil, err
 	}
 
-	c := &ReaderCache{
-		reader: r,
+	q := u.Query()
+
+	r_uri := q.Get("reader")
+
+	if r_uri == "" {
+		return nil, errors.New("Missing reader parameter")
 	}
 
-	return c, nil
+	r, err := reader.NewReader(ctx, r_uri)
+
+	if err != nil {
+		return nil, err
+	}
+
+	c_uri := q.Get("cache")
+
+	if c_uri == "" {
+		return nil, errors.New("Missing cache parameter")
+	}
+
+	c, err := wof_cache.NewCache(ctx, c_uri)
+
+	if err != nil {
+		return nil, err
+	}
+
+	rc := &ReaderCache{
+		reader: r,
+		cache:  c,
+	}
+
+	return rc, nil
 }
 
 func (c *ReaderCache) Name() string {
-	return "http"
+	return "readercache"
 }
 
 func (c *ReaderCache) Get(ctx context.Context, key string) (io.ReadCloser, error) {
+
+	c_fh, err := c.cache.Get(ctx, key)
+
+	if err != nil {
+		return c_fh, nil
+	}
 
 	id, err := strconv.ParseInt(key, 10, 64)
 
@@ -59,15 +94,15 @@ func (c *ReaderCache) Get(ctx context.Context, key string) (io.ReadCloser, error
 		return nil, err
 	}
 
-	fh, err := c.reader.Read(ctx, rel_path)
+	r_fh, err := c.reader.Read(ctx, rel_path)
 
 	if err != nil {
 		return nil, err
 	}
 
-	defer fh.Close()
+	defer r_fh.Close()
 
-	body, err := ioutil.ReadAll(fh)
+	body, err := ioutil.ReadAll(r_fh)
 
 	if err != nil {
 		return nil, err
@@ -94,29 +129,31 @@ func (c *ReaderCache) Get(ctx context.Context, key string) (io.ReadCloser, error
 	}
 
 	br := bytes.NewReader(enc)
-	return ioutil.NopCloser(br), nil
+	rsp := ioutil.NopCloser(br)
+
+	return c.Set(ctx, key, rsp)
 }
 
 func (c *ReaderCache) Set(ctx context.Context, key string, fh io.ReadCloser) (io.ReadCloser, error) {
-	return fh, nil
+	return c.cache.Set(ctx, key, fh)
 }
 
-func (c *ReaderCache) Unset(context.Context, string) error {
-	return nil
+func (c *ReaderCache) Unset(ctx context.Context, key string) error {
+	return c.cache.Unset(ctx, key)
 }
 
 func (c *ReaderCache) Hits() int64 {
-	return 0
+	return c.cache.Hits()
 }
 
 func (c *ReaderCache) Misses() int64 {
-	return 0
+	return c.cache.Misses()
 }
 
 func (c *ReaderCache) Evictions() int64 {
-	return 0
+	return c.cache.Evictions()
 }
 
 func (c *ReaderCache) Size() int64 {
-	return 0
+	return c.cache.Size()
 }
