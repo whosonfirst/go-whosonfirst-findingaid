@@ -1,5 +1,5 @@
 debug:
-	go run -mod vendor cmd/lookupd/main.go -reader-uri https://data.whosonfirst.org
+	go run -mod vendor cmd/lookupd/main.go
 
 lambda-handlers:
 	@make lambda-server

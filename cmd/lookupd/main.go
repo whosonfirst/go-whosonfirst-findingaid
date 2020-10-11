@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"github.com/aaronland/go-http-server"
 	"github.com/rs/cors"
@@ -67,7 +66,7 @@ func (c *HTTPCache) Name() string {
 }
 
 func (c *HTTPCache) Get(ctx context.Context, key string) (io.ReadCloser, error) {
-	return nil, errors.New("Not implemented")
+	return c.reader.Read(ctx, key)
 }
 
 func (c *HTTPCache) Set(ctx context.Context, key string, fh io.ReadCloser) (io.ReadCloser, error) {
@@ -110,11 +109,12 @@ func main() {
 
 	ctx := context.Background()
 
-	cache_uri := "null://"
-	indexer_uri := "http://"
+	cache_uri := "http://"
+	indexer_uri := "null://"
 
 	fa_uri := fmt.Sprintf("repo:///?cache=%s&indexer=%s", cache_uri, indexer_uri)
 
+	log.Println(fa_uri)
 	fa, err := repo.NewRepoFindingAid(ctx, fa_uri)
 
 	if err != nil {
