@@ -27,7 +27,7 @@ type RepoFindingAid struct {
 type FindingAidResponse struct {
 	ID   int64  `json:"id"`
 	Repo string `json:"repo"`
-	Path string `json:"path"`
+	URI  string `json:"uri"`
 }
 
 // see notes below in IndexReader
@@ -170,7 +170,7 @@ func (fa *RepoFindingAid) IndexReader(ctx context.Context, fh io.Reader) error {
 	wof_id := id_rsp.Int()
 	wof_repo := repo_rsp.String()
 
-	path, err := uri.Id2RelPath(wof_id)
+	rel_path, err := uri.Id2RelPath(wof_id)
 
 	if err != nil {
 		return err
@@ -179,7 +179,7 @@ func (fa *RepoFindingAid) IndexReader(ctx context.Context, fh io.Reader) error {
 	rsp := &FindingAidResponse{
 		ID:   wof_id,
 		Repo: wof_repo,
-		Path: path,
+		URI:  rel_path,
 	}
 
 	enc, err := json.Marshal(rsp)
@@ -254,8 +254,8 @@ func (fa *RepoFindingAid) LookupID(ctx context.Context, id int64, i interface{})
 		f.SetString(rsp.Repo)
 	}
 
-	if f := v.FieldByName("Path"); f.IsValid() {
-		f.SetString(rsp.Path)
+	if f := v.FieldByName("URI"); f.IsValid() {
+		f.SetString(rsp.URI)
 	}
 
 	return nil

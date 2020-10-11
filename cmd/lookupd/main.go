@@ -1,11 +1,15 @@
 package main
 
 import (
+	"bytes"
 	"context"
+	"encoding/json"
+	"errors"
 	"fmt"
 	"github.com/aaronland/go-http-server"
 	"github.com/rs/cors"
 	"github.com/sfomuseum/go-flags/flagset"
+	"github.com/tidwall/gjson"
 	"github.com/whosonfirst/go-cache"
 	"github.com/whosonfirst/go-reader"
 	_ "github.com/whosonfirst/go-reader-http"
@@ -14,6 +18,7 @@ import (
 	"github.com/whosonfirst/go-whosonfirst-index"
 	"github.com/whosonfirst/go-whosonfirst-uri"
 	"io"
+	"io/ioutil"
 	"log"
 	go_http "net/http"
 	"strconv"
@@ -81,7 +86,42 @@ func (c *HTTPCache) Get(ctx context.Context, key string) (io.ReadCloser, error) 
 		return nil, err
 	}
 
-	return c.reader.Read(ctx, rel_path)
+	fh, err := c.reader.Read(ctx, rel_path)
+
+	if err != nil {
+		return nil, err
+	}
+
+	defer fh.Close()
+
+	body, err := ioutil.ReadAll(fh)
+
+	if err != nil {
+		return nil, err
+	}
+
+	repo_rsp := gjson.GetBytes(body, "properties.wof:repo")
+
+	if !repo_rsp.Exists() {
+		return nil, errors.New("Invalid WOF record")
+	}
+
+	wof_repo := repo_rsp.String()
+
+	fa_rsp := repo.FindingAidResponse{
+		ID:   id,
+		URI:  rel_path,
+		Repo: wof_repo,
+	}
+
+	enc, err := json.Marshal(fa_rsp)
+
+	if err != nil {
+		return nil, err
+	}
+
+	br := bytes.NewReader(enc)
+	return ioutil.NopCloser(br), nil
 }
 
 func (c *HTTPCache) Set(ctx context.Context, key string, fh io.ReadCloser) (io.ReadCloser, error) {
