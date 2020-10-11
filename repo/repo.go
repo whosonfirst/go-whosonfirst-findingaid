@@ -260,3 +260,7 @@ func (fa *RepoFindingAid) LookupID(ctx context.Context, id int64, i interface{})
 
 	return nil
 }
+
+func (fa *RepoFindingAid) Result(ctx context.Context) (interface{}, error) {
+	return &RepoFindingAid{}, nil
+}
