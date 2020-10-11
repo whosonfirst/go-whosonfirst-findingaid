@@ -5,7 +5,7 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
-	"fmt"
+	_ "fmt"
 	"github.com/aaronland/go-http-server"
 	"github.com/rs/cors"
 	"github.com/sfomuseum/go-flags/flagset"
@@ -21,6 +21,7 @@ import (
 	"io/ioutil"
 	"log"
 	go_http "net/http"
+	"net/url"
 	"strconv"
 )
 
@@ -154,6 +155,9 @@ func main() {
 
 	server_uri := fs.String("server-uri", "http://localhost:8080", "A valid aaronland/go-http-server URI")
 
+	cache_uri := fs.String("cache-uri", "http://", "...")
+	indexer_uri := fs.String("indexer-uri", "null://", "...")
+
 	flagset.Parse(fs)
 
 	err := flagset.SetFlagsFromEnvVarsWithFeedback(fs, "FINDINGAID", true)
@@ -164,12 +168,15 @@ func main() {
 
 	ctx := context.Background()
 
-	cache_uri := "http://"
-	indexer_uri := "null://"
+	fa_q := url.Values{}
+	fa_q.Set("cache", *cache_uri)
+	fa_q.Set("indexer", *indexer_uri)
 
-	fa_uri := fmt.Sprintf("repo:///?cache=%s&indexer=%s", cache_uri, indexer_uri)
+	fa_uri := url.URL{}
+	fa_uri.Scheme = "repo"
+	fa_uri.RawQuery = fa_q.Encode()
 
-	fa, err := repo.NewRepoFindingAid(ctx, fa_uri)
+	fa, err := repo.NewRepoFindingAid(ctx, fa_uri.String())
 
 	if err != nil {
 		log.Fatalf("Failed to create repo finding aid, %v", err)
