@@ -12,9 +12,11 @@ import (
 	"github.com/whosonfirst/go-whosonfirst-findingaid/http"
 	"github.com/whosonfirst/go-whosonfirst-findingaid/repo"
 	"github.com/whosonfirst/go-whosonfirst-index"
+	"github.com/whosonfirst/go-whosonfirst-uri"
 	"io"
 	"log"
 	go_http "net/http"
+	"strconv"
 )
 
 func init() {
@@ -66,7 +68,20 @@ func (c *HTTPCache) Name() string {
 }
 
 func (c *HTTPCache) Get(ctx context.Context, key string) (io.ReadCloser, error) {
-	return c.reader.Read(ctx, key)
+
+	id, err := strconv.ParseInt(key, 10, 64)
+
+	if err != nil {
+		return nil, err
+	}
+
+	rel_path, err := uri.Id2RelPath(id)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return c.reader.Read(ctx, rel_path)
 }
 
 func (c *HTTPCache) Set(ctx context.Context, key string, fh io.ReadCloser) (io.ReadCloser, error) {
@@ -114,7 +129,6 @@ func main() {
 
 	fa_uri := fmt.Sprintf("repo:///?cache=%s&indexer=%s", cache_uri, indexer_uri)
 
-	log.Println(fa_uri)
 	fa, err := repo.NewRepoFindingAid(ctx, fa_uri)
 
 	if err != nil {

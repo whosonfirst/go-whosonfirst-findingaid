@@ -5,7 +5,7 @@ import (
 	"github.com/whosonfirst/go-whosonfirst-findingaid"
 	"github.com/whosonfirst/go-whosonfirst-findingaid/repo"
 	"github.com/whosonfirst/go-whosonfirst-uri"
-	_ "log"
+	"log"
 	go_http "net/http"
 )
 
@@ -37,7 +37,9 @@ func LookupHandler(fa findingaid.FindingAid) (go_http.Handler, error) {
 
 		var fa_rsp repo.FindingAidResponse
 
-		err = fa.LookupID(ctx, id, &rsp)
+		log.Println("LOOKUP", id)
+
+		err = fa.LookupID(ctx, id, &fa_rsp)
 
 		if err != nil {
 			go_http.Error(rsp, err.Error(), go_http.StatusBadRequest)
