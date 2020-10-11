@@ -8,11 +8,11 @@ import (
 	"github.com/tidwall/gjson"
 	wof_cache "github.com/whosonfirst/go-cache"
 	"github.com/whosonfirst/go-reader"
-	_ "github.com/whosonfirst/go-reader-http"
 	"github.com/whosonfirst/go-whosonfirst-findingaid/repo"
 	"github.com/whosonfirst/go-whosonfirst-uri"
 	"io"
 	"io/ioutil"
+	_ "log"
 	"net/url"
 	"strconv"
 )
@@ -78,7 +78,7 @@ func (c *ReaderCache) Get(ctx context.Context, key string) (io.ReadCloser, error
 
 	c_fh, err := c.cache.Get(ctx, key)
 
-	if err != nil {
+	if err == nil {
 		return c_fh, nil
 	}
 

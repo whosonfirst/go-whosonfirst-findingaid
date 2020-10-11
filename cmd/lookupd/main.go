@@ -2,10 +2,10 @@ package main
 
 import (
 	"context"
-	_ "fmt"
 	"github.com/aaronland/go-http-server"
 	"github.com/rs/cors"
 	"github.com/sfomuseum/go-flags/flagset"
+	_ "github.com/whosonfirst/go-reader-http"
 	_ "github.com/whosonfirst/go-whosonfirst-findingaid/cache"
 	"github.com/whosonfirst/go-whosonfirst-findingaid/http"
 	_ "github.com/whosonfirst/go-whosonfirst-findingaid/index"
