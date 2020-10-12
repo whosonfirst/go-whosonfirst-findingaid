@@ -63,9 +63,8 @@ $> ./bin/lookupd -h
     	A valid aaronland/go-http-server URI string. (default "http://localhost:8080")
 ```
 
-## Interfaces
 
-### FindingAid
+## FindingAids
 
 ```
 type FindingAid interface {
@@ -73,6 +72,46 @@ type FindingAid interface {
 	IndexReader(context.Context, io.Reader) error
 	LookupID(context.Context, int64) (interface{}, error)
 }
+```
+
+### Repo(sitory) FindingAid
+
+## Caches
+
+This package imports the [whosonfirst/go-cache](#) package so all the caches it exports are automatically available. Please consult [that package's documentation](#) for details. The following additional caching layers are also available:
+
+### readercache
+
+The `readercache` package implements the `whosonfirst/go-cache` interface by lazy-loading cache values using a valid [whosonfirst/go-reader](#) `Reader` instance. 
+
+For example, this package is used in concert with the `null` indexing package by the [lookupd](cmd/lookupd) tool to implement an HTTP findingaid that resolves, and caches, indentifiers at runtime.
+
+```
+import (
+	_ "github.com/whosonfirst/go-whosonfirst-findingaid/repo"
+)
+
+cache_uri := "readercache://?reader={READER_URI}&cache={CACHE_URI}"
+```
+
+Where `{READER_URI}` is a valid [whosonfirst/go-reader](#) URI string and `{CACHE_URI}` is a valid [whosonfirst/go-cache](#) URI string.
+
+## Indexers
+
+This package imports the [whosonfirst/go-whosonfirst-index](#) package so all the caches it exports are automatically available. Please consult [that package's documentation](#) for details. The following additional caching layers are also available:
+
+### null
+
+The `null` package implements to `whosonfirst/go-whosonfirst-index` interface but doesn't actually index anything at all.
+
+For example, this package is used in concert with the `readercache` caching package by the [lookupd](cmd/lookupd) tool to implement an HTTP findingaid that resolves, and caches, indentifiers at runtime.
+
+```
+import (
+	_ "github.com/whosonfirst/go-whosonfirst-findingaid/index"
+)
+
+indexer_uri := "null://"
 ```
 
 ## See also
