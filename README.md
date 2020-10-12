@@ -35,9 +35,7 @@ func main(){
 
 	fa.Index(ctx, repo_url)
 
-	var rsp repo.FindingAidResponse
-	
-	fa.LookupID(ctx, wof_id, &rsp)
+	rsp, _ := fa.LookupID(ctx, wof_id)
 
 	if rsp.Repo != wof_repo {
 		log.Fatal("Invalid repo")
@@ -48,7 +46,6 @@ func main(){
 Notes:
 
 * Eventually there will be a `findingaid.NewFindingAid` helper method.
-* The use of `whosonfirst/go-whosonfirst-index` packages will likely be replaced the [whosonfirst/go-whosonfirst-iterate](https://github.com/whosonfirst/go-whosonfirst-iterate) packages but that's still work in progress.
 
 ## Interfaces
 
@@ -58,7 +55,7 @@ Notes:
 type FindingAid interface {
 	Index(context.Context, ...string) error
 	IndexReader(context.Context, io.Reader) error
-	LookupID(context.Context, int64, interface{}) error
+	LookupID(context.Context, int64) (interface{}, error)
 }
 ```
 

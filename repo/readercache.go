@@ -1,4 +1,4 @@
-package cache
+package repo
 
 import (
 	"bytes"
@@ -6,9 +6,8 @@ import (
 	"encoding/json"
 	"errors"
 	"github.com/tidwall/gjson"
-	wof_cache "github.com/whosonfirst/go-cache"
+	"github.com/whosonfirst/go-cache"
 	"github.com/whosonfirst/go-reader"
-	"github.com/whosonfirst/go-whosonfirst-findingaid/repo"
 	"github.com/whosonfirst/go-whosonfirst-uri"
 	"io"
 	"io/ioutil"
@@ -19,16 +18,16 @@ import (
 
 func init() {
 	ctx := context.Background()
-	wof_cache.RegisterCache(ctx, "readercache", NewReaderCache)
+	cache.RegisterCache(ctx, "readercache", NewReaderCache)
 }
 
 type ReaderCache struct {
-	wof_cache.Cache
+	cache.Cache
 	reader reader.Reader
-	cache  wof_cache.Cache
+	cache  cache.Cache
 }
 
-func NewReaderCache(ctx context.Context, uri string) (wof_cache.Cache, error) {
+func NewReaderCache(ctx context.Context, uri string) (cache.Cache, error) {
 
 	u, err := url.Parse(uri)
 
@@ -56,7 +55,7 @@ func NewReaderCache(ctx context.Context, uri string) (wof_cache.Cache, error) {
 		return nil, errors.New("Missing cache parameter")
 	}
 
-	c, err := wof_cache.NewCache(ctx, c_uri)
+	c, err := cache.NewCache(ctx, c_uri)
 
 	if err != nil {
 		return nil, err
@@ -116,7 +115,7 @@ func (c *ReaderCache) Get(ctx context.Context, key string) (io.ReadCloser, error
 
 	wof_repo := repo_rsp.String()
 
-	fa_rsp := repo.FindingAidResponse{
+	fa_rsp := FindingAidResponse{
 		ID:   id,
 		URI:  rel_path,
 		Repo: wof_repo,

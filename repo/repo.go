@@ -14,7 +14,6 @@ import (
 	"io/ioutil"
 	_ "log"
 	"net/url"
-	"reflect"
 	"strconv"
 )
 
@@ -225,14 +224,14 @@ func (fa *RepoFindingAid) indexSource(ctx context.Context, source string) error 
 	return idx.Index(ctx, source)
 }
 
-func (fa *RepoFindingAid) LookupID(ctx context.Context, id int64, i interface{}) error {
+func (fa *RepoFindingAid) LookupID(ctx context.Context, id int64) (interface{}, error) {
 
 	str_id := strconv.FormatInt(id, 10)
 
 	fh, err := fa.cache.Get(ctx, str_id)
 
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	var rsp *FindingAidResponse
@@ -241,26 +240,8 @@ func (fa *RepoFindingAid) LookupID(ctx context.Context, id int64, i interface{})
 	err = dec.Decode(&rsp)
 
 	if err != nil {
-		return err
+		return nil, err
 	}
 
-	v := reflect.ValueOf(i).Elem()
-
-	if f := v.FieldByName("ID"); f.IsValid() {
-		f.SetInt(rsp.ID)
-	}
-
-	if f := v.FieldByName("Repo"); f.IsValid() {
-		f.SetString(rsp.Repo)
-	}
-
-	if f := v.FieldByName("URI"); f.IsValid() {
-		f.SetString(rsp.URI)
-	}
-
-	return nil
-}
-
-func (fa *RepoFindingAid) Result(ctx context.Context) (interface{}, error) {
-	return &RepoFindingAid{}, nil
+	return rsp, nil
 }

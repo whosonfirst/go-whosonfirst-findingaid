@@ -8,6 +8,5 @@ import (
 type FindingAid interface {
 	Index(context.Context, ...string) error
 	IndexReader(context.Context, io.Reader) error
-	LookupID(context.Context, int64, interface{}) error
-	Result(context.Context) (interface{}, error)
+	LookupID(context.Context, int64) (interface{}, error)
 }
