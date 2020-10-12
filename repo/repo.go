@@ -29,15 +29,14 @@ type FindingAidResponse struct {
 	URI  string `json:"uri"`
 }
 
-// see notes below in IndexReader
+func init() {
 
-type geojson_properties struct {
-	ID   int64  `json:"wof:id"`
-	Repo string `json:"wof:repo"`
-}
+	ctx := context.Background()
+	err := findingaid.RegisterFindingAid(ctx, "repo", NewRepoFindingAid)
 
-type geojson_feature struct {
-	Properties geojson_properties `json:"properties"`
+	if err != nil {
+		panic(err)
+	}
 }
 
 func NewRepoFindingAid(ctx context.Context, uri string) (findingaid.FindingAid, error) {
@@ -127,26 +126,6 @@ func (fa *RepoFindingAid) Index(ctx context.Context, sources ...string) error {
 }
 
 func (fa *RepoFindingAid) IndexReader(ctx context.Context, fh io.Reader) error {
-
-	// this is what we'd like to do but we know that there are records
-	// that aren't properly encoded so we'll hand off to gjson instead
-	// https://github.com/whosonfirst-data/whosonfirst-data/issues/1845
-	// (20200521/thisisaaronland)
-
-	/*
-		var f *geojson_feature
-
-		dec := json.NewDecoder(fh)
-		err := dec.Decode(&f)
-
-		if err != nil {
-			return err
-		}
-
-		wof_id := f.Properties.ID
-		wof_repo := f.Properties.Repo
-
-	*/
 
 	body, err := ioutil.ReadAll(fh)
 

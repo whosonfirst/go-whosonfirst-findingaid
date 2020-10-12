@@ -4,6 +4,7 @@ go 1.12
 
 require (
 	github.com/aaronland/go-http-server v0.0.5
+	github.com/aaronland/go-roster v0.0.2
 	github.com/rs/cors v1.7.0
 	github.com/sfomuseum/go-flags v0.4.2
 	github.com/tidwall/gjson v1.6.1
