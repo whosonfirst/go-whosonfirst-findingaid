@@ -4,16 +4,16 @@ Work in progress.
 
 ## Example
 
-_Error handling omitted for the sake of brevity._
-
 ```
 package main
 
 import (
 	"context"
 	"fmt"
-	"github.com/whosonfirst/go-whosonfirst-findingaid/repo"
-	_ "github.com/whosonfirst/go-whosonfirst-index/fs"	
+	_ "github.com/whosonfirst/go-cache"			
+	"github.com/whosonfirst/go-whosonfirst-findingaid"	
+	_ "github.com/whosonfirst/go-whosonfirst-findingaid/repo"
+	_ "github.com/whosonfirst/go-whosonfirst-index/fs"
 	"log"
 )
 
@@ -31,7 +31,7 @@ func main(){
 	
 	fa_uri := fmt.Sprintf("repo://?cache=%s&indexer=%s", cache_uri, indexer_uri)
 	
-	fa, _ := repo.NewRepoFindingAid(ctx, fa_uri)
+	fa, _ := findingaid.NewFindingAid(ctx, fa_uri)
 
 	fa.Index(ctx, repo_url)
 
@@ -43,9 +43,25 @@ func main(){
 }
 ```
 
-Notes:
+_Error handling omitted for the sake of brevity._
 
-* Eventually there will be a `findingaid.NewFindingAid` helper method.
+## Tools
+
+### lookupd
+
+```
+$> ./bin/lookupd -h
+  -cache-uri string
+    	A valid whosonfirst/go-cache URI string. (default "readercache://?reader=http://data.whosonfirst.org&cache=gocache://")
+  -enable-cors
+    	Enable CORS headers for output. (default true)
+  -findingaid-uri string
+    	A valid whosonfirst/go-whosonfirst-findingaid URI string. (default "repo://?cache={cache_uri}&indexer={indexer_uri}")
+  -indexer-uri string
+    	A valid whosonfirst/go-whosonfirst-index URI string. (default "null://")
+  -server-uri string
+    	A valid aaronland/go-http-server URI string. (default "http://localhost:8080")
+```
 
 ## Interfaces
 

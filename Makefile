@@ -1,3 +1,6 @@
+cli:
+	go build -mod vendor -o bin/lookupd cmd/lookupd/main.go
+
 debug:
 	go run -mod vendor cmd/lookupd/main.go
 
