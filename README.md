@@ -63,6 +63,25 @@ $> ./bin/lookupd -h
     	A valid aaronland/go-http-server URI string. (default "http://localhost:8080")
 ```
 
+As a convenience the string values of `{cache_uri}` and `{indexer_uri}` in the value of the `-findingaid-uri` argument will be automatically replaced with the values of the `-cache-uri` and `-indexer-uri` flags. Values will also be automatically URL encoded so you don't need to do that yourself.
+
+For example:
+
+```
+$> go run -mod vendor cmd/lookupd/main.go
+2020/10/12 13:47:24 Listening on http://localhost:8080
+```
+
+And then:
+
+```
+$> curl -s localhost:8080/85922583 | jq
+{
+  "id": 85922583,
+  "repo": "whosonfirst-data-admin-us",
+  "uri": "859/225/83/85922583.geojson"
+}
+```
 
 ## FindingAids
 
@@ -74,7 +93,19 @@ type FindingAid interface {
 }
 ```
 
-### Repo(sitory) FindingAid
+### repo
+
+```
+import (
+       "context"
+	_ "github.com/whosonfirst/go-whosonfirst-findingaid/repo"
+)
+
+ctx := context.Background()
+
+fa_uri := "repo://?cache={cache_uri}&indexer={indexer_uri}"
+fa, _ := findingaid.NewFindingAid(ctx, fa_uri)
+```
 
 ## Caches
 
