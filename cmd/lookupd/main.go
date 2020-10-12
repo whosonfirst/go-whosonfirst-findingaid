@@ -18,10 +18,14 @@ func main() {
 
 	fs := flagset.NewFlagSet("findingaid")
 
-	server_uri := fs.String("server-uri", "http://localhost:8080", "A valid aaronland/go-http-server URI")
+	server_uri := fs.String("server-uri", "http://localhost:8080", "A valid aaronland/go-http-server URI string.")
 
-	cache_uri := fs.String("cache-uri", "readercache://?reader=http://data.whosonfirst.org&cache=gocache://", "...")
-	indexer_uri := fs.String("indexer-uri", "null://", "...")
+	cache_uri := fs.String("cache-uri", "readercache://?reader=http://data.whosonfirst.org&cache=gocache://", "A valid whosonfirst/go-cache URI string.")
+	indexer_uri := fs.String("indexer-uri", "null://", "A valid whosonfirst/go-whosonfirst-index URI string.")
+
+	findingaid_uri := fs.String("findingaid-uri", "repo://?cache={cache_uri}&indexer={indexer_uri}", "A valid whosonfirst/go-whosonfirst-findingaid URI string.")
+
+	enable_cors := fs.Bool("enable-cors", true, "Enable CORS headers for output.")
 
 	flagset.Parse(fs)
 
@@ -33,13 +37,22 @@ func main() {
 
 	ctx := context.Background()
 
-	fa_q := url.Values{}
+	fa_uri, err := url.Parse(*findingaid_uri)
 
-	fa_q.Set("cache", *cache_uri)
-	fa_q.Set("indexer", *indexer_uri)
+	if err != nil {
+		log.Fatalf("Failed to parse findingaid URI, %v", err)
+	}
 
-	fa_uri := url.URL{}
-	fa_uri.Scheme = "repo"
+	fa_q := fa_uri.Query()
+
+	if fa_q.Get("cache") == "{cache_uri}" {
+		fa_q["cache"] = []string{*cache_uri}
+	}
+
+	if fa_q.Get("indexer") == "{indexer_uri}" {
+		fa_q["indexer"] = []string{*indexer_uri}
+	}
+
 	fa_uri.RawQuery = fa_q.Encode()
 
 	fa, err := repo.NewRepoFindingAid(ctx, fa_uri.String())
@@ -48,15 +61,16 @@ func main() {
 		log.Fatalf("Failed to create repo finding aid, %v", err)
 	}
 
-	cors_handler := cors.New(cors.Options{})
-
 	lookup_handler, err := http.LookupHandler(fa)
 
 	if err != nil {
 		log.Fatalf("Failed to create lookup handler, %v", err)
 	}
 
-	lookup_handler = cors_handler.Handler(lookup_handler)
+	if *enable_cors {
+		cors_handler := cors.New(cors.Options{})
+		lookup_handler = cors_handler.Handler(lookup_handler)
+	}
 
 	mux := go_http.NewServeMux()
 
