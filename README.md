@@ -45,6 +45,132 @@ func main(){
 
 _Error handling omitted for the sake of brevity._
 
+## FindingAids
+
+Conceptually a finding aid consists of two parts:
+
+* An indexer which indexes (or catalogs) one or more Who's On First (WOF) records in to a cache. WOF records may be cataloged in full, truncated or otherwise manipulated according to logic implemented by the indexing or caching layers.
+* A cache of WOF records, in full or otherwise manipulated, that can resolved using a given WOF ID.
+
+It is generally assumed that a complete catalog of WOF records will be assembled in advance of any query actions but that is not an absolute requirement. For an example of a lazy-loading catalog and query implementation, where all operations are performed at runtime, consult the documentation for the `readercache` chaching layer below.
+
+There can be more than one kind of finding aid. Finding aids can implement their own internal logic for cataloging, caching and querying WOF records. A finding aid need only implement the following interface:
+
+```
+type FindingAid interface {
+	Index(context.Context, ...string) error
+	IndexReader(context.Context, io.Reader) error
+	LookupID(context.Context, int64) (interface{}, error)
+}
+```
+
+Note the ambiguous return value (`interface{}`) for the `LookupID` method. Since it impossible to know in advance the response properties of any given finding aid it is left to developers to cast query results in to the appropriate type if necessary.
+
+The `findingaid` package provides for a generic constructor method using URI strings to distinguish one finding from another. For example:
+
+```
+import (
+       "context"
+	_ "github.com/whosonfirst/go-whosonfirst-findingaid/repo"
+)
+
+func main() {
+	ctx := context.Background()
+
+	fa_uri := "repo://?cache={cache_uri}&indexer={indexer_uri}"
+	fa, _ := findingaid.NewFindingAid(ctx, fa_uri)
+}	
+```
+
+Individual finding aid implementations must "register" themselves and their URI schemes on initialization in order to make themselves available. For example:
+
+```
+package repo
+
+import (
+       "context"
+	"github.com/whosonfirst/go-whosonfirst-findingaid"
+)
+
+func init() {
+
+	ctx := context.Background()
+	err := findingaid.RegisterFindingAid(ctx, "repo", NewRepoFindingAid)
+
+	if err != nil {
+		panic(err)
+	}
+}
+
+func NewRepoFindingAid(ctx context.Context, uri string) (findingaid.FindingAid, error) {
+	...
+}	
+```
+
+The following finding aids are available by default:
+
+### repo
+
+```
+type FindingAidResponse struct {
+	ID   int64  `json:"id"`
+	Repo string `json:"repo"`
+	URI  string `json:"uri"`
+}
+```
+
+```
+import (
+       "context"
+	_ "github.com/whosonfirst/go-whosonfirst-findingaid/repo"
+)
+
+func main() {
+	ctx := context.Background()
+
+	fa_uri := "repo://?cache={cache_uri}&indexer={indexer_uri}"
+	fa, _ := findingaid.NewFindingAid(ctx, fa_uri)
+}	
+```
+
+## Caches
+
+This package imports the [whosonfirst/go-cache](https://github.com/whosonfirst/go-cache) package so all the caches it exports are automatically available. Please consult [that package's documentation](#) for details. The following additional caching layers are also available:
+
+### readercache
+
+The `readercache` package implements the `whosonfirst/go-cache` interface by lazy-loading cache values using a valid [whosonfirst/go-reader](https://github.com/whosonfirst/go-reader) `Reader` instance. 
+
+For example, this package is used in concert with the `null` indexing package by the [lookupd](cmd/lookupd) tool to implement an HTTP findingaid that resolves, and caches, indentifiers at runtime.
+
+```
+import (
+	_ "github.com/whosonfirst/go-whosonfirst-findingaid/repo"
+)
+
+cache_uri := "readercache://?reader={READER_URI}&cache={CACHE_URI}"
+```
+
+Where `{READER_URI}` is a valid [whosonfirst/go-reader](https://github.com/whosonfirst/go-reader) URI string and `{CACHE_URI}` is a valid [whosonfirst/go-cache](https://github.com/whosonfirst/go-cache) URI string.
+
+## Indexers
+
+This package imports the [whosonfirst/go-whosonfirst-index](https://github.com/whosonfirst/go-whosonfirst-index) package so all the caches it exports are automatically available. Please consult [that package's documentation](#) for details. The following additional caching layers are also available:
+
+### null
+
+The `null` package implements to `whosonfirst/go-whosonfirst-index` interface but doesn't actually index anything at all.
+
+For example, this package is used in concert with the `readercache` caching package by the [lookupd](cmd/lookupd) tool to implement an HTTP findingaid that resolves, and caches, indentifiers at runtime.
+
+```
+import (
+	_ "github.com/whosonfirst/go-whosonfirst-findingaid/index"
+)
+
+indexer_uri := "null://"
+```
+
 ## Tools
 
 ### lookupd
@@ -83,70 +209,9 @@ $> curl -s localhost:8080/85922583 | jq
 }
 ```
 
-## FindingAids
-
-```
-type FindingAid interface {
-	Index(context.Context, ...string) error
-	IndexReader(context.Context, io.Reader) error
-	LookupID(context.Context, int64) (interface{}, error)
-}
-```
-
-### repo
-
-```
-import (
-       "context"
-	_ "github.com/whosonfirst/go-whosonfirst-findingaid/repo"
-)
-
-ctx := context.Background()
-
-fa_uri := "repo://?cache={cache_uri}&indexer={indexer_uri}"
-fa, _ := findingaid.NewFindingAid(ctx, fa_uri)
-```
-
-## Caches
-
-This package imports the [whosonfirst/go-cache](#) package so all the caches it exports are automatically available. Please consult [that package's documentation](#) for details. The following additional caching layers are also available:
-
-### readercache
-
-The `readercache` package implements the `whosonfirst/go-cache` interface by lazy-loading cache values using a valid [whosonfirst/go-reader](#) `Reader` instance. 
-
-For example, this package is used in concert with the `null` indexing package by the [lookupd](cmd/lookupd) tool to implement an HTTP findingaid that resolves, and caches, indentifiers at runtime.
-
-```
-import (
-	_ "github.com/whosonfirst/go-whosonfirst-findingaid/repo"
-)
-
-cache_uri := "readercache://?reader={READER_URI}&cache={CACHE_URI}"
-```
-
-Where `{READER_URI}` is a valid [whosonfirst/go-reader](#) URI string and `{CACHE_URI}` is a valid [whosonfirst/go-cache](#) URI string.
-
-## Indexers
-
-This package imports the [whosonfirst/go-whosonfirst-index](#) package so all the caches it exports are automatically available. Please consult [that package's documentation](#) for details. The following additional caching layers are also available:
-
-### null
-
-The `null` package implements to `whosonfirst/go-whosonfirst-index` interface but doesn't actually index anything at all.
-
-For example, this package is used in concert with the `readercache` caching package by the [lookupd](cmd/lookupd) tool to implement an HTTP findingaid that resolves, and caches, indentifiers at runtime.
-
-```
-import (
-	_ "github.com/whosonfirst/go-whosonfirst-findingaid/index"
-)
-
-indexer_uri := "null://"
-```
-
 ## See also
 
 * https://github.com/whosonfirst/go-cache
 * https://github.com/whosonfirst/go-whosonfirst-index
+* https://github.com/whosonfirst/go-reader
 * https://en.wikipedia.org/wiki/Finding_aid
