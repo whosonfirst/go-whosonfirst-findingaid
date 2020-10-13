@@ -1,6 +1,6 @@
 # go-whosonfirst-findingaid
 
-Work in progress.
+A Go language interface for building and querying finding aids of Who's On First documents.
 
 ## Example
 
@@ -35,8 +35,10 @@ func main(){
 
 	fa.Index(ctx, repo_url)
 
-	rsp, _ := fa.LookupID(ctx, wof_id)
+	fa_rsp, _ := fa.LookupID(ctx, wof_id)
 
+	rsp := fa_rsp.(*repo.FindingAidResponse)
+	
 	if rsp.Repo != wof_repo {
 		log.Fatal("Invalid repo")
 	}
@@ -111,6 +113,10 @@ The following finding aids are available by default:
 
 ### repo
 
+This finding aid catalogs Who's On First records and the `wof:repo` name. For details on why this is necessary consult the [Upcoming changes to Who's On First administrative data](https://whosonfirst.org/blog/2019/05/09/changes/) blog post.
+
+The return value of this finding aid's `LookupID` method is a pointer to a `repo.FindingAidResponse` struct:
+
 ```
 type FindingAidResponse struct {
 	ID   int64  `json:"id"`
@@ -118,6 +124,8 @@ type FindingAidResponse struct {
 	URI  string `json:"uri"`
 }
 ```
+
+To load this finding aid you would add the following (abbreviated code) to your code:
 
 ```
 import (
@@ -133,9 +141,16 @@ func main() {
 }	
 ```
 
+URI strings for the `repo` finding aid take the following parameters:
+
+| Name | Type | Rquired | Notes |
+| --- | --- | --- | --- |
+| cache | string | yes | A valid `whosonfirst/go-cache URI string. |
+| indexer | string | yes | A valid `whosonfirst/go-whosonfirst-index URI string. |
+
 ## Caches
 
-This package imports the [whosonfirst/go-cache](https://github.com/whosonfirst/go-cache) package so all the caches it exports are automatically available. Please consult [that package's documentation](#) for details. The following additional caching layers are also available:
+The `go-whosonfirst-findingaid` package imports the [whosonfirst/go-cache](https://github.com/whosonfirst/go-cache) package so all the caches it exports are automatically available. Please consult [that package's documentation](#) for details. The following additional caching layers are also available:
 
 ### readercache
 
@@ -155,7 +170,7 @@ Where `{READER_URI}` is a valid [whosonfirst/go-reader](https://github.com/whoso
 
 ## Indexers
 
-This package imports the [whosonfirst/go-whosonfirst-index](https://github.com/whosonfirst/go-whosonfirst-index) package so all the caches it exports are automatically available. Please consult [that package's documentation](#) for details. The following additional caching layers are also available:
+The `go-whosonfirst-findingaid` package imports the [whosonfirst/go-whosonfirst-index](https://github.com/whosonfirst/go-whosonfirst-index) package so all the caches it exports are automatically available. Please consult [that package's documentation](#) for details. The following additional caching layers are also available:
 
 ### null
 
@@ -174,6 +189,8 @@ indexer_uri := "null://"
 ## Tools
 
 ### lookupd
+
+A simple HTTP server for querying a finding aid by URI and returning the results as JSON.
 
 ```
 $> ./bin/lookupd -h
@@ -208,6 +225,10 @@ $> curl -s localhost:8080/85922583 | jq
   "uri": "859/225/83/85922583.geojson"
 }
 ```
+
+#### AWS Lambda
+
+...
 
 ## See also
 
