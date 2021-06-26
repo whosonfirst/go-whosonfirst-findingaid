@@ -35,7 +35,7 @@ func (app *LookupdApplication) DefaultFlagSet(ctx context.Context) (*flag.FlagSe
 
 	fs.StringVar(&server_uri, "server-uri", "http://localhost:8080", "A valid aaronland/go-http-server URI string.")
 
-	fs.StringVar(&cache_uri, "cache-uri", "readercache://?reader=http://data.whosonfirst.org&cache=gocache://", "A valid whosonfirst/go-cache URI string.")
+	fs.StringVar(&cache_uri, "cache-uri", "file:///tmp", "A valid whosonfirst/go-cache URI string.")
 	fs.StringVar(&findingaid_uri, "findingaid-uri", "repo://?cache={cache_uri}", "A valid whosonfirst/go-whosonfirst-findingaid URI string.")
 
 	fs.BoolVar(&enable_cors, "enable-cors", true, "Enable CORS headers for output.")
@@ -76,15 +76,9 @@ func (app *LookupdApplication) RunWithFlagSet(ctx context.Context, fs *flag.Flag
 		fa_q["cache"] = []string{cache_uri}
 	}
 
-	/*
-		if fa_q.Get("indexer") == "{indexer_uri}" {
-			fa_q["indexer"] = []string{indexer_uri}
-		}
-	*/
-
 	fa_uri.RawQuery = fa_q.Encode()
 
-	fa, err := findingaid.NewFindingAid(ctx, fa_uri.String())
+	fa, err := findingaid.NewResolver(ctx, fa_uri.String())
 
 	if err != nil {
 		return fmt.Errorf("Failed to create finding aid, %v", err)
