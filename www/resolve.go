@@ -7,7 +7,7 @@ import (
 	"net/http"
 )
 
-func LookupHandler(fa findingaid.Resolver) (http.Handler, error) {
+func ResolveHandler(fa findingaid.Resolver) (http.Handler, error) {
 
 	fn := func(rsp http.ResponseWriter, req *http.Request) {
 

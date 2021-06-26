@@ -90,7 +90,7 @@ func (app *LookupdApplication) RunWithFlagSet(ctx context.Context, fs *flag.Flag
 		return fmt.Errorf("Failed to create finding aid, %v", err)
 	}
 
-	lookup_handler, err := www.LookupHandler(fa)
+	lookup_handler, err := www.ResolveHandler(fa)
 
 	if err != nil {
 		return fmt.Errorf("Failed to create lookup handler, %v", err)
