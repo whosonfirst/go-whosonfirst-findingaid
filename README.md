@@ -8,12 +8,16 @@ A Go language interface for building and querying finding aids of Who's On First
 package main
 
 import (
+	_ "github.com/whosonfirst/go-cache"
+	_ "github.com/whosonfirst/go-whosonfirst-findingaid/repo"
+	_ "github.com/whosonfirst/go-whosonfirst-iterator"	
+)
+
+import (
 	"context"
 	"fmt"
-	_ "github.com/whosonfirst/go-cache"			
+
 	"github.com/whosonfirst/go-whosonfirst-findingaid"	
-	_ "github.com/whosonfirst/go-whosonfirst-findingaid/repo"
-	_ "github.com/whosonfirst/go-whosonfirst-index/fs"
 	"log"
 )
 
