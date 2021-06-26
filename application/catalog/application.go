@@ -7,11 +7,11 @@ import (
 	"github.com/sfomuseum/go-flags/flagset"
 	"github.com/whosonfirst/go-whosonfirst-findingaid"
 	"github.com/whosonfirst/go-whosonfirst-findingaid/application"
-	"log"
 	"net/url"
 )
 
 var cache_uri string
+var indexer_uri string
 var findingaid_uri string
 
 type CatalogApplication struct {
@@ -28,6 +28,7 @@ func (app *CatalogApplication) DefaultFlagSet(ctx context.Context) (*flag.FlagSe
 	fs := flagset.NewFlagSet("catalog")
 
 	fs.StringVar(&cache_uri, "cache-uri", "readercache://?reader=http://data.whosonfirst.org&cache=gocache://", "A valid whosonfirst/go-cache URI string.")
+	fs.StringVar(&indexer_uri, "indexer-uri", "repo://", "A valid whosonfirst/go-whosonfirst-iterate URI string.")
 	fs.StringVar(&findingaid_uri, "findingaid-uri", "repo://?cache={cache_uri}", "A valid whosonfirst/go-whosonfirst-findingaid URI string.")
 
 	return fs, nil
@@ -66,11 +67,13 @@ func (app *CatalogApplication) RunWithFlagSet(ctx context.Context, fs *flag.Flag
 		fa_q["cache"] = []string{cache_uri}
 	}
 
-	/*
-		if fa_q.Get("indexer") == "{indexer_uri}" {
-			fa_q["indexer"] = []string{indexer_uri}
-		}
-	*/
+	if fa_q.Get("indexer") == "{indexer_uri}" {
+		fa_q["indexer"] = []string{indexer_uri}
+	}
+
+	if fa_q.Get("indexer") == "" {
+		return fmt.Errorf("Missing '-indexer-uri' flag.")
+	}
 
 	fa_uri.RawQuery = fa_q.Encode()
 
@@ -80,6 +83,13 @@ func (app *CatalogApplication) RunWithFlagSet(ctx context.Context, fs *flag.Flag
 		return fmt.Errorf("Failed to create finding aid, %v", err)
 	}
 
-	log.Println(fa)
+	uris := fs.Args()
+
+	err = fa.Index(ctx, uris...)
+
+	if err != nil {
+		return fmt.Errorf("Failed to catalog sources, %v", err)
+	}
+
 	return nil
 }
