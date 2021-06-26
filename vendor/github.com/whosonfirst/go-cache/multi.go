@@ -3,8 +3,9 @@ package cache
 import (
 	"bytes"
 	"context"
+	"fmt"
 	"io"
-	"io/ioutil"
+	"net/url"
 	"sync/atomic"
 )
 
@@ -17,14 +18,41 @@ type MultiCache struct {
 	caches    []Cache
 }
 
-/*
 func init() {
 	ctx := context.Background()
-	RegisterCache(ctx, "null", NewMultiCache)
+	RegisterCache(ctx, "multi", NewMultiCache)
 }
-*/
 
-func NewMultiCache(ctx context.Context, caches ...Cache) (Cache, error) {
+func NewMultiCache(ctx context.Context, str_uri string) (Cache, error) {
+
+	u, err := url.Parse(str_uri)
+
+	if err != nil {
+		return nil, err
+	}
+
+	q := u.Query()
+
+	cache_uris := q["cache"]
+
+	caches := make([]Cache, len(cache_uris))
+
+	for idx, c_uri := range cache_uris {
+
+		c, err := NewCache(ctx, c_uri)
+
+		if err != nil {
+			return nil, fmt.Errorf("Failed to create cache for '%s', %v", c_uri, err)
+		}
+
+		caches[idx] = c
+	}
+
+	return NewMultiCacheWithCaches(ctx, caches...)
+}
+
+func NewMultiCacheWithCaches(ctx context.Context, caches ...Cache) (Cache, error) {
+
 	c := &MultiCache{
 		size:      int64(0),
 		hits:      int64(0),
@@ -32,6 +60,7 @@ func NewMultiCache(ctx context.Context, caches ...Cache) (Cache, error) {
 		evictions: int64(0),
 		caches:    caches,
 	}
+
 	return c, nil
 }
 
@@ -64,7 +93,40 @@ func (mc *MultiCache) Get(ctx context.Context, key string) (io.ReadCloser, error
 		}
 
 		atomic.AddInt64(&mc.hits, 1)
-		return fh, nil
+
+		// START OF...
+
+		body, err := io.ReadAll(fh)
+
+		if err != nil {
+			return nil, err
+		}
+
+		go func(body []byte) {
+
+			br := bytes.NewReader(body)
+
+			for _, c := range mc.caches {
+
+				// Only set caches that come *before* this cache
+				
+				if c.Name() == mc.Name() {
+					break
+				}
+
+				cl := io.NopCloser(br)
+
+				c.Set(ctx, key, cl)
+				br.Seek(0, 0)
+			}
+		}(body)
+
+		// END OF...
+
+		br := bytes.NewReader(body)
+		cl := io.NopCloser(br)
+
+		return cl, nil
 	}
 
 	atomic.AddInt64(&mc.misses, 1)
@@ -73,7 +135,7 @@ func (mc *MultiCache) Get(ctx context.Context, key string) (io.ReadCloser, error
 
 func (mc *MultiCache) Set(ctx context.Context, key string, fh io.ReadCloser) (io.ReadCloser, error) {
 
-	body, err := ioutil.ReadAll(fh)
+	body, err := io.ReadAll(fh)
 
 	if err != nil {
 		return nil, err
@@ -84,7 +146,7 @@ func (mc *MultiCache) Set(ctx context.Context, key string, fh io.ReadCloser) (io
 	for _, c := range mc.caches {
 
 		br.Seek(0, 0)
-		cl := ioutil.NopCloser(br)
+		cl := io.NopCloser(br)
 
 		_, err := c.Set(ctx, key, cl)
 
@@ -96,7 +158,7 @@ func (mc *MultiCache) Set(ctx context.Context, key string, fh io.ReadCloser) (io
 	atomic.AddInt64(&mc.size, 1)
 
 	br.Seek(0, 0)
-	cl := ioutil.NopCloser(br)
+	cl := io.NopCloser(br)
 
 	return cl, nil
 }

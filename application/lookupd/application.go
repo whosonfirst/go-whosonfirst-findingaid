@@ -35,7 +35,7 @@ func (app *LookupdApplication) DefaultFlagSet(ctx context.Context) (*flag.FlagSe
 
 	fs.StringVar(&server_uri, "server-uri", "http://localhost:8080", "A valid aaronland/go-http-server URI string.")
 
-	fs.StringVar(&cache_uri, "cache-uri", "file:///tmp", "A valid whosonfirst/go-cache URI string.")
+	fs.StringVar(&cache_uri, "cache-uri", "multi://?cache=gocache://&cache=file:///tmp", "A valid whosonfirst/go-cache URI string.")
 	fs.StringVar(&findingaid_uri, "findingaid-uri", "repo://?cache={cache_uri}", "A valid whosonfirst/go-whosonfirst-findingaid URI string.")
 
 	fs.BoolVar(&enable_cors, "enable-cors", true, "Enable CORS headers for output.")
