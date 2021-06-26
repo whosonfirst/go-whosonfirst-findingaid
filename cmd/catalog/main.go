@@ -1,8 +1,11 @@
 package main
 
 import (
-	_ "github.com/whosonfirst/go-reader"
-	_ "github.com/whosonfirst/go-reader-http"
+	_ "gocloud.dev/blob/fileblob"
+)
+
+import (
+	_ "github.com/whosonfirst/go-cache-blob"
 	_ "github.com/whosonfirst/go-whosonfirst-findingaid/repo"
 	_ "github.com/whosonfirst/go-whosonfirst-iterate/iterator"
 )

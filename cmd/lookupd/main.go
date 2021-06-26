@@ -1,10 +1,7 @@
 package main
 
 import (
-	_ "github.com/whosonfirst/go-reader"
-	_ "github.com/whosonfirst/go-reader-http"
-	_ "github.com/whosonfirst/go-whosonfirst-findingaid/repo"
-	_ "github.com/whosonfirst/go-whosonfirst-iterate/iterator"
+	_ "github.com/whosonfirst/go-cache-blob"
 )
 
 import (

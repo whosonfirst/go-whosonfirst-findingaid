@@ -1,5 +1,6 @@
 cli:
 	go build -mod vendor -o bin/lookupd cmd/lookupd/main.go
+	go build -mod vendor -o bin/catalog cmd/catalog/main.go
 
 debug:
 	go run -mod vendor cmd/lookupd/main.go

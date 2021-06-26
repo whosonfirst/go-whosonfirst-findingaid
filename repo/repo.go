@@ -1,6 +1,6 @@
 package repo
 
-// ResolverResonse is a struct that contains Who's On First repository information for Who's On First records.
+// FindingAidResonse is a struct that contains Who's On First repository information for Who's On First records.
 type FindingAidResponse struct {
 	// The unique Who's On First ID.
 	ID int64 `json:"id"`

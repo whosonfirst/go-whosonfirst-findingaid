@@ -16,8 +16,8 @@ import (
 	"strconv"
 )
 
-// RepoIndexer is a struct that implements the findingaid.Indexer interface for information about Who's On First repositories.
-type RepoIndexer struct {
+// Indexer is a struct that implements the findingaid.Indexer interface for information about Who's On First repositories.
+type Indexer struct {
 	findingaid.Indexer
 	cache        cache.Cache
 	iterator_uri string
@@ -26,15 +26,15 @@ type RepoIndexer struct {
 func init() {
 
 	ctx := context.Background()
-	err := findingaid.RegisterIndexer(ctx, "repo", NewRepoIndexer)
+	err := findingaid.RegisterIndexer(ctx, "repo", NewIndexer)
 
 	if err != nil {
 		panic(err)
 	}
 }
 
-// NewRepoIndexer returns a findingaid.Indexer instance for exposing information about Who's On First repositories
-func NewRepoIndexer(ctx context.Context, uri string) (findingaid.Indexer, error) {
+// NewIndexer returns a findingaid.Indexer instance for exposing information about Who's On First repositories
+func NewIndexer(ctx context.Context, uri string) (findingaid.Indexer, error) {
 
 	u, err := url.Parse(uri)
 
@@ -69,7 +69,7 @@ func NewRepoIndexer(ctx context.Context, uri string) (findingaid.Indexer, error)
 		return nil, err
 	}
 
-	fa := &RepoIndexer{
+	fa := &Indexer{
 		cache:        c,
 		iterator_uri: iterator_uri,
 	}
@@ -78,7 +78,7 @@ func NewRepoIndexer(ctx context.Context, uri string) (findingaid.Indexer, error)
 }
 
 // Index will index records defined by 'sources...' in the finding aid, using the whosonfirst/go-whosonfirst-iterate package.
-func (fa *RepoIndexer) IndexURI(ctx context.Context, sources ...string) error {
+func (fa *Indexer) IndexURIs(ctx context.Context, sources ...string) error {
 
 	if fa.iterator_uri == "" {
 		return errors.New("Finding aid was not created with an indexer URI.")
@@ -106,7 +106,7 @@ func (fa *RepoIndexer) IndexURI(ctx context.Context, sources ...string) error {
 }
 
 // IndexReader will index an individual Who's On First record in the finding aid.
-func (fa *RepoIndexer) IndexReader(ctx context.Context, fh io.Reader) error {
+func (fa *Indexer) IndexReader(ctx context.Context, fh io.Reader) error {
 
 	body, err := io.ReadAll(fh)
 

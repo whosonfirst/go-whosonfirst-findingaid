@@ -65,7 +65,7 @@ func NewRepoResolver(ctx context.Context, uri string) (findingaid.Resolver, erro
 }
 
 // LookupID will return 'repo.ResolverResponse' for 'id' if it present in the finding aid.
-func (fa *RepoResolver) Resolve(ctx context.Context, str_uri string) (interface{}, error) {
+func (fa *RepoResolver) ResolveURI(ctx context.Context, str_uri string) (interface{}, error) {
 
 	id, _, err := uri.ParseURI(str_uri)
 
