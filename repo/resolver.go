@@ -6,10 +6,8 @@ import (
 	"errors"
 	"github.com/whosonfirst/go-cache"
 	"github.com/whosonfirst/go-whosonfirst-findingaid"
-	"github.com/whosonfirst/go-whosonfirst-uri"
 	_ "log"
 	"net/url"
-	"strconv"
 )
 
 // RepoResolver is a struct that implements the findingaid.Resolver interface for information about Who's On First repositories.
@@ -67,15 +65,13 @@ func NewRepoResolver(ctx context.Context, uri string) (findingaid.Resolver, erro
 // LookupID will return 'repo.ResolverResponse' for 'id' if it present in the finding aid.
 func (fa *RepoResolver) ResolveURI(ctx context.Context, str_uri string) (interface{}, error) {
 
-	id, _, err := uri.ParseURI(str_uri)
+	key, err := cacheKeyFromURI(str_uri)
 
 	if err != nil {
 		return nil, err
 	}
 
-	str_id := strconv.FormatInt(id, 10)
-
-	fh, err := fa.cache.Get(ctx, str_id)
+	fh, err := fa.cache.Get(ctx, key)
 
 	if err != nil {
 		return nil, err

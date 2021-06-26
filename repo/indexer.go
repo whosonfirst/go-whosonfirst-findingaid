@@ -5,15 +5,12 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
-	"github.com/tidwall/gjson"
 	"github.com/whosonfirst/go-cache"
 	"github.com/whosonfirst/go-whosonfirst-findingaid"
 	"github.com/whosonfirst/go-whosonfirst-iterate/iterator"
-	"github.com/whosonfirst/go-whosonfirst-uri"
 	"io"
 	_ "log"
 	"net/url"
-	"strconv"
 )
 
 // Indexer is a struct that implements the findingaid.Indexer interface for information about Who's On First repositories.
@@ -108,39 +105,10 @@ func (fa *Indexer) IndexURIs(ctx context.Context, sources ...string) error {
 // IndexReader will index an individual Who's On First record in the finding aid.
 func (fa *Indexer) IndexReader(ctx context.Context, fh io.Reader) error {
 
-	body, err := io.ReadAll(fh)
+	rsp, err := FindingAidResponseFromReader(ctx, fh)
 
 	if err != nil {
 		return err
-	}
-
-	// TO DO: SUPPORT ALT FILES
-
-	id_rsp := gjson.GetBytes(body, "properties.wof:id")
-
-	if !id_rsp.Exists() {
-		return errors.New("Missing wof:id")
-	}
-
-	repo_rsp := gjson.GetBytes(body, "properties.wof:repo")
-
-	if !repo_rsp.Exists() {
-		return errors.New("Missing wof:repo")
-	}
-
-	wof_id := id_rsp.Int()
-	wof_repo := repo_rsp.String()
-
-	rel_path, err := uri.Id2RelPath(wof_id)
-
-	if err != nil {
-		return err
-	}
-
-	rsp := &FindingAidResponse{
-		ID:   wof_id,
-		Repo: wof_repo,
-		URI:  rel_path,
 	}
 
 	enc, err := json.Marshal(rsp)
@@ -152,9 +120,13 @@ func (fa *Indexer) IndexReader(ctx context.Context, fh io.Reader) error {
 	br := bytes.NewReader(enc)
 	br_cl := io.NopCloser(br)
 
-	str_id := strconv.FormatInt(wof_id, 10)
+	key, err := cacheKeyFromRelPath(rsp.URI)
 
-	_, err = fa.cache.Set(ctx, str_id, br_cl)
+	if err != nil {
+		return err
+	}
+
+	_, err = fa.cache.Set(ctx, key, br_cl)
 
 	if err != nil {
 		return err
