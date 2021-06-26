@@ -19,18 +19,18 @@ import (
 // RepoFindingAid is a struct that implements the findingaid.FindingAid interface for information about Who's On First repositories.
 type RepoFindingAid struct {
 	findingaid.FindingAid
-	cache       cache.Cache
+	cache        cache.Cache
 	iterator_uri string
 }
 
 // FindingAidResonse is a struct that contains Who's On First repository information for Who's On First records.
 type FindingAidResponse struct {
 	// The unique Who's On First ID.
-	ID   int64  `json:"id"`
+	ID int64 `json:"id"`
 	// The name of the Who's On First repository.
 	Repo string `json:"repo"`
-	// The relative path for a Who's On First ID.	
-	URI  string `json:"uri"`
+	// The relative path for a Who's On First ID.
+	URI string `json:"uri"`
 }
 
 func init() {
@@ -84,7 +84,7 @@ func NewRepoFindingAid(ctx context.Context, uri string) (findingaid.FindingAid, 
 	}
 
 	fa := &RepoFindingAid{
-		cache:       c,
+		cache:        c,
 		iterator_uri: iterator_uri,
 	}
 
