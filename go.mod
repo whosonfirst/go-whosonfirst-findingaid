@@ -12,5 +12,6 @@ require (
 	github.com/whosonfirst/go-reader v0.5.0
 	github.com/whosonfirst/go-reader-http v0.2.2
 	github.com/whosonfirst/go-whosonfirst-index v0.3.4
+	github.com/whosonfirst/go-whosonfirst-iterate v1.1.2
 	github.com/whosonfirst/go-whosonfirst-uri v1.0.1
 )

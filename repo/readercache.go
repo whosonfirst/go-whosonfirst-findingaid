@@ -10,7 +10,6 @@ import (
 	"github.com/whosonfirst/go-reader"
 	"github.com/whosonfirst/go-whosonfirst-uri"
 	"io"
-	"io/ioutil"
 	_ "log"
 	"net/url"
 	"strconv"
@@ -21,12 +20,18 @@ func init() {
 	cache.RegisterCache(ctx, "readercache", NewReaderCache)
 }
 
+// Note to self: This needs to define it's own internal cache for cache MISSes that
+// can be determined to always fail.
+
+// ReaderCache defines an implementation of the whosonfirst/go-cache.Cache interface that contains an internal
+// whosonfirst/go-reader.Reader instance for retrieving (and storing) queries that return a cache MISS.
 type ReaderCache struct {
 	cache.Cache
 	reader reader.Reader
 	cache  cache.Cache
 }
 
+// NewReaderCache returns a ReaderCache instance that implements the whosonfirst/go-cache.Cache interface.
 func NewReaderCache(ctx context.Context, uri string) (cache.Cache, error) {
 
 	u, err := url.Parse(uri)
@@ -69,10 +74,12 @@ func NewReaderCache(ctx context.Context, uri string) (cache.Cache, error) {
 	return rc, nil
 }
 
+// Name returns the name of the whosonfirst/go-cache.Cache implementation.
 func (c *ReaderCache) Name() string {
 	return "readercache"
 }
 
+// Returns a io.ReadCloser instance containing a JSON-encoded repo.FindingAidResponse document.
 func (c *ReaderCache) Get(ctx context.Context, key string) (io.ReadCloser, error) {
 
 	c_fh, err := c.cache.Get(ctx, key)
@@ -101,7 +108,7 @@ func (c *ReaderCache) Get(ctx context.Context, key string) (io.ReadCloser, error
 
 	defer r_fh.Close()
 
-	body, err := ioutil.ReadAll(r_fh)
+	body, err := io.ReadAll(r_fh)
 
 	if err != nil {
 		return nil, err
@@ -128,7 +135,7 @@ func (c *ReaderCache) Get(ctx context.Context, key string) (io.ReadCloser, error
 	}
 
 	br := bytes.NewReader(enc)
-	rsp := ioutil.NopCloser(br)
+	rsp := io.NopCloser(br)
 
 	return c.Set(ctx, key, rsp)
 }

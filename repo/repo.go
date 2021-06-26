@@ -8,24 +8,28 @@ import (
 	"github.com/tidwall/gjson"
 	"github.com/whosonfirst/go-cache"
 	"github.com/whosonfirst/go-whosonfirst-findingaid"
-	"github.com/whosonfirst/go-whosonfirst-index"
+	"github.com/whosonfirst/go-whosonfirst-iterate/iterator"
 	"github.com/whosonfirst/go-whosonfirst-uri"
 	"io"
-	"io/ioutil"
 	_ "log"
 	"net/url"
 	"strconv"
 )
 
+// RepoFindingAid is a struct that implements the findingaid.FindingAid interface for information about Who's On First repositories.
 type RepoFindingAid struct {
 	findingaid.FindingAid
 	cache       cache.Cache
-	indexer_uri string
+	iterator_uri string
 }
 
+// FindingAidResonse is a struct that contains Who's On First repository information for Who's On First records.
 type FindingAidResponse struct {
+	// The unique Who's On First ID.
 	ID   int64  `json:"id"`
+	// The name of the Who's On First repository.
 	Repo string `json:"repo"`
+	// The relative path for a Who's On First ID.	
 	URI  string `json:"uri"`
 }
 
@@ -39,6 +43,7 @@ func init() {
 	}
 }
 
+// NewRepoFindingAid returns a findingaid.FindingAid instance for exposing information about Who's On First repositories
 func NewRepoFindingAid(ctx context.Context, uri string) (findingaid.FindingAid, error) {
 
 	u, err := url.Parse(uri)
@@ -50,7 +55,7 @@ func NewRepoFindingAid(ctx context.Context, uri string) (findingaid.FindingAid, 
 	q := u.Query()
 
 	cache_uri := q.Get("cache")
-	indexer_uri := q.Get("indexer")
+	iterator_uri := q.Get("indexer")
 
 	if cache_uri == "" {
 		return nil, errors.New("Missing cache URI")
@@ -62,11 +67,11 @@ func NewRepoFindingAid(ctx context.Context, uri string) (findingaid.FindingAid, 
 		return nil, err
 	}
 
-	if indexer_uri == "" {
+	if iterator_uri == "" {
 		return nil, errors.New("Missing indexer URI")
 	}
 
-	_, err = url.Parse(indexer_uri)
+	_, err = url.Parse(iterator_uri)
 
 	if err != nil {
 		return nil, err
@@ -80,54 +85,40 @@ func NewRepoFindingAid(ctx context.Context, uri string) (findingaid.FindingAid, 
 
 	fa := &RepoFindingAid{
 		cache:       c,
-		indexer_uri: indexer_uri,
+		iterator_uri: iterator_uri,
 	}
 
 	return fa, nil
 }
 
+// Index will index records defined by 'sources...' in the finding aid, using the whosonfirst/go-whosonfirst-iterate package.
 func (fa *RepoFindingAid) Index(ctx context.Context, sources ...string) error {
 
-	ctx, cancel := context.WithCancel(ctx)
-	defer cancel()
+	cb := func(ctx context.Context, fh io.ReadSeeker, args ...interface{}) error {
 
-	remaining := len(sources)
-
-	err_ch := make(chan error)
-	done_ch := make(chan bool)
-
-	for _, s := range sources {
-
-		go func(ctx context.Context, source string) {
-
-			err := fa.indexSource(ctx, source)
-
-			if err != nil {
-				err_ch <- err
-			}
-
-			done_ch <- true
-
-		}(ctx, s)
-	}
-
-	for remaining > 0 {
 		select {
-		case <-done_ch:
-			remaining -= 1
-		case err := <-err_ch:
-			return err
+		case <-ctx.Done():
+			return nil
 		default:
 			// pass
 		}
+
+		return fa.IndexReader(ctx, fh)
 	}
 
-	return nil
+	iter, err := iterator.NewIterator(ctx, fa.iterator_uri, cb)
+
+	if err != nil {
+		return err
+	}
+
+	return iter.IterateURIs(ctx, sources...)
 }
 
+// IndexReader will index an individual Who's On First record in the finding aid.
 func (fa *RepoFindingAid) IndexReader(ctx context.Context, fh io.Reader) error {
 
-	body, err := ioutil.ReadAll(fh)
+	body, err := io.ReadAll(fh)
 
 	if err != nil {
 		return err
@@ -167,7 +158,7 @@ func (fa *RepoFindingAid) IndexReader(ctx context.Context, fh io.Reader) error {
 	}
 
 	br := bytes.NewReader(enc)
-	br_cl := ioutil.NopCloser(br)
+	br_cl := io.NopCloser(br)
 
 	str_id := strconv.FormatInt(wof_id, 10)
 
@@ -180,29 +171,7 @@ func (fa *RepoFindingAid) IndexReader(ctx context.Context, fh io.Reader) error {
 	return nil
 }
 
-func (fa *RepoFindingAid) indexSource(ctx context.Context, source string) error {
-
-	cb := func(ctx context.Context, fh io.Reader, args ...interface{}) error {
-
-		select {
-		case <-ctx.Done():
-			return nil
-		default:
-			// pass
-		}
-
-		return fa.IndexReader(ctx, fh)
-	}
-
-	idx, err := index.NewIndexer(fa.indexer_uri, cb)
-
-	if err != nil {
-		return err
-	}
-
-	return idx.Index(ctx, source)
-}
-
+// LookupID will return 'repo.FindingAidResponse' for 'id' if it present in the finding aid.
 func (fa *RepoFindingAid) LookupID(ctx context.Context, id int64) (interface{}, error) {
 
 	str_id := strconv.FormatInt(id, 10)

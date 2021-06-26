@@ -3,7 +3,7 @@ package repo
 import (
 	"context"
 	"fmt"
-	_ "github.com/whosonfirst/go-whosonfirst-index/fs"
+	_ "github.com/whosonfirst/go-whosonfirst-iterator"
 	"github.com/whosonfirst/go-whosonfirst-uri"
 	"testing"
 )

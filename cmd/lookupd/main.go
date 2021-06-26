@@ -3,7 +3,7 @@ package main
 import (
 	_ "github.com/whosonfirst/go-reader"
 	_ "github.com/whosonfirst/go-reader-http"
-	_ "github.com/whosonfirst/go-whosonfirst-findingaid/index"
+	_ "github.com/whosonfirst/go-whosonfirst-iterate/iterator"
 	_ "github.com/whosonfirst/go-whosonfirst-findingaid/repo"	
 )
 
@@ -26,7 +26,7 @@ func main() {
 	server_uri := fs.String("server-uri", "http://localhost:8080", "A valid aaronland/go-http-server URI string.")
 
 	cache_uri := fs.String("cache-uri", "readercache://?reader=http://data.whosonfirst.org&cache=gocache://", "A valid whosonfirst/go-cache URI string.")
-	indexer_uri := fs.String("indexer-uri", "null://", "A valid whosonfirst/go-whosonfirst-index URI string.")
+	indexer_uri := fs.String("indexer-uri", "null://", "A valid whosonfirst/go-whosonfirst-iterate/emitter URI string.")
 
 	findingaid_uri := fs.String("findingaid-uri", "repo://?cache={cache_uri}&indexer={indexer_uri}", "A valid whosonfirst/go-whosonfirst-findingaid URI string.")
 
