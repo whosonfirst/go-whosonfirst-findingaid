@@ -1,16 +1,16 @@
-package http
+package www
 
 import (
 	"encoding/json"
 	"github.com/whosonfirst/go-whosonfirst-findingaid"
 	"github.com/whosonfirst/go-whosonfirst-uri"
 	_ "log"
-	go_http "net/http"
+	"net/http"
 )
 
-func LookupHandler(fa findingaid.FindingAid) (go_http.Handler, error) {
+func LookupHandler(fa findingaid.FindingAid) (http.Handler, error) {
 
-	fn := func(rsp go_http.ResponseWriter, req *go_http.Request) {
+	fn := func(rsp http.ResponseWriter, req *http.Request) {
 
 		ctx := req.Context()
 		path := req.URL.Path
@@ -20,7 +20,7 @@ func LookupHandler(fa findingaid.FindingAid) (go_http.Handler, error) {
 			err := usage(rsp, req)
 
 			if err != nil {
-				go_http.Error(rsp, err.Error(), go_http.StatusInternalServerError)
+				http.Error(rsp, err.Error(), http.StatusInternalServerError)
 				return
 			}
 
@@ -30,14 +30,14 @@ func LookupHandler(fa findingaid.FindingAid) (go_http.Handler, error) {
 		id, _, err := uri.ParseURI(path)
 
 		if err != nil {
-			go_http.Error(rsp, err.Error(), go_http.StatusBadRequest)
+			http.Error(rsp, err.Error(), http.StatusBadRequest)
 			return
 		}
 
 		fa_rsp, err := fa.LookupID(ctx, id)
 
 		if err != nil {
-			go_http.Error(rsp, err.Error(), go_http.StatusBadRequest)
+			http.Error(rsp, err.Error(), http.StatusBadRequest)
 			return
 		}
 
@@ -47,17 +47,17 @@ func LookupHandler(fa findingaid.FindingAid) (go_http.Handler, error) {
 		err = enc.Encode(fa_rsp)
 
 		if err != nil {
-			go_http.Error(rsp, err.Error(), go_http.StatusInternalServerError)
+			http.Error(rsp, err.Error(), http.StatusInternalServerError)
 			return
 		}
 
 		return
 	}
 
-	return go_http.HandlerFunc(fn), nil
+	return http.HandlerFunc(fn), nil
 }
 
-func usage(rsp go_http.ResponseWriter, req *go_http.Request) error {
+func usage(rsp http.ResponseWriter, req *http.Request) error {
 
 	rsp.Header().Set("Content-type", "text/html")
 

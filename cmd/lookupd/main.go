@@ -1,17 +1,21 @@
 package main
 
 import (
+	_ "github.com/whosonfirst/go-reader"
+	_ "github.com/whosonfirst/go-reader-http"
+	_ "github.com/whosonfirst/go-whosonfirst-findingaid/index"
+	_ "github.com/whosonfirst/go-whosonfirst-findingaid/repo"	
+)
+
+import (
 	"context"
 	"github.com/aaronland/go-http-server"
 	"github.com/rs/cors"
 	"github.com/sfomuseum/go-flags/flagset"
-	_ "github.com/whosonfirst/go-reader"
-	_ "github.com/whosonfirst/go-reader-http"
-	"github.com/whosonfirst/go-whosonfirst-findingaid/http"
-	_ "github.com/whosonfirst/go-whosonfirst-findingaid/index"
-	"github.com/whosonfirst/go-whosonfirst-findingaid/repo"
+	"github.com/whosonfirst/go-whosonfirst-findingaid"	
+	"github.com/whosonfirst/go-whosonfirst-findingaid/www"
 	"log"
-	go_http "net/http"
+	"net/http"
 	"net/url"
 )
 
@@ -56,13 +60,13 @@ func main() {
 
 	fa_uri.RawQuery = fa_q.Encode()
 
-	fa, err := repo.NewRepoFindingAid(ctx, fa_uri.String())
+	fa, err := findingaid.NewFindingAid(ctx, fa_uri.String())
 
 	if err != nil {
-		log.Fatalf("Failed to create repo finding aid, %v", err)
+		log.Fatalf("Failed to create finding aid, %v", err)
 	}
 
-	lookup_handler, err := http.LookupHandler(fa)
+	lookup_handler, err := www.LookupHandler(fa)
 
 	if err != nil {
 		log.Fatalf("Failed to create lookup handler, %v", err)
@@ -73,7 +77,7 @@ func main() {
 		lookup_handler = cors_handler.Handler(lookup_handler)
 	}
 
-	mux := go_http.NewServeMux()
+	mux := http.NewServeMux()
 
 	mux.Handle("/", lookup_handler)
 
