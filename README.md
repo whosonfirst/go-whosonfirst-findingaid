@@ -31,7 +31,7 @@ func main(){
 	repo_url := fmt.Sprintf("fixtures/%s", wof_repo)
 	
 	cache_uri := "gocache://"	// https://github.com/whosonfirst/go-cache
-	indexer_uri := "repo://"	// https://github.com/whosonfirst/go-whosonfirst-index
+	indexer_uri := "repo://"	// https://github.com/whosonfirst/go-whosonfirst-iterate
 	
 	fa_uri := fmt.Sprintf("repo://?cache=%s&indexer=%s", cache_uri, indexer_uri)
 	
@@ -150,7 +150,7 @@ URI strings for the `repo` finding aid take the following parameters:
 | Name | Type | Rquired | Notes |
 | --- | --- | --- | --- |
 | cache | string | yes | A valid `whosonfirst/go-cache URI string. |
-| indexer | string | yes | A valid `whosonfirst/go-whosonfirst-index URI string. |
+| indexer | string | yes | A valid `whosonfirst/go-whosonfirst-iterate/emitter URI string. |
 
 ## Caches
 
@@ -174,21 +174,7 @@ Where `{READER_URI}` is a valid [whosonfirst/go-reader](https://github.com/whoso
 
 ## Indexers
 
-The `go-whosonfirst-findingaid` package imports the [whosonfirst/go-whosonfirst-index](https://github.com/whosonfirst/go-whosonfirst-index) package so all the caches it exports are automatically available. Please consult [that package's documentation](#) for details. The following additional caching layers are also available:
-
-### null
-
-The `null` package implements to `whosonfirst/go-whosonfirst-index` interface but doesn't actually index anything at all.
-
-For example, this package is used in concert with the `readercache` caching package by the [lookupd](cmd/lookupd) tool to implement an HTTP findingaid that resolves, and caches, indentifiers at runtime.
-
-```
-import (
-	_ "github.com/whosonfirst/go-whosonfirst-findingaid/index"
-)
-
-indexer_uri := "null://"
-```
+The `go-whosonfirst-findingaid` package imports the [whosonfirst/go-whosonfirst-iterate](https://github.com/whosonfirst/go-whosonfirst-iterate) package so all the iterators and emitters it exports are automatically available. Please consult [that package's documentation](https://github.com/whosonfirst/go-whosonfirst-iterate) for details.
 
 ## Tools
 
@@ -237,6 +223,6 @@ $> curl -s localhost:8080/85922583 | jq
 ## See also
 
 * https://github.com/whosonfirst/go-cache
-* https://github.com/whosonfirst/go-whosonfirst-index
+* https://github.com/whosonfirst/go-whosonfirst-iterate
 * https://github.com/whosonfirst/go-reader
 * https://en.wikipedia.org/wiki/Finding_aid

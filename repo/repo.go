@@ -67,10 +67,6 @@ func NewRepoFindingAid(ctx context.Context, uri string) (findingaid.FindingAid, 
 		return nil, err
 	}
 
-	if iterator_uri == "" {
-		return nil, errors.New("Missing indexer URI")
-	}
-
 	_, err = url.Parse(iterator_uri)
 
 	if err != nil {
@@ -93,6 +89,10 @@ func NewRepoFindingAid(ctx context.Context, uri string) (findingaid.FindingAid, 
 
 // Index will index records defined by 'sources...' in the finding aid, using the whosonfirst/go-whosonfirst-iterate package.
 func (fa *RepoFindingAid) Index(ctx context.Context, sources ...string) error {
+
+	if fa.iterator_uri == "" {
+		return errors.New("Finding aid was not created with an indexer URI.")
+	}
 
 	cb := func(ctx context.Context, fh io.ReadSeeker, args ...interface{}) error {
 
