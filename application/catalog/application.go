@@ -77,7 +77,7 @@ func (app *CatalogApplication) RunWithFlagSet(ctx context.Context, fs *flag.Flag
 
 	fa_uri.RawQuery = fa_q.Encode()
 
-	fa, err := findingaid.NewFindingAid(ctx, fa_uri.String())
+	fa, err := findingaid.NewIndexer(ctx, fa_uri.String())
 
 	if err != nil {
 		return fmt.Errorf("Failed to create finding aid, %v", err)
@@ -85,7 +85,7 @@ func (app *CatalogApplication) RunWithFlagSet(ctx context.Context, fs *flag.Flag
 
 	uris := fs.Args()
 
-	err = fa.Index(ctx, uris...)
+	err = fa.IndexURIs(ctx, uris...)
 
 	if err != nil {
 		return fmt.Errorf("Failed to catalog sources, %v", err)

@@ -3,12 +3,11 @@ package www
 import (
 	"encoding/json"
 	"github.com/whosonfirst/go-whosonfirst-findingaid"
-	"github.com/whosonfirst/go-whosonfirst-uri"
 	_ "log"
 	"net/http"
 )
 
-func LookupHandler(fa findingaid.FindingAid) (http.Handler, error) {
+func LookupHandler(fa findingaid.Resolver) (http.Handler, error) {
 
 	fn := func(rsp http.ResponseWriter, req *http.Request) {
 
@@ -27,14 +26,7 @@ func LookupHandler(fa findingaid.FindingAid) (http.Handler, error) {
 			return
 		}
 
-		id, _, err := uri.ParseURI(path)
-
-		if err != nil {
-			http.Error(rsp, err.Error(), http.StatusBadRequest)
-			return
-		}
-
-		fa_rsp, err := fa.LookupID(ctx, id)
+		fa_rsp, err := fa.ResolveURI(ctx, path)
 
 		if err != nil {
 			http.Error(rsp, err.Error(), http.StatusBadRequest)

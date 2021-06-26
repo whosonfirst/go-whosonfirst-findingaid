@@ -3,21 +3,19 @@ package findingaid
 import (
 	"context"
 	"github.com/aaronland/go-roster"
-	"io"
 	"net/url"
 )
 
 type FindingAid interface {
-	Index(context.Context, ...string) error
-	IndexReader(context.Context, io.Reader) error
-	LookupID(context.Context, int64) (interface{}, error)
+	Resolver
+	Indexer
 }
 
 type FindingAidInitializationFunc func(ctx context.Context, uri string) (FindingAid, error)
 
 var findingaids roster.Roster
 
-func ensureRoster() error {
+func ensureFindingAids() error {
 
 	if findingaids == nil {
 
@@ -35,7 +33,7 @@ func ensureRoster() error {
 
 func RegisterFindingAid(ctx context.Context, name string, c FindingAidInitializationFunc) error {
 
-	err := ensureRoster()
+	err := ensureFindingAids()
 
 	if err != nil {
 		return err
