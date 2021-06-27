@@ -3,6 +3,7 @@ package repo
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"github.com/jtacoma/uritemplates"
 	"github.com/whosonfirst/go-whosonfirst-findingaid"
 	"github.com/whosonfirst/go-whosonfirst-uri"
@@ -85,6 +86,10 @@ func (fa *HTTPResolver) ResolveURI(ctx context.Context, str_uri string) (interfa
 	}
 
 	defer rsp.Body.Close()
+
+	if rsp.StatusCode != http.StatusOK {
+		return "", fmt.Errorf("Failed to resolve, %s", rsp.Status)
+	}
 
 	var fa_rsp *FindingAidResponse
 
