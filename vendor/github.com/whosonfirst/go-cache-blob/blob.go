@@ -1,13 +1,13 @@
-package cache
+package blob
 
 import (
 	"bufio"
 	"bytes"
 	"context"
 	wof_cache "github.com/whosonfirst/go-cache"
+	"github.com/whosonfirst/go-ioutil"
 	"gocloud.dev/blob"
 	"io"
-	"io/ioutil"
 	"sync/atomic"
 )
 
@@ -57,7 +57,7 @@ func (c *BlobCache) Name() string {
 	return "blob"
 }
 
-func (c *BlobCache) Get(ctx context.Context, key string) (io.ReadCloser, error) {
+func (c *BlobCache) Get(ctx context.Context, key string) (io.ReadSeekCloser, error) {
 
 	fh, err := c.bucket.NewReader(ctx, key, nil)
 
@@ -67,10 +67,10 @@ func (c *BlobCache) Get(ctx context.Context, key string) (io.ReadCloser, error) 
 	}
 
 	atomic.AddInt64(&c.hits, 1)
-	return fh, nil
+	return ioutil.NewReadSeekCloser(fh)
 }
 
-func (c *BlobCache) Set(ctx context.Context, key string, fh io.ReadCloser) (io.ReadCloser, error) {
+func (c *BlobCache) Set(ctx context.Context, key string, fh io.ReadSeekCloser) (io.ReadSeekCloser, error) {
 
 	var wr_opts *blob.WriterOptions
 
@@ -79,7 +79,7 @@ func (c *BlobCache) Set(ctx context.Context, key string, fh io.ReadCloser) (io.R
 	if v != nil {
 		wr_opts = v.(*blob.WriterOptions)
 	}
-	
+
 	bucket_wr, err := c.bucket.NewWriter(ctx, key, wr_opts)
 
 	if err != nil {
@@ -114,7 +114,7 @@ func (c *BlobCache) Set(ctx context.Context, key string, fh io.ReadCloser) (io.R
 	atomic.AddInt64(&c.sets, 1)
 
 	r.Reset(b.Bytes())
-	return ioutil.NopCloser(r), nil
+	return ioutil.NewReadSeekCloser(r)
 }
 
 func (c *BlobCache) Unset(ctx context.Context, key string) error {

@@ -324,8 +324,12 @@ github.com/whosonfirst/go-cache v0.3.0 h1:QwboIxWu3Ab2gPikTMAJT2kukRr5c5yr/+yoMF
 github.com/whosonfirst/go-cache v0.3.0/go.mod h1:uYn6IpxBxuSdULs15zkHHkOHTW8i4AS4A3jTv8wcbGg=
 github.com/whosonfirst/go-cache v0.4.0 h1:KTUA6YHbsjh3bFIJpJ1+8uNJDwnaL5+3Et1dCj8xYBQ=
 github.com/whosonfirst/go-cache v0.4.0/go.mod h1:uYn6IpxBxuSdULs15zkHHkOHTW8i4AS4A3jTv8wcbGg=
+github.com/whosonfirst/go-cache v0.5.0 h1:s8o2FafYxI1TGJGqwi3G0XVD5yY1dvzwSe9dE5C+KfA=
+github.com/whosonfirst/go-cache v0.5.0/go.mod h1:YawO5K9kQa3XnrtdfwZ6OS4gwuO87S06FqIPblMqZf4=
 github.com/whosonfirst/go-cache-blob v0.1.2 h1:i+b9t02UdJXvw+mPlUz1WbLYKsJ+TsnHVWFh3eCkMcc=
 github.com/whosonfirst/go-cache-blob v0.1.2/go.mod h1:HIGjOdg1tGaIv5ADlsKb0gel992vrklmykoYJd+axC0=
+github.com/whosonfirst/go-cache-blob v0.2.0 h1:IagILVwbUKEKrGjKmjs/wEb/Q28uwLp0fkYh+IsYnyc=
+github.com/whosonfirst/go-cache-blob v0.2.0/go.mod h1:CXgKyLBwkinhTLnuPs7/HVxPr0DSWGL7UoZF0ehmszo=
 github.com/whosonfirst/go-ioutil v0.0.1 h1:cCrEYen6NDvHfjzV2q4u/VB21u2kTOwDnUGRlMI8Z9o=
 github.com/whosonfirst/go-ioutil v0.0.1/go.mod h1:2dS1vWdAIkiHDvDF8fYyjv6k2NISmwaIjJJeEDBEdvg=
 github.com/whosonfirst/go-ioutil v1.0.0 h1:sYpgJx7Wsp76e7PFGa8KKQBvWQW3+HMCWSJbKdD5m14=

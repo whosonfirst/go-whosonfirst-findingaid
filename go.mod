@@ -8,8 +8,9 @@ require (
 	github.com/rs/cors v1.7.0
 	github.com/sfomuseum/go-flags v0.8.2
 	github.com/tidwall/gjson v1.8.0
-	github.com/whosonfirst/go-cache v0.4.0
-	github.com/whosonfirst/go-cache-blob v0.1.2
+	github.com/whosonfirst/go-cache v0.5.0
+	github.com/whosonfirst/go-cache-blob v0.2.0
+	github.com/whosonfirst/go-ioutil v1.0.0
 	github.com/whosonfirst/go-reader v0.5.0
 	github.com/whosonfirst/go-whosonfirst-iterate v1.1.2
 	github.com/whosonfirst/go-whosonfirst-uri v1.0.1

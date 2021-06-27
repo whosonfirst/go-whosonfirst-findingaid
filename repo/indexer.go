@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"errors"
 	"github.com/whosonfirst/go-cache"
+	"github.com/whosonfirst/go-ioutil"
 	"github.com/whosonfirst/go-whosonfirst-findingaid"
 	"github.com/whosonfirst/go-whosonfirst-iterate/iterator"
 	"io"
@@ -118,7 +119,11 @@ func (fa *Indexer) IndexReader(ctx context.Context, fh io.Reader) error {
 	}
 
 	br := bytes.NewReader(enc)
-	br_cl := io.NopCloser(br)
+	rsc, err := ioutil.NewReadSeekCloser(br)
+
+	if err != nil {
+		return err
+	}
 
 	key, err := cacheKeyFromRelPath(rsp.URI)
 
@@ -126,7 +131,7 @@ func (fa *Indexer) IndexReader(ctx context.Context, fh io.Reader) error {
 		return err
 	}
 
-	_, err = fa.cache.Set(ctx, key, br_cl)
+	_, err = fa.cache.Set(ctx, key, rsc)
 
 	if err != nil {
 		return err
