@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"github.com/jtacoma/uritemplates"
-	"github.com/whosonfirst/go-cache"
 	"github.com/whosonfirst/go-whosonfirst-findingaid"
 	"github.com/whosonfirst/go-whosonfirst-uri"
 	_ "log"
@@ -14,9 +13,9 @@ import (
 
 const FINDINGAID_URI_TEMPLATE string = "https://data.whosonfirst.org/findingaid/{id}"
 
+// RepoResolver is a struct that implements the findingaid.Resolver interface for information about Who's On First repositories by retrieving information from an HTTP endpoint that returns JSON-encoded FindingAidResponse responses. For example, a remote server running the `application/lookupd` tool.
 type HTTPResolver struct {
 	findingaid.Resolver
-	cache    cache.Cache
 	template *uritemplates.UriTemplate
 }
 
@@ -30,6 +29,7 @@ func init() {
 	}
 }
 
+// NewRepoResolver returns a findingaid.Resolver instance for exposing information about Who's On First repositories by retrieving information from an HTTP endpoint that returns JSON-encoded FindingAidResponse responses.
 func NewHTTPResolver(ctx context.Context, uri string) (findingaid.Resolver, error) {
 
 	u, err := url.Parse(uri)
@@ -39,12 +39,6 @@ func NewHTTPResolver(ctx context.Context, uri string) (findingaid.Resolver, erro
 	}
 
 	q := u.Query()
-
-	c, err := cache.NewCache(ctx, "gocache://")
-
-	if err != nil {
-		return nil, err
-	}
 
 	fa_template_uri := q.Get("findingaid_uri_template")
 
@@ -59,13 +53,13 @@ func NewHTTPResolver(ctx context.Context, uri string) (findingaid.Resolver, erro
 	}
 
 	fa := &HTTPResolver{
-		cache:    c,
 		template: fa_template,
 	}
 
 	return fa, nil
 }
 
+// ResolveURI will return 'repo.FindingAidResponse' for 'str_response' if it present in the finding aid.
 func (fa *HTTPResolver) ResolveURI(ctx context.Context, str_uri string) (interface{}, error) {
 
 	id, _, err := uri.ParseURI(str_uri)

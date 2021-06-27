@@ -62,7 +62,7 @@ func NewRepoResolver(ctx context.Context, uri string) (findingaid.Resolver, erro
 	return fa, nil
 }
 
-// LookupID will return 'repo.ResolverResponse' for 'id' if it present in the finding aid.
+// ResolveURI will return 'repo.FindingAidResponse' for 'str_response' if it present in the finding aid.
 func (fa *RepoResolver) ResolveURI(ctx context.Context, str_uri string) (interface{}, error) {
 
 	key, err := cacheKeyFromURI(str_uri)
