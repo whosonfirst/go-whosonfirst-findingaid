@@ -12,8 +12,7 @@ require (
 	github.com/whosonfirst/go-cache v0.5.0
 	github.com/whosonfirst/go-cache-blob v0.2.0
 	github.com/whosonfirst/go-ioutil v1.0.0
-	github.com/whosonfirst/go-reader v0.5.0 // indirect
-	github.com/whosonfirst/go-whosonfirst-iterate v1.1.2
+	github.com/whosonfirst/go-whosonfirst-iterate v1.2.0
 	github.com/whosonfirst/go-whosonfirst-uri v1.0.1
 	gocloud.dev v0.23.0
 )
