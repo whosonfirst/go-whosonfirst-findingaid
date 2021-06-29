@@ -5,6 +5,7 @@ go 1.16
 require (
 	github.com/aaronland/go-http-server v0.0.6
 	github.com/aaronland/go-roster v0.0.2
+	github.com/aaronland/gocloud-blob-s3 v0.1.0
 	github.com/jtacoma/uritemplates v1.0.0
 	github.com/rs/cors v1.7.0
 	github.com/sfomuseum/go-flags v0.8.2
