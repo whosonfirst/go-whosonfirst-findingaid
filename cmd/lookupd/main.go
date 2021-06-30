@@ -5,7 +5,7 @@ import (
 )
 
 import (
-	_ "github.com/aaronland/gocloud-blob-s3"	
+	_ "github.com/aaronland/gocloud-blob-s3"
 	_ "github.com/whosonfirst/go-cache-blob"
 	_ "github.com/whosonfirst/go-whosonfirst-findingaid/repo"
 )
