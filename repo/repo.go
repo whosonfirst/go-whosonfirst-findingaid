@@ -2,11 +2,15 @@ package repo
 
 import (
 	"context"
-	"errors"
+	"fmt"
 	"github.com/tidwall/gjson"
 	"github.com/whosonfirst/go-whosonfirst-uri"
 	"io"
+	_ "log"
 )
+
+const WOF_ID_PROPERTY string = "wof:id"
+const WOF_REPO_PROPERTY string = "wof:repo"
 
 // FindingAidResonse is a struct that contains Who's On First repository information for Who's On First records.
 type FindingAidResponse struct {
@@ -26,18 +30,26 @@ func FindingAidResponseFromReader(ctx context.Context, fh io.Reader) (*FindingAi
 		return nil, err
 	}
 
+	return FindingAidResponseFromBytes(ctx, body)
+}
+
+func FindingAidResponseFromBytes(ctx context.Context, body []byte) (*FindingAidResponse, error) {
+
 	// TO DO: SUPPORT ALT FILES
 
-	id_rsp := gjson.GetBytes(body, "properties.wof:id")
+	path_id := fmt.Sprintf("properties.%s", WOF_ID_PROPERTY)
+	path_repo := fmt.Sprintf("properties.%s", WOF_REPO_PROPERTY)
+
+	id_rsp := gjson.GetBytes(body, path_id)
 
 	if !id_rsp.Exists() {
-		return nil, errors.New("Missing wof:id")
+		return nil, fmt.Errorf("Missing '%s' property", path_id)
 	}
 
-	repo_rsp := gjson.GetBytes(body, "properties.wof:repo")
+	repo_rsp := gjson.GetBytes(body, path_repo)
 
 	if !repo_rsp.Exists() {
-		return nil, errors.New("Missing wof:repo")
+		return nil, fmt.Errorf("Missing '%s' property", path_repo)
 	}
 
 	wof_id := id_rsp.Int()

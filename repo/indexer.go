@@ -6,6 +6,8 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/tidwall/gjson"
+	"github.com/tidwall/sjson"
 	"github.com/whosonfirst/go-cache"
 	"github.com/whosonfirst/go-ioutil"
 	"github.com/whosonfirst/go-whosonfirst-findingaid"
@@ -18,8 +20,9 @@ import (
 // Indexer is a struct that implements the findingaid.Indexer interface for information about Who's On First repositories.
 type Indexer struct {
 	findingaid.Indexer
-	cache        cache.Cache
-	iterator_uri string
+	cache         cache.Cache
+	iterator_uri  string
+	repo_property string
 }
 
 func init() {
@@ -71,9 +74,22 @@ func NewIndexer(ctx context.Context, uri string) (findingaid.Indexer, error) {
 		return nil, fmt.Errorf("Invalid ?iterator= parameter, %w", err)
 	}
 
+	// This is necessary for some repos like sfomuseum-data/sfomuseum-data-whosonfirst
+	// where the relevant repo name is stored in a properties.sfomuseum:repo key. This
+	// logic is handled below in IndexReader
+
+	repo_property := WOF_REPO_PROPERTY
+
+	custom_repo := q.Get("repo-property")
+
+	if custom_repo != "" {
+		repo_property = custom_repo
+	}
+
 	fa := &Indexer{
-		cache:        c,
-		iterator_uri: iterator_uri,
+		cache:         c,
+		iterator_uri:  iterator_uri,
+		repo_property: repo_property,
 	}
 
 	return fa, nil
@@ -106,7 +122,37 @@ func (fa *Indexer) IndexURIs(ctx context.Context, sources ...string) error {
 // IndexReader will index an individual Who's On First record in the finding aid.
 func (fa *Indexer) IndexReader(ctx context.Context, fh io.Reader) error {
 
-	rsp, err := FindingAidResponseFromReader(ctx, fh)
+	body, err := io.ReadAll(fh)
+
+	if err != nil {
+		return fmt.Errorf("Failed to read feature, %v", err)
+	}
+
+	// This is necessary for some repos like sfomuseum-data/sfomuseum-data-whosonfirst
+	// where the relevant repo name is stored in a properties.sfomuseum:repo key
+
+	if fa.repo_property != WOF_REPO_PROPERTY {
+
+		path_wof_repo := fmt.Sprintf("properties.%s", WOF_REPO_PROPERTY)
+		path_custom_repo := fmt.Sprintf("properties.%s", fa.repo_property)
+
+		custom_rsp := gjson.GetBytes(body, path_custom_repo)
+
+		// If custom repo property is present then use its value to update wof:repo
+
+		if custom_rsp.Exists() {
+
+			custom_repo := custom_rsp.String()
+
+			body, err = sjson.SetBytes(body, path_wof_repo, custom_repo)
+
+			if err != nil {
+				return fmt.Errorf("Failed to assign custom repo (%s) to %s, %v", custom_repo, WOF_REPO_PROPERTY, err)
+			}
+		}
+	}
+
+	rsp, err := FindingAidResponseFromBytes(ctx, body)
 
 	if err != nil {
 		return err

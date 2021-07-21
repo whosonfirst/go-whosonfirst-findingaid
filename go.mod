@@ -10,6 +10,7 @@ require (
 	github.com/rs/cors v1.7.0
 	github.com/sfomuseum/go-flags v0.8.2
 	github.com/tidwall/gjson v1.8.0
+	github.com/tidwall/sjson v1.1.7
 	github.com/whosonfirst/go-cache v0.5.0
 	github.com/whosonfirst/go-cache-blob v0.2.0
 	github.com/whosonfirst/go-ioutil v1.0.0
