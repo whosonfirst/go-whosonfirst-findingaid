@@ -12,7 +12,7 @@ import (
 )
 
 var cache_uri string
-var indexer_uri string
+var iterator_uri string
 var findingaid_uri string
 
 type CatalogApplication struct {
@@ -29,9 +29,9 @@ func (app *CatalogApplication) DefaultFlagSet(ctx context.Context) (*flag.FlagSe
 	fs := flagset.NewFlagSet("catalog")
 
 	fs.StringVar(&cache_uri, "cache-uri", "file:///tmp/", "A valid whosonfirst/go-cache URI string.")
-	fs.StringVar(&indexer_uri, "indexer-uri", "repo://", "A valid whosonfirst/go-whosonfirst-iterate/v2 URI string.")
+	fs.StringVar(&iterator_uri, "iterator-uri", "repo://", "A valid whosonfirst/go-whosonfirst-iterate/v2 URI string.")
 
-	fs.StringVar(&findingaid_uri, "findingaid-uri", "repo://?cache={cache_uri}&indexer={indexer_uri}", "A valid whosonfirst/go-whosonfirst-findingaid URI string.")
+	fs.StringVar(&findingaid_uri, "findingaid-uri", "repo://?cache={cache_uri}&iterator={iterator_uri}", "A valid whosonfirst/go-whosonfirst-findingaid URI string.")
 
 	return fs, nil
 }
@@ -69,12 +69,12 @@ func (app *CatalogApplication) RunWithFlagSet(ctx context.Context, fs *flag.Flag
 		fa_q["cache"] = []string{cache_uri}
 	}
 
-	if fa_q.Get("indexer") == "{indexer_uri}" {
-		fa_q["indexer"] = []string{indexer_uri}
+	if fa_q.Get("iterator") == "{iterator_uri}" {
+		fa_q["iterator"] = []string{iterator_uri}
 	}
 
-	if fa_q.Get("indexer") == "" {
-		return fmt.Errorf("Missing '-indexer-uri' flag.")
+	if fa_q.Get("iterator") == "" {
+		return fmt.Errorf("Missing '-iterator-uri' flag.")
 	}
 
 	fa_uri.RawQuery = fa_q.Encode()
