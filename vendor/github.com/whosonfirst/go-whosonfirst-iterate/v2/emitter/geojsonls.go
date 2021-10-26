@@ -6,7 +6,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/whosonfirst/go-ioutil"
-	"github.com/whosonfirst/go-whosonfirst-iterate/filters"
+	"github.com/whosonfirst/go-whosonfirst-iterate/v2/filters"
 	"io"
 )
 
@@ -111,8 +111,7 @@ func (idx *GeojsonLEmitter) WalkURI(ctx context.Context, index_cb EmitterCallbac
 			}
 		}
 
-		ctx = AssignPathContext(ctx, path)
-		err = index_cb(ctx, fh)
+		err = index_cb(ctx, path, fh)
 
 		if err != nil {
 			return err

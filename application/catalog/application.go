@@ -7,7 +7,7 @@ import (
 	"github.com/sfomuseum/go-flags/flagset"
 	"github.com/whosonfirst/go-whosonfirst-findingaid"
 	"github.com/whosonfirst/go-whosonfirst-findingaid/application"
-	"log"
+	_ "log"
 	"net/url"
 )
 
@@ -29,7 +29,7 @@ func (app *CatalogApplication) DefaultFlagSet(ctx context.Context) (*flag.FlagSe
 	fs := flagset.NewFlagSet("catalog")
 
 	fs.StringVar(&cache_uri, "cache-uri", "file:///tmp/", "A valid whosonfirst/go-cache URI string.")
-	fs.StringVar(&indexer_uri, "indexer-uri", "repo://", "A valid whosonfirst/go-whosonfirst-iterate URI string.")
+	fs.StringVar(&indexer_uri, "indexer-uri", "repo://", "A valid whosonfirst/go-whosonfirst-iterate/v2 URI string.")
 
 	fs.StringVar(&findingaid_uri, "findingaid-uri", "repo://?cache={cache_uri}&indexer={indexer_uri}", "A valid whosonfirst/go-whosonfirst-findingaid URI string.")
 
@@ -62,8 +62,6 @@ func (app *CatalogApplication) RunWithFlagSet(ctx context.Context, fs *flag.Flag
 	if err != nil {
 		return fmt.Errorf("Failed to parse findingaid URI, %v", err)
 	}
-
-	log.Println("WHAT", indexer_uri)
 
 	fa_q := fa_uri.Query()
 

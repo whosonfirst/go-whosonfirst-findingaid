@@ -2,7 +2,7 @@ package emitter
 
 import (
 	"context"
-	"github.com/whosonfirst/go-whosonfirst-iterate/filters"
+	"github.com/whosonfirst/go-whosonfirst-iterate/v2/filters"
 )
 
 func init() {
@@ -59,6 +59,5 @@ func (idx *FileEmitter) WalkURI(ctx context.Context, index_cb EmitterCallbackFun
 		}
 	}
 
-	ctx = AssignPathContext(ctx, uri)
-	return index_cb(ctx, fh)
+	return index_cb(ctx, uri, fh)
 }

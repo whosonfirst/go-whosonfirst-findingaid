@@ -3,7 +3,7 @@ package emitter
 import (
 	"bufio"
 	"context"
-	"github.com/whosonfirst/go-whosonfirst-iterate/filters"
+	"github.com/whosonfirst/go-whosonfirst-iterate/v2/filters"
 )
 
 func init() {
@@ -79,9 +79,7 @@ func (idx *FileListEmitter) WalkURI(ctx context.Context, index_cb EmitterCallbac
 			}
 		}
 
-		ctx = AssignPathContext(ctx, path)
-
-		err = index_cb(ctx, fh)
+		err = index_cb(ctx, path, fh)
 
 		if err != nil {
 			return err

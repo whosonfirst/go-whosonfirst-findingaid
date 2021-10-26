@@ -1,9 +1,9 @@
 # github.com/aaronland/go-aws-session v0.0.6
 github.com/aaronland/go-aws-session
-# github.com/aaronland/go-http-server v0.0.6
+# github.com/aaronland/go-http-server v0.0.7
 ## explicit
 github.com/aaronland/go-http-server
-# github.com/aaronland/go-json-query v0.1.0
+# github.com/aaronland/go-json-query v0.1.1
 github.com/aaronland/go-json-query
 # github.com/aaronland/go-roster v0.0.2
 ## explicit
@@ -96,12 +96,12 @@ github.com/rs/cors
 # github.com/sfomuseum/go-flags v0.8.2
 ## explicit
 github.com/sfomuseum/go-flags/flagset
-# github.com/tidwall/gjson v1.8.0
+# github.com/tidwall/gjson v1.9.3
 ## explicit
 github.com/tidwall/gjson
-# github.com/tidwall/match v1.0.3
+# github.com/tidwall/match v1.1.1
 github.com/tidwall/match
-# github.com/tidwall/pretty v1.1.0
+# github.com/tidwall/pretty v1.2.0
 github.com/tidwall/pretty
 # github.com/whosonfirst/algnhsa v0.1.0
 github.com/whosonfirst/algnhsa
@@ -118,9 +118,11 @@ github.com/whosonfirst/go-ioutil
 github.com/whosonfirst/go-whosonfirst-crawl
 # github.com/whosonfirst/go-whosonfirst-iterate v1.2.0
 ## explicit
-github.com/whosonfirst/go-whosonfirst-iterate/emitter
-github.com/whosonfirst/go-whosonfirst-iterate/filters
-github.com/whosonfirst/go-whosonfirst-iterate/iterator
+# github.com/whosonfirst/go-whosonfirst-iterate/v2 v2.0.1
+## explicit
+github.com/whosonfirst/go-whosonfirst-iterate/v2/emitter
+github.com/whosonfirst/go-whosonfirst-iterate/v2/filters
+github.com/whosonfirst/go-whosonfirst-iterate/v2/iterator
 # github.com/whosonfirst/go-whosonfirst-sources v0.1.0
 github.com/whosonfirst/go-whosonfirst-sources
 github.com/whosonfirst/go-whosonfirst-sources/sources

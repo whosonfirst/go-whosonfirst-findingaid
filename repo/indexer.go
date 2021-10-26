@@ -9,7 +9,7 @@ import (
 	"github.com/whosonfirst/go-cache"
 	"github.com/whosonfirst/go-ioutil"
 	"github.com/whosonfirst/go-whosonfirst-findingaid"
-	"github.com/whosonfirst/go-whosonfirst-iterate/iterator"
+	"github.com/whosonfirst/go-whosonfirst-iterate/v2/iterator"
 	"io"
 	_ "log"
 	"net/url"
@@ -82,7 +82,7 @@ func NewIndexer(ctx context.Context, uri string) (findingaid.Indexer, error) {
 // Index will index records defined by 'sources...' in the finding aid, using the whosonfirst/go-whosonfirst-iterate package.
 func (fa *Indexer) IndexURIs(ctx context.Context, sources ...string) error {
 
-	cb := func(ctx context.Context, fh io.ReadSeeker, args ...interface{}) error {
+	cb := func(ctx context.Context, path string, fh io.ReadSeeker, args ...interface{}) error {
 
 		select {
 		case <-ctx.Done():
@@ -91,7 +91,13 @@ func (fa *Indexer) IndexURIs(ctx context.Context, sources ...string) error {
 			// pass
 		}
 
-		return fa.IndexReader(ctx, fh)
+		err := fa.IndexReader(ctx, fh)
+
+		if err != nil {
+			return fmt.Errorf("Failed to index %s, %w", path, err)
+		}
+
+		return nil
 	}
 
 	iter, err := iterator.NewIterator(ctx, fa.iterator_uri, cb)

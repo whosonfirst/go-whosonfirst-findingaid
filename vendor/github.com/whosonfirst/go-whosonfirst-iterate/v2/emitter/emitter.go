@@ -2,7 +2,6 @@ package emitter
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"github.com/aaronland/go-roster"
 	"io"
@@ -18,7 +17,7 @@ type IndexerContextKey string
 
 type EmitterInitializeFunc func(context.Context, string) (Emitter, error)
 
-type EmitterCallbackFunc func(context.Context, io.ReadSeeker, ...interface{}) error
+type EmitterCallbackFunc func(context.Context, string, io.ReadSeeker, ...interface{}) error
 
 type Emitter interface {
 	WalkURI(context.Context, EmitterCallbackFunc, string) error
@@ -91,32 +90,6 @@ func NewEmitter(ctx context.Context, uri string) (Emitter, error) {
 
 	fn := i.(EmitterInitializeFunc)
 	return fn(ctx, uri)
-}
-
-//
-
-func ContextForPath(path string) (context.Context, error) {
-
-	ctx := AssignPathContext(context.Background(), path)
-	return ctx, nil
-}
-
-func AssignPathContext(ctx context.Context, path string) context.Context {
-
-	key := IndexerContextKey("path")
-	return context.WithValue(ctx, key, path)
-}
-
-func PathForContext(ctx context.Context) (string, error) {
-
-	k := IndexerContextKey("path")
-	path := ctx.Value(k)
-
-	if path == nil {
-		return "", errors.New("path is not set")
-	}
-
-	return path.(string), nil
 }
 
 //

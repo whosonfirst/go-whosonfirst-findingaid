@@ -6,7 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/whosonfirst/go-ioutil"
-	"github.com/whosonfirst/go-whosonfirst-iterate/filters"
+	"github.com/whosonfirst/go-whosonfirst-iterate/v2/filters"
 	"io"
 )
 
@@ -106,9 +106,7 @@ func (idx *FeatureCollectionEmitter) WalkURI(ctx context.Context, index_cb Emitt
 		}
 
 		path := fmt.Sprintf("%s#%d", uri, i)
-		ctx = AssignPathContext(ctx, path)
-
-		err = index_cb(ctx, fh)
+		err = index_cb(ctx, path, fh)
 
 		if err != nil {
 			return err

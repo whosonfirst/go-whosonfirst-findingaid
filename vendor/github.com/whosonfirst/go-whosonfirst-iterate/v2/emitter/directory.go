@@ -3,7 +3,7 @@ package emitter
 import (
 	"context"
 	"github.com/whosonfirst/go-whosonfirst-crawl"
-	"github.com/whosonfirst/go-whosonfirst-iterate/filters"
+	"github.com/whosonfirst/go-whosonfirst-iterate/v2/filters"
 	"os"
 	"path/filepath"
 )
@@ -81,8 +81,7 @@ func (idx *DirectoryEmitter) WalkURI(ctx context.Context, index_cb EmitterCallba
 			}
 		}
 
-		ctx = AssignPathContext(ctx, path)
-		return index_cb(ctx, fh)
+		return index_cb(ctx, path, fh)
 	}
 
 	c := crawl.NewCrawler(abs_path)

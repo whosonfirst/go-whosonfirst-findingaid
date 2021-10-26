@@ -7,7 +7,7 @@ import (
 import (
 	_ "github.com/whosonfirst/go-cache-blob"
 	_ "github.com/whosonfirst/go-whosonfirst-findingaid/repo"
-	_ "github.com/whosonfirst/go-whosonfirst-iterate/iterator"
+	_ "github.com/whosonfirst/go-whosonfirst-iterate/v2/iterator"
 )
 
 import (

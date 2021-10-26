@@ -2,7 +2,7 @@ package iterator
 
 import (
 	"context"
-	"github.com/whosonfirst/go-whosonfirst-iterate/emitter"
+	"github.com/whosonfirst/go-whosonfirst-iterate/v2/emitter"
 	"io"
 	"log"
 	"net/url"
@@ -89,24 +89,18 @@ func (idx *Iterator) IterateURIs(ctx context.Context, uris ...string) error {
 	idx.increment()
 	defer idx.decrement()
 
-	local_callback := func(ctx context.Context, fh io.ReadSeeker, args ...interface{}) error {
+	local_callback := func(ctx context.Context, path string, fh io.ReadSeeker, args ...interface{}) error {
 
 		defer atomic.AddInt64(&idx.Seen, 1)
 
 		if idx.exclude_paths != nil {
-
-			path, err := emitter.PathForContext(ctx)
-
-			if err != nil {
-				return err
-			}
 
 			if idx.exclude_paths.MatchString(path) {
 				return nil
 			}
 		}
 
-		return idx.EmitterCallbackFunc(ctx, fh, args...)
+		return idx.EmitterCallbackFunc(ctx, path, fh, args...)
 	}
 
 	ctx, cancel := context.WithCancel(ctx)
