@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+option go_package = "./protobuf";
+
+message Repo {
+	int64 id = 1;
+	string name = 2;
+}
+
+message Record {
+	int64 id = 1;
+	int64 repo = 2;
+}
+
+message Sources {
+	repeated Repo repos = 1;
+}
+	
+message Catalog {
+  repeated Record records = 1;
+}
+
+message FindingAid {
+	Sources sources = 1;
+	Catalog catalog = 2;
+}
+	
