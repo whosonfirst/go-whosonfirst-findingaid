@@ -21,8 +21,8 @@ import (
 import (
 	"context"
 	"flag"
-	"github.com/whosonfirst/go-whosonfirst-findingaid/producer"
-	"github.com/whosonfirst/go-whosonfirst-findingaid/provider"
+	"github.com/whosonfirst/go-whosonfirst-findingaid/v2/producer"
+	"github.com/whosonfirst/go-whosonfirst-findingaid/v2/provider"
 )
 
 func main() {
@@ -81,24 +81,12 @@ $> ./bin/populate \
 	-provider-uri 'github://sfomuseum-data?prefix=sfomuseum-data-&exclude=sfomuseum-data-flights&exclude=sfomuseum-data-faa&exclude=sfomuseum-data-garages&exclude=sfomuseum-data-checkpoints' \
 	-producer-uri 'csv://?archive=archive.tar.gz'
 
-...time passes 
-
-$> wc -l sfomuseum-catalog.csv 
-60002 sfomuseum-catalog.csv
-
-$> cat sfomuseum-sources.csv
-id,name
-1746547613,sfomuseum-data-collection
-1746547615,sfomuseum-data-publicart
-1746547617,sfomuseum-data-architecture
-1746547619,sfomuseum-data-maps
-1746547621,sfomuseum-data-exhibition
-1746547625,sfomuseum-data-enterprise
-1746547627,sfomuseum-data-aircraft
-1746547629,sfomuseum-data-whosonfirst
-... and so on
-
 ```
 
 ### sources
 
+_TBW_
+
+## See also
+
+* https://www.github.com/whosonfirst/go-whosonfirst-iterate
