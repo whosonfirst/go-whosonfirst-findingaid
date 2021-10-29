@@ -83,6 +83,15 @@ $> ./bin/populate \
 
 ```
 
+```
+$> ./bin/populate \
+	-producer-uri protobuf:///usr/local/data/whosonfirst-data-admin-xy.pb \
+	/usr/local/data/whosonfirst-data-admin-xy
+
+$> ll /usr/local/data/whosonfirst-data-admin-xy.pb 
+-rw-r--r--  1 wof  wheel  245798 Oct 28 17:13 /usr/local/data/whosonfirst-data-admin-xy.pb
+```
+
 ### sources
 
 _TBW_

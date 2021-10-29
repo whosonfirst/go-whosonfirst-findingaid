@@ -1,5 +1,5 @@
 proto:
-	protoc -I=./protobuf --go_out=./ ./protobuf/findingaid.proto
+	protoc -I=./producer/protobuf --go_out=./ ./producer/protobuf/findingaid.proto
 
 cli:
 	go build -mod vendor -o bin/populate cmd/populate/main.go

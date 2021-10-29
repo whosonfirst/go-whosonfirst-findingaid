@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/whosonfirst/go-whosonfirst-findingaid/v2"
-	"github.com/whosonfirst/go-whosonfirst-findingaid/v2/protobuf"
+	"github.com/whosonfirst/go-whosonfirst-findingaid/v2/producer/protobuf"
 	"github.com/sfomuseum/go-timings"
 	"github.com/whosonfirst/go-whosonfirst-iterate/v2/iterator"
 	"github.com/whosonfirst/go-whosonfirst-uri"
@@ -22,7 +22,7 @@ type ProtobufProducer struct {
 
 func init() {
 	ctx := context.Background()
-	RegisterProducer(ctx, "csv", NewProtobufProducer)
+	RegisterProducer(ctx, "protobuf", NewProtobufProducer)
 }
 
 func NewProtobufProducer(ctx context.Context, uri string) (Producer, error) {
@@ -33,9 +33,7 @@ func NewProtobufProducer(ctx context.Context, uri string) (Producer, error) {
 		return nil, fmt.Errorf("Failed to parse URI, %w", err)
 	}
 
-	q := u.Query()
-
-	protobuf_filename := q.Get("protobuf")
+	protobuf_filename := u.Path
 
 	if protobuf_filename == "" {
 		return nil, fmt.Errorf("Missing ?protobuf parameter")
