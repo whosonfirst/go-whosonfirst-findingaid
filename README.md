@@ -45,10 +45,24 @@ func main() {
 
 	prd.PopulateWithIterator(ctx, *iterator_uri, iterator_sources...)
 }
-
 ```
 
+For a working example have a look at [cmd/populate](cmd/populate/main.go).
+
 ### Command line
+
+#### CSV archives
+
+```
+$> ./bin/populate -iterator-uri git:///tmp -provider-uri 'github://sfomuseum-data?prefix=sfomuseum-data-maps'
+2021/10/28 20:08:55 time to index paths (1) 2.408854633s
+
+$> tar -tf archive.tar.gz 
+catalog.csv
+sources.csv
+```
+
+#### SQLite databases
 
 ```
 #!/bin/sh
@@ -62,14 +76,24 @@ do
 done
 ```
 
-```
-$> ./bin/populate -iterator-uri git:///tmp -provider-uri 'github://sfomuseum-data?prefix=sfomuseum-data-maps'
-2021/10/28 20:08:55 time to index paths (1) 2.408854633s
+#### Protobuffers
 
-$> tar -tf archive.tar.gz 
-catalog.csv
-sources.csv
 ```
+$> ./bin/populate \
+	-producer-uri protobuf:///usr/local/data/whosonfirst-data-admin-xy.pb \
+	/usr/local/data/whosonfirst-data-admin-xy
+
+$> ll /usr/local/data/whosonfirst-data-admin-xy.pb 
+-rw-r--r--  1 wof  wheel  245798 Oct 28 17:13 /usr/local/data/whosonfirst-data-admin-xy.pb
+```
+
+## Concepts
+
+### Producers
+
+### Providers
+
+### Iterators
 
 ## Tools
 
@@ -83,14 +107,6 @@ $> ./bin/populate \
 
 ```
 
-```
-$> ./bin/populate \
-	-producer-uri protobuf:///usr/local/data/whosonfirst-data-admin-xy.pb \
-	/usr/local/data/whosonfirst-data-admin-xy
-
-$> ll /usr/local/data/whosonfirst-data-admin-xy.pb 
--rw-r--r--  1 wof  wheel  245798 Oct 28 17:13 /usr/local/data/whosonfirst-data-admin-xy.pb
-```
 
 ### sources
 
