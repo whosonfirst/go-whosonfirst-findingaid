@@ -3,9 +3,9 @@ package producer
 import (
 	"context"
 	"fmt"
+	"github.com/sfomuseum/go-timings"
 	"github.com/whosonfirst/go-whosonfirst-findingaid/v2"
 	"github.com/whosonfirst/go-whosonfirst-findingaid/v2/producer/protobuf"
-	"github.com/sfomuseum/go-timings"
 	"github.com/whosonfirst/go-whosonfirst-iterate/v2/iterator"
 	"github.com/whosonfirst/go-whosonfirst-uri"
 	"google.golang.org/protobuf/proto"
