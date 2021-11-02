@@ -8,9 +8,9 @@ import (
 import (
 	"context"
 	"flag"
+	"github.com/sfomuseum/go-timings"
 	"github.com/whosonfirst/go-whosonfirst-findingaid/v2/producer"
 	"github.com/whosonfirst/go-whosonfirst-findingaid/v2/provider"
-	"github.com/sfomuseum/go-timings"
 	"log"
 	"os"
 	"time"

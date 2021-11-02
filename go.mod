@@ -10,6 +10,7 @@ require (
 	github.com/mattn/go-sqlite3 v1.14.9
 	github.com/sfomuseum/go-csvdict v1.0.0
 	github.com/sfomuseum/go-timings v0.0.1
+	github.com/tidwall/gjson v1.10.2
 	github.com/whosonfirst/go-whosonfirst-feature v0.0.17
 	github.com/whosonfirst/go-whosonfirst-github v0.3.5
 	github.com/whosonfirst/go-whosonfirst-iterate-git/v2 v2.0.0

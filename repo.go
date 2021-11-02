@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/aaronland/go-artisanal-integers"
 	"github.com/aaronland/go-brooklynintegers-api"
+	"github.com/tidwall/gjson"
 	"github.com/whosonfirst/go-whosonfirst-feature/properties"
 	"io"
 	"sync"
@@ -47,6 +48,19 @@ func GetRepoWithBytes(ctx context.Context, body []byte) (*FindingAidRepo, bool, 
 	if err != nil {
 		return nil, false, fmt.Errorf("Failed to derive repo, %w", err)
 	}
+
+	return GetRepo(ctx, repo_name)
+}
+
+func GetRepoWithBytesForPath(ctx context.Context, body []byte, path string) (*FindingAidRepo, bool, error) {
+
+	rsp := gjson.GetBytes(body, path)
+
+	if !rsp.Exists() {
+		return nil, false, fmt.Errorf("Path (%s) does not exist", path)
+	}
+
+	repo_name := rsp.String()
 
 	return GetRepo(ctx, repo_name)
 }

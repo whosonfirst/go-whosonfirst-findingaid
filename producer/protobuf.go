@@ -3,9 +3,9 @@ package producer
 import (
 	"context"
 	"fmt"
+	"github.com/sfomuseum/go-timings"
 	"github.com/whosonfirst/go-whosonfirst-findingaid/v2"
 	"github.com/whosonfirst/go-whosonfirst-findingaid/v2/producer/protobuf"
-	"github.com/sfomuseum/go-timings"
 	"github.com/whosonfirst/go-whosonfirst-iterate/v2/iterator"
 	"github.com/whosonfirst/go-whosonfirst-uri"
 	"google.golang.org/protobuf/proto"
@@ -18,6 +18,7 @@ import (
 type ProtobufProducer struct {
 	Producer
 	protobuf_writer io.WriteCloser
+	path_repo       string
 }
 
 func init() {
@@ -45,8 +46,13 @@ func NewProtobufProducer(ctx context.Context, uri string) (Producer, error) {
 		return nil, fmt.Errorf("Failed to open %s, %v", protobuf_filename, err)
 	}
 
+	q := u.Query()
+
+	path_repo := q.Get("path-repo")
+
 	p := &ProtobufProducer{
 		protobuf_writer: protobuf_wr,
+		path_repo:       path_repo,
 	}
 
 	return p, nil
@@ -79,7 +85,14 @@ func (p *ProtobufProducer) PopulateWithIterator(ctx context.Context, monitor tim
 			return fmt.Errorf("Failed to read %s, %w", path, err)
 		}
 
-		repo, exists, err := findingaid.GetRepoWithBytes(ctx, body)
+		var repo *findingaid.FindingAidRepo
+		var exists bool
+
+		if p.path_repo != "" {
+			repo, exists, err = findingaid.GetRepoWithBytesForPath(ctx, body, p.path_repo)
+		} else {
+			repo, exists, err = findingaid.GetRepoWithBytes(ctx, body)
+		}
 
 		if err != nil {
 			return fmt.Errorf("Failed to retrieve repo for %s, %w", path, err)

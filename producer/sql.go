@@ -4,20 +4,21 @@ import (
 	"context"
 	gosql "database/sql"
 	"fmt"
+	"github.com/sfomuseum/go-timings"
 	"github.com/whosonfirst/go-whosonfirst-findingaid/v2"
 	"github.com/whosonfirst/go-whosonfirst-findingaid/v2/producer/sql"
-	"github.com/sfomuseum/go-timings"
 	"github.com/whosonfirst/go-whosonfirst-iterate/v2/iterator"
 	"github.com/whosonfirst/go-whosonfirst-uri"
 	"io"
-	_ "net/url"
+	"net/url"
 	"sync"
 )
 
 type SQLProducer struct {
 	Producer
-	engine string
-	db     *gosql.DB
+	engine    string
+	db        *gosql.DB
+	path_repo string
 }
 
 func init() {
@@ -33,9 +34,16 @@ func NewSQLProducer(ctx context.Context, uri string) (Producer, error) {
 		return nil, fmt.Errorf("Failed to create database, %w", err)
 	}
 
+	u, _ := url.Parse(uri)
+
+	q := u.Query()
+
+	path_repo := q.Get("path-repo")
+
 	p := &SQLProducer{
-		engine: engine,
-		db:     db,
+		engine:    engine,
+		db:        db,
+		path_repo: path_repo,
 	}
 
 	return p, nil
@@ -65,7 +73,14 @@ func (p *SQLProducer) PopulateWithIterator(ctx context.Context, monitor timings.
 			return fmt.Errorf("Failed to read %s, %w", path, err)
 		}
 
-		repo, exists, err := findingaid.GetRepoWithBytes(ctx, body)
+		var repo *findingaid.FindingAidRepo
+		var exists bool
+
+		if p.path_repo != "" {
+			repo, exists, err = findingaid.GetRepoWithBytesForPath(ctx, body, p.path_repo)
+		} else {
+			repo, exists, err = findingaid.GetRepoWithBytes(ctx, body)
+		}
 
 		if err != nil {
 			return fmt.Errorf("Failed to retrieve repo for %s, %w", path, err)

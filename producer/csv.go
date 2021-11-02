@@ -6,8 +6,8 @@ import (
 	"context"
 	"fmt"
 	"github.com/sfomuseum/go-csvdict"
-	"github.com/whosonfirst/go-whosonfirst-findingaid/v2"
 	"github.com/sfomuseum/go-timings"
+	"github.com/whosonfirst/go-whosonfirst-findingaid/v2"
 	"github.com/whosonfirst/go-whosonfirst-iterate/v2/iterator"
 	"github.com/whosonfirst/go-whosonfirst-uri"
 	"io"
@@ -28,6 +28,7 @@ type CSVProducer struct {
 	sources_filename string
 	catalog_writer   io.WriteCloser
 	sources_writer   io.WriteCloser
+	path_repo        string
 }
 
 func init() {
@@ -51,6 +52,8 @@ func NewCSVProducer(ctx context.Context, uri string) (Producer, error) {
 		return nil, fmt.Errorf("Missing ?archive parameter")
 	}
 
+	path_repo := q.Get("path-repo")
+
 	catalog_writer, err := ioutil.TempFile("", "catalog")
 
 	if err != nil {
@@ -69,6 +72,7 @@ func NewCSVProducer(ctx context.Context, uri string) (Producer, error) {
 		sources_filename: sources_writer.Name(),
 		catalog_writer:   catalog_writer,
 		sources_writer:   sources_writer,
+		path_repo:        path_repo,
 	}
 
 	return p, nil
@@ -101,7 +105,14 @@ func (p *CSVProducer) PopulateWithIterator(ctx context.Context, monitor timings.
 			return fmt.Errorf("Failed to read %s, %w", path, err)
 		}
 
-		repo, exists, err := findingaid.GetRepoWithBytes(ctx, body)
+		var repo *findingaid.FindingAidRepo
+		var exists bool
+
+		if p.path_repo != "" {
+			repo, exists, err = findingaid.GetRepoWithBytesForPath(ctx, body, p.path_repo)
+		} else {
+			repo, exists, err = findingaid.GetRepoWithBytes(ctx, body)
+		}
 
 		if err != nil {
 			return fmt.Errorf("Failed to retrieve repo for %s, %w", path, err)
