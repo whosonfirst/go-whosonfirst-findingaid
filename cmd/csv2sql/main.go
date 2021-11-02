@@ -79,6 +79,12 @@ func processArchiveWithReader(ctx context.Context, r io.Reader, db *gosql.DB) er
 			return fmt.Errorf("..., %w", err)
 		}
 
+		// Account for 0-length CSV files (repos with no records)
+
+		if header.Size == 0 {
+			continue
+		}
+
 		switch header.Name {
 		case "sources.csv":
 			err = processSources(ctx, tar_r, db)

@@ -97,6 +97,29 @@ $> ll /usr/local/data/whosonfirst-data-admin-xy.pb
 
 ## Tools
 
+### csv2sql
+
+```
+$> du -h -d 1 /usr/local/data/findingaid/csv/
+15M     /usr/local/data/findingaid/csv/
+
+$> time ./bin/csv2sql -database-uri 'sql://sqlite3?dsn=admin.db' /usr/local/data/findingaid/csv/*.gz
+
+real	1m49.170s
+user	1m31.838s
+sys	0m22.015s
+
+$> sqlite3 admin.db 
+SQLite version 3.7.17 2013-05-20 00:56:22
+Enter ".help" for instructions
+Enter SQL statements terminated with a ";"
+sqlite> SELECT COUNT(id) FROM catalog;
+4930544
+
+$> du -h admin.db 
+81M   admin.db
+```
+
 ### populate
 
 ```
