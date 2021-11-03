@@ -17,5 +17,6 @@ require (
 	github.com/whosonfirst/go-whosonfirst-iterate/v2 v2.0.1
 	github.com/whosonfirst/go-whosonfirst-uri v1.1.0
 	github.com/whosonfirst/iso8601duration v0.0.0-20150204201828-8da3af7a2a61
+	gocloud.dev v0.24.0
 	google.golang.org/protobuf v1.27.1
 )
