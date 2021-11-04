@@ -12,7 +12,7 @@ import (
 
 /*
 
-$> go run -mod vendor cmd/create-dynamodb-tables/main.go -dynamodb-uri 'awsdynamodb://findinaid?region=us-west-2&endpoint=http://localhost:8000&credentials=static:local:local:local'
+$> go run -mod vendor cmd/create-dynamodb-tables/main.go -dynamodb-uri 'awsdynamodb://findingaid?region=us-west-2&endpoint=http://localhost:8000&credentials=static:local:local:local'
 
 */
 
@@ -20,6 +20,7 @@ func main() {
 
 	dynamodb_uri := flag.String("dynamodb-uri", "", "A valid aaronland/go-aws-session DSN")
 	billing_mode := flag.String("billing-mode", "PAY_PER_REQUEST", "...")
+	refresh := flag.Bool("refresh", false, "...")
 
 	flag.Parse()
 
@@ -41,10 +42,6 @@ func main() {
 					AttributeName: aws.String("id"),
 					AttributeType: aws.String("N"),
 				},
-				{
-					AttributeName: aws.String("repo_name"),
-					AttributeType: aws.String("S"),
-				},
 			},
 			KeySchema: []*aws_dynamodb.KeySchemaElement{
 				{
@@ -52,30 +49,14 @@ func main() {
 					KeyType:       aws.String("HASH"),
 				},
 			},
-			/*
-				GlobalSecondaryIndexes: []*aws_dynamodb.GlobalSecondaryIndex{
-					{
-						IndexName: aws.String("repo_name"),
-						KeySchema: []*aws_dynamodb.KeySchemaElement{
-							{
-								AttributeName: aws.String("repo_name"),
-								KeyType:       aws.String("HASH"),
-							},
-						},
-						Projection: &aws_dynamodb.Projection{
-							// maybe just address...?
-							ProjectionType: aws.String("ALL"),
-						},
-					},
-				},
-			*/
 			BillingMode: aws.String(*billing_mode),
 			TableName:   aws.String(table_name),
 		},
 	}
 
 	opts := &dynamodb.CreateTablesOptions{
-		Tables: tables,
+		Tables:  tables,
+		Refresh: *refresh,
 	}
 
 	err = dynamodb.CreateTables(client, opts)
