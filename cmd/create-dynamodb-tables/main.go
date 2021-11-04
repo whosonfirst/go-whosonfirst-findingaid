@@ -28,8 +28,6 @@ func main() {
 
 	ctx := context.Background()
 
-	// START OF put me in aaronland/go-aws-dynamodb
-
 	client, err := dynamodb.NewClientWithURI(ctx, *dynamodb_uri)
 
 	if err != nil {
@@ -53,29 +51,27 @@ func main() {
 					AttributeType: aws.String("S"),
 				},
 			},
-			/*
-				KeySchema: []*aws_dynamodb.KeySchemaElement{
-					{
-						AttributeName: aws.String("address"),
-						KeyType:       aws.String("HASH"),
-					},
+			KeySchema: []*aws_dynamodb.KeySchemaElement{
+				{
+					AttributeName: aws.String("id"),
+					KeyType:       aws.String("HASH"),
 				},
-				GlobalSecondaryIndexes: []*aws_dynamodb.GlobalSecondaryIndex{
-					{
-						IndexName: aws.String("status"),
-						KeySchema: []*aws_dynamodb.KeySchemaElement{
-							{
-								AttributeName: aws.String("status"),
-								KeyType:       aws.String("HASH"),
-							},
-						},
-						Projection: &aws_dynamodb.Projection{
-							// maybe just address...?
-							ProjectionType: aws.String("ALL"),
+			},
+			GlobalSecondaryIndexes: []*aws_dynamodb.GlobalSecondaryIndex{
+				{
+					IndexName: aws.String("status"),
+					KeySchema: []*aws_dynamodb.KeySchemaElement{
+						{
+							AttributeName: aws.String("repo_name"),
+							KeyType:       aws.String("HASH"),
 						},
 					},
+					Projection: &aws_dynamodb.Projection{
+						// maybe just address...?
+						ProjectionType: aws.String("ALL"),
+					},
 				},
-			*/
+			},
 			BillingMode: aws.String(*billing_mode),
 			TableName:   aws.String(table_name),
 		},
