@@ -21,11 +21,10 @@ github.com/ProtonMail/go-crypto/openpgp/s2k
 # github.com/aaronland/go-artisanal-integers v0.1.1
 ## explicit
 github.com/aaronland/go-artisanal-integers
-# github.com/aaronland/go-aws-dynamodb v0.0.2
+# github.com/aaronland/go-aws-dynamodb v0.0.3
 ## explicit
 github.com/aaronland/go-aws-dynamodb
 # github.com/aaronland/go-aws-session v0.0.6
-## explicit
 github.com/aaronland/go-aws-session
 # github.com/aaronland/go-brooklynintegers-api v1.2.3
 ## explicit
@@ -257,7 +256,7 @@ github.com/sfomuseum/go-edtf
 # github.com/sfomuseum/go-timings v0.0.1
 ## explicit
 github.com/sfomuseum/go-timings
-# github.com/tidwall/gjson v1.10.2
+# github.com/tidwall/gjson v1.11.0
 ## explicit
 github.com/tidwall/gjson
 # github.com/tidwall/match v1.1.1

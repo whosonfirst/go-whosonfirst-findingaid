@@ -1,11 +1,10 @@
 package main
 
 import (
+	"context"
 	"flag"
 	"github.com/aaronland/go-aws-dynamodb"
-	"github.com/aaronland/go-aws-session"
 	"github.com/aws/aws-sdk-go/aws"
-	aws_session "github.com/aws/aws-sdk-go/aws/session"
 	aws_dynamodb "github.com/aws/aws-sdk-go/service/dynamodb"
 	"log"
 	"net/url"
@@ -27,41 +26,18 @@ func main() {
 
 	flag.Parse()
 
+	ctx := context.Background()
+
 	// START OF put me in aaronland/go-aws-dynamodb
 
-	u, err := url.Parse(*dynamodb_uri)
+	client, err := dynamodb.NewClientWithURI(ctx, *dynamodb_uri)
 
 	if err != nil {
-		log.Fatalf("Failed to parse URI, %v", err)
+		log.Fatalf("Failed to create client, %v", err)
 	}
 
+	u, _ := url.Parse(*dynamodb_uri)
 	table_name := u.Host
-
-	q := u.Query()
-
-	// partition_key := q.Get("partition_key")
-	region := q.Get("region")
-	endpoint := q.Get("endpoint")
-
-	credentials := q.Get("credentials")
-
-	cfg, err := session.NewConfigWithCredentialsAndRegion(credentials, region)
-
-	if err != nil {
-		log.Fatalf("Failed to create new session for credentials '%s', %w", credentials, err)
-	}
-
-	if endpoint != "" {
-		cfg.Endpoint = aws.String(endpoint)
-	}
-
-	sess, err := aws_session.NewSession(cfg)
-
-	if err != nil {
-		log.Fatalf("Failed to create AWS session, %w", err)
-	}
-
-	client := aws_dynamodb.New(sess)
 
 	// END OF put me in aaronland/go-aws-dynamodb
 
