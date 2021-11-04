@@ -3,6 +3,8 @@ package main
 import (
 	_ "github.com/mattn/go-sqlite3"
 	_ "github.com/whosonfirst/go-whosonfirst-iterate-git/v2"
+	_ "gocloud.dev/docstore/memdocstore"
+	_ "gocloud.dev/docstore/awsdynamodb"
 )
 
 import (

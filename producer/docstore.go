@@ -13,6 +13,19 @@ import (
 	"net/url"
 )
 
+/*
+
+> java -Djava.library.path=./DynamoDBLocal_lib -jar DynamoDBLocal.jar 
+Initializing DynamoDB Local with the following configuration:
+Port:	8000
+InMemory:	false
+DbPath:	null
+SharedDb:	false
+shouldDelayTransientStatuses:	false
+CorsParams:	*
+
+*/
+
 type DocstoreProducer struct {
 	Producer
 	engine     string
