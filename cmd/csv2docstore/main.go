@@ -10,7 +10,9 @@ import (
 	"fmt"
 	"github.com/sfomuseum/go-csvdict"
 	"github.com/whosonfirst/go-whosonfirst-findingaid/v2/producer/docstore"
+	gc_docstore "gocloud.dev/docstore"
 	"io"
+	"io/ioutil"
 	"log"
 	"os"
 	"strconv"
@@ -18,14 +20,14 @@ import (
 
 func main() {
 
-	docstore_uri := flag.String("docstore-uri", "", "...")
+	// docstore_uri := flag.String("docstore-uri", "", "...")
 	flag.Parse()
 
 	archives := flag.Args()
 
 	ctx := context.Background()
 
-	var collection *docstore.Collection
+	var collection *gc_docstore.Collection
 
 	for _, path := range archives {
 
@@ -37,7 +39,7 @@ func main() {
 	}
 }
 
-func processArchive(ctx context.Context, path string, collection *docstore.Collection) error {
+func processArchive(ctx context.Context, path string, collection *gc_docstore.Collection) error {
 
 	f, err := os.Open(path)
 
@@ -50,7 +52,7 @@ func processArchive(ctx context.Context, path string, collection *docstore.Colle
 	return processArchiveWithReader(ctx, f, collection)
 }
 
-func processArchiveWithReader(ctx context.Context, r io.Reader, collection *docstore.Collection) error {
+func processArchiveWithReader(ctx context.Context, r io.Reader, collection *gc_docstore.Collection) error {
 
 	gzip_r, err := gzip.NewReader(r)
 
@@ -59,6 +61,26 @@ func processArchiveWithReader(ctx context.Context, r io.Reader, collection *docs
 	}
 
 	tar_r := tar.NewReader(gzip_r)
+
+	sources_tmp := ""
+	catalog_tmp := ""
+
+	defer func() {
+
+		to_remove := []string{
+			sources_tmp,
+			catalog_tmp,
+		}
+
+		for _, p := range to_remove {
+
+			if p == "" {
+				continue
+			}
+
+			os.Remove(p)
+		}
+	}()
 
 	for {
 
@@ -80,9 +102,25 @@ func processArchiveWithReader(ctx context.Context, r io.Reader, collection *docs
 
 		switch header.Name {
 		case "sources.csv":
-			err = processSources(ctx, tar_r)
+
+			fname, err := writeTempFile(tar_r)
+
+			if err != nil {
+				return fmt.Errorf("Failed to create temp file for %s, %w", header.Name, err)
+			}
+
+			sources_tmp = fname
+
 		case "catalog.csv":
-			err = processCatalog(ctx, tar_r, collection)
+
+			fname, err := writeTempFile(tar_r)
+
+			if err != nil {
+				return fmt.Errorf("Failed to create temp file for %s, %w", header.Name, err)
+			}
+
+			catalog_tmp = fname
+
 		default:
 			// pass
 		}
@@ -92,10 +130,42 @@ func processArchiveWithReader(ctx context.Context, r io.Reader, collection *docs
 		}
 	}
 
+	if sources_tmp == "" || catalog_tmp == "" {
+		return nil
+	}
+
+	sources_r, err := os.Open(sources_tmp)
+
+	if err != nil {
+		return fmt.Errorf("Failed to open %s, %w", sources_tmp, err)
+	}
+
+	defer sources_r.Close()
+
+	lookup, err := processSources(ctx, sources_r)
+
+	if err != nil {
+		return fmt.Errorf("Failed to derive sources lookup, %w")
+	}
+
+	catalog_r, err := os.Open(catalog_tmp)
+
+	if err != nil {
+		return fmt.Errorf("Failed to open %s, %w", catalog_tmp, err)
+	}
+
+	defer catalog_r.Close()
+
+	err = processCatalog(ctx, catalog_r, lookup, collection)
+
+	if err != nil {
+		return fmt.Errorf("Failed to process catalog, %w", err)
+	}
+
 	return nil
 }
 
-func processCatalog(ctx context.Context, r io.Reader, collection *docstore.Collection) error {
+func processCatalog(ctx context.Context, r io.Reader, lookup map[int64]string, collection *gc_docstore.Collection) error {
 
 	csv_r, err := csvdict.NewReader(r)
 
@@ -138,9 +208,13 @@ func processCatalog(ctx context.Context, r io.Reader, collection *docstore.Colle
 			return fmt.Errorf("Failed to parse %s, %w", str_repo_id, err)
 		}
 
-		repo_name := "FIXME"
+		repo_name, ok := lookup[repo_id]
 
-		err = docstore.AddToCatalog(ctx, collection, id, repo_id, repo_name)
+		if !ok {
+			return fmt.Errorf("Missing lookup entry for %d", repo_id)
+		}
+
+		err = docstore.AddToCatalog(ctx, collection, id, repo_name)
 
 		if err != nil {
 			return fmt.Errorf("Failed to add row to catalog, %w", err)
@@ -150,12 +224,14 @@ func processCatalog(ctx context.Context, r io.Reader, collection *docstore.Colle
 	return nil
 }
 
-func processSources(ctx context.Context, r io.Reader) error {
+func processSources(ctx context.Context, r io.Reader) (map[int64]string, error) {
+
+	lookup := make(map[int64]string)
 
 	csv_r, err := csvdict.NewReader(r)
 
 	if err != nil {
-		return fmt.Errorf("Failed to create CSV reader, %w", err)
+		return nil, fmt.Errorf("Failed to create CSV reader, %w", err)
 	}
 
 	for {
@@ -166,28 +242,53 @@ func processSources(ctx context.Context, r io.Reader) error {
 		}
 
 		if err != nil {
-			return fmt.Errorf("Failed to read row, %w", err)
+			return nil, fmt.Errorf("Failed to read row, %w", err)
 		}
 
 		str_id, ok := row["id"]
 
 		if !ok {
-			return fmt.Errorf("Row is missing 'id' column")
+			return nil, fmt.Errorf("Row is missing 'id' column")
 		}
 
 		name, ok := row["name"]
 
 		if !ok {
-			return fmt.Errorf("Row is missing 'name' column")
+			return nil, fmt.Errorf("Row is missing 'name' column")
 		}
 
 		id, err := strconv.ParseInt(str_id, 10, 64)
 
 		if err != nil {
-			return fmt.Errorf("Failed to parse %s, %w", str_id, err)
+			return nil, fmt.Errorf("Failed to parse %s, %w", str_id, err)
 		}
 
+		lookup[id] = name
 	}
 
-	return nil
+	return lookup, nil
+}
+
+func writeTempFile(r io.Reader) (string, error) {
+
+	wr, err := ioutil.TempFile("", "docstore")
+
+	if err != nil {
+		return "", fmt.Errorf("Failed to create temp file, %w", err)
+	}
+
+	_, err = io.Copy(wr, r)
+
+	if err != nil {
+		return "", fmt.Errorf("Failed to write temp file, %w", err)
+	}
+
+	err = wr.Close()
+
+	if err != nil {
+		return "", fmt.Errorf("Failed to close temp file, %w", err)
+	}
+
+	tmpname := wr.Name()
+	return tmpname, nil
 }
