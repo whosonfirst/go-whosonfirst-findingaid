@@ -13,6 +13,7 @@ import (
 	gc_dynamodb "gocloud.dev/docstore/awsdynamodb"
 	"io"
 	"net/url"
+	"sync"
 )
 
 /*
@@ -146,6 +147,8 @@ func NewDocstoreProducer(ctx context.Context, uri string) (Producer, error) {
 
 func (p *DocstoreProducer) PopulateWithIterator(ctx context.Context, monitor timings.Monitor, iterator_uri string, iterator_sources ...string) error {
 
+	mu := new(sync.RWMutex)
+
 	iter_cb := func(ctx context.Context, path string, fh io.ReadSeeker, args ...interface{}) error {
 
 		id, uri_args, err := uri.ParseURI(path)
@@ -165,6 +168,9 @@ func (p *DocstoreProducer) PopulateWithIterator(ctx context.Context, monitor tim
 		if err != nil {
 			return fmt.Errorf("Failed to read %s, %w", path, err)
 		}
+
+		mu.Lock()
+		defer mu.Unlock()
 
 		var repo *findingaid.FindingAidRepo
 

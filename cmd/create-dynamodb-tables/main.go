@@ -50,6 +50,7 @@ func main() {
 				{
 					AttributeName: aws.String("id"),
 					KeyType:       aws.String("HASH"),
+					// KeyType:       aws.String("RANGE"),
 				},
 			},
 			GlobalSecondaryIndexes: []*aws_dynamodb.GlobalSecondaryIndex{
