@@ -15,7 +15,7 @@ import (
 
 /*
 
-> java -Djava.library.path=./DynamoDBLocal_lib -jar DynamoDBLocal.jar 
+> java -Djava.library.path=./DynamoDBLocal_lib -jar DynamoDBLocal.jar
 Initializing DynamoDB Local with the following configuration:
 Port:	8000
 InMemory:	false

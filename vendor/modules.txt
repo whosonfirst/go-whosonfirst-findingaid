@@ -24,6 +24,9 @@ github.com/aaronland/go-artisanal-integers
 # github.com/aaronland/go-aws-dynamodb v0.0.2
 ## explicit
 github.com/aaronland/go-aws-dynamodb
+# github.com/aaronland/go-aws-session v0.0.6
+## explicit
+github.com/aaronland/go-aws-session
 # github.com/aaronland/go-brooklynintegers-api v1.2.3
 ## explicit
 github.com/aaronland/go-brooklynintegers-api
@@ -32,6 +35,8 @@ github.com/aaronland/go-json-query
 # github.com/aaronland/go-roster v0.0.2
 ## explicit
 github.com/aaronland/go-roster
+# github.com/aaronland/go-string v0.1.2
+github.com/aaronland/go-string/dsn
 # github.com/acomagu/bufpipe v1.0.3
 github.com/acomagu/bufpipe
 # github.com/andres-erbsen/clock v0.0.0-20160526145045-9e14626cd129

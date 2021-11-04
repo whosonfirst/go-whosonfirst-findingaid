@@ -106,6 +106,8 @@ github.com/aaronland/go-aws-dynamodb v0.0.1 h1:Z01X4Xxcop1zn0tHUVmaDQYVRY6RlDvle
 github.com/aaronland/go-aws-dynamodb v0.0.1/go.mod h1:660tmOwXShy40T7Ag7Wwy3nKvW+7aLE4FNlpuBWs8qE=
 github.com/aaronland/go-aws-dynamodb v0.0.2 h1:PLoU/hHZuSwj1n4NJ6IqN3Wif5fDsWMbgq4RlvdgHro=
 github.com/aaronland/go-aws-dynamodb v0.0.2/go.mod h1:WCI7Rm5Gsd27VUvDLUKVOmCWHRo6qCPhyAYUNtU/Rcg=
+github.com/aaronland/go-aws-session v0.0.6 h1:Dp1Hvg7s1qM1xJ2byktEdB16i9t6wx6tMcZRpMoSwpo=
+github.com/aaronland/go-aws-session v0.0.6/go.mod h1:jflsOdd7QkD0ugdTEfU2UYpFjytP8AxiBxP++s10x88=
 github.com/aaronland/go-brooklynintegers-api v1.2.3 h1:SMKKCyGbZVCLADi8tyRnxumkf3uAIS5TpFkQBp1nRv8=
 github.com/aaronland/go-brooklynintegers-api v1.2.3/go.mod h1:WbHl7/IQM+4woqhTyfnTfmL0cXwx0WsaDYKC6YIpMD8=
 github.com/aaronland/go-json-query v0.1.0/go.mod h1:Mj1i+9hS3cd2Nj7qlnahcUeRC5uydPuJ/3xZGlIgBFU=
@@ -114,6 +116,8 @@ github.com/aaronland/go-json-query v0.1.1/go.mod h1:lZHt3LmcrZ0bovlqvr1jQaQKJKpb
 github.com/aaronland/go-roster v0.0.1/go.mod h1:AcovpxlG1XxJxX2Fjqlm63fEIBhCjEIBV4lP87FZDmI=
 github.com/aaronland/go-roster v0.0.2 h1:2Fu7v4VQLRLRL/Zgr6R9S5JxsW75Ab/K88QtMVX532s=
 github.com/aaronland/go-roster v0.0.2/go.mod h1:AcovpxlG1XxJxX2Fjqlm63fEIBhCjEIBV4lP87FZDmI=
+github.com/aaronland/go-string v0.1.2 h1:RSr/mQNbLgF37H0RV+nF7j2kILRRFkCmr8Jwq4lw92k=
+github.com/aaronland/go-string v0.1.2/go.mod h1:2aMIWdTqk63jZsaLLy+p9dsB1MDRqx4sHYoLtkwyYUo=
 github.com/acomagu/bufpipe v1.0.3 h1:fxAGrHZTgQ9w5QqVItgzwj235/uYZYgbXitB+dLupOk=
 github.com/acomagu/bufpipe v1.0.3/go.mod h1:mxdxdup/WdsKVreO5GpW4+M/1CE2sMG4jeGJ2sYmHc4=
 github.com/andres-erbsen/clock v0.0.0-20160526145045-9e14626cd129 h1:MzBOUgng9orim59UnfUTLRjMpd09C5uEVQ6RPGeCaVI=

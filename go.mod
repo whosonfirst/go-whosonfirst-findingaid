@@ -5,6 +5,7 @@ go 1.16
 require (
 	github.com/aaronland/go-artisanal-integers v0.1.1
 	github.com/aaronland/go-aws-dynamodb v0.0.2
+	github.com/aaronland/go-aws-session v0.0.6
 	github.com/aaronland/go-brooklynintegers-api v1.2.3
 	github.com/aaronland/go-roster v0.0.2
 	github.com/aws/aws-sdk-go v1.41.17
