@@ -14,6 +14,13 @@ import (
 
 $> go run -mod vendor cmd/create-dynamodb-tables/main.go -dynamodb-uri 'awsdynamodb://findingaid?region=us-west-2&endpoint=http://localhost:8000&credentials=static:local:local:local'
 
+$> ./bin/create-dynamodb-tables -dynamodb-uri 'awsdynamodb://findingaid?region=us-west-2&credentials=session' 
+$> ./bin/populate -producer-uri 'awsdynamodb://findingaid?region=us-west-2&credentials=session&partition_key=id' /usr/local/data/sfomuseum-data-maps/
+
+$> cd /usr/local/whosonfirst/go-reader-findingaid
+$> ./bin/read -reader-uri 'findingaid://awsdynamodb/findingaid?region=us-west-2&credentials=session&partition_key=id&template=https://raw.githubusercontent.com/sfomuseum-data/{repo}/main/data/' 1360391327 | jq '.["properties"]["wof:name"]'
+"SFO (1988)"
+
 */
 
 func main() {
