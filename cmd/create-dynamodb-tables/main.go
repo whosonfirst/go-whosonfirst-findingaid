@@ -50,24 +50,25 @@ func main() {
 				{
 					AttributeName: aws.String("id"),
 					KeyType:       aws.String("HASH"),
-					// KeyType:       aws.String("RANGE"),
 				},
 			},
-			GlobalSecondaryIndexes: []*aws_dynamodb.GlobalSecondaryIndex{
-				{
-					IndexName: aws.String("status"),
-					KeySchema: []*aws_dynamodb.KeySchemaElement{
-						{
-							AttributeName: aws.String("repo_name"),
-							KeyType:       aws.String("HASH"),
+			/*
+				GlobalSecondaryIndexes: []*aws_dynamodb.GlobalSecondaryIndex{
+					{
+						IndexName: aws.String("repo_name"),
+						KeySchema: []*aws_dynamodb.KeySchemaElement{
+							{
+								AttributeName: aws.String("repo_name"),
+								KeyType:       aws.String("HASH"),
+							},
+						},
+						Projection: &aws_dynamodb.Projection{
+							// maybe just address...?
+							ProjectionType: aws.String("ALL"),
 						},
 					},
-					Projection: &aws_dynamodb.Projection{
-						// maybe just address...?
-						ProjectionType: aws.String("ALL"),
-					},
 				},
-			},
+			*/
 			BillingMode: aws.String(*billing_mode),
 			TableName:   aws.String(table_name),
 		},

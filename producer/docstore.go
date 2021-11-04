@@ -88,9 +88,9 @@ func NewDocstoreProducer(ctx context.Context, uri string) (Producer, error) {
 		u, _ := url.Parse(uri)
 		table_name := u.Host
 
-		/*
+		partition_key := q.Get("partition_key")
 
-			partition_key := q.Get("partition_key")
+		/*
 
 			// START OF necessary for order by created/lastupdate dates
 			// https://pkg.go.dev/gocloud.dev@v0.23.0/docstore/awsdynamodb#InMemorySortFallback
@@ -112,7 +112,7 @@ func NewDocstoreProducer(ctx context.Context, uri string) (Producer, error) {
 
 		*/
 
-		col, err := gc_dynamodb.OpenCollection(client, table_name, "", "", nil)
+		col, err := gc_dynamodb.OpenCollection(client, table_name, partition_key, "", nil)
 
 		if err != nil {
 			return nil, fmt.Errorf("Failed to open collection, %w", err)
