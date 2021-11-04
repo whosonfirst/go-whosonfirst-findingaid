@@ -12,10 +12,7 @@ import (
 
 /*
 
-> go run -mod vendor cmd/create-dynamodb-tables/main.go -dynamodb-uri 'awsdynamodb://findinaid?region=us-west-2&endpoint=http://localhost:8000&credentials=static:local:local:local'
-2021/11/04 11:23:03 Failed to create tables, Failed to create table 'findinaid', InvalidParameter: 1 validation error(s) found.
-- missing required field, CreateTableInput.KeySchema.
-exit status 1
+$> go run -mod vendor cmd/create-dynamodb-tables/main.go -dynamodb-uri 'awsdynamodb://findinaid?region=us-west-2&endpoint=http://localhost:8000&credentials=static:local:local:local'
 
 */
 
@@ -36,8 +33,6 @@ func main() {
 
 	u, _ := url.Parse(*dynamodb_uri)
 	table_name := u.Host
-
-	// END OF put me in aaronland/go-aws-dynamodb
 
 	tables := map[string]*aws_dynamodb.CreateTableInput{
 		table_name: &aws_dynamodb.CreateTableInput{
