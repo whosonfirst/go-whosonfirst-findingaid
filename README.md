@@ -146,3 +146,4 @@ _TBW_
 ## See also
 
 * https://www.github.com/whosonfirst/go-whosonfirst-iterate
+* https://www.github.com/whosonfirst/go-reader-findingaid
