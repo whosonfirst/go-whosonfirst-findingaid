@@ -3,6 +3,7 @@ package git
 import (
 	"context"
 	gogit "github.com/go-git/go-git/v5"
+	"github.com/go-git/go-git/v5/plumbing"
 	"github.com/go-git/go-git/v5/plumbing/object"
 	"github.com/go-git/go-git/v5/storage/memory"
 	"github.com/whosonfirst/go-ioutil"
@@ -23,6 +24,7 @@ type GitEmitter struct {
 	target   string
 	preserve bool
 	filters  filters.Filters
+	branch   string
 }
 
 func NewGitEmitter(ctx context.Context, uri string) (emitter.Emitter, error) {
@@ -51,6 +53,12 @@ func NewGitEmitter(ctx context.Context, uri string) (emitter.Emitter, error) {
 		em.preserve = true
 	}
 
+	branch := q.Get("branch")
+
+	if branch != "" {
+		em.branch = branch
+	}
+
 	return em, nil
 }
 
@@ -60,6 +68,11 @@ func (em *GitEmitter) WalkURI(ctx context.Context, index_cb emitter.EmitterCallb
 
 	opts := &gogit.CloneOptions{
 		URL: uri,
+	}
+
+	if em.branch != "" {
+		br := plumbing.NewBranchReferenceName(em.branch)
+		opts.ReferenceName = br
 	}
 
 	switch em.target {
