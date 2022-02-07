@@ -1,3 +1,4 @@
+// package producer provides interfaces used to populate a finding aid where "populate" means updating a data store with information mapping a Who's On First ID to its corresponding repository name.
 package producer
 
 import (
@@ -7,7 +8,9 @@ import (
 	"net/url"
 )
 
+// Producer provides an interfaces used to populate a finding aid where "populate" means updating a data store with information mapping a Who's On First ID to its corresponding repository name.
 type Producer interface {
+	// PopulateWithIterator will crawl one or more paths with a `whosonfirst/go-whosonfirst-iterate/v2` iterator instance and populate a finding aid with each record encountered.
 	PopulateWithIterator(context.Context, timings.Monitor, string, ...string) error
 	Close(context.Context) error
 }

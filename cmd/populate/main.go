@@ -22,7 +22,7 @@ func main() {
 
 	iterator_uri := flag.String("iterator-uri", "repo://", "A valid whosonfirst/go-whosonfirst-iterate/v2 URI.")
 
-	provider_uri := flag.String("provider-uri", "", "A valid whosonfirst/go-whosonfirst-findingaid/v2/provider URI to use for deriving additional sources.")
+	provider_uri := flag.String("provider-uri", "", "An optional whosonfirst/go-whosonfirst-findingaid/v2/provider URI to use for deriving additional sources.")
 
 	producer_uri := flag.String("producer-uri", "csv://?archive=archive.tar.gz", "A valid whosonfirst/go-whosonfirst-findingaid/v2/producer URI.")
 

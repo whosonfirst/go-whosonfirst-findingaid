@@ -91,11 +91,17 @@ $> ll /usr/local/data/whosonfirst-data-admin-xy.pb
 
 ## Concepts
 
+### Iterators
+
+An iterator is a valid `whosonfirst/go-whosonfirst-iterate/v2` instance (or URI used to create that instance) that is the source of records to pass to a (findingaid) producer.
+
 ### Producers
+
+Producers implement the `producer.Producer` interface and are used to populate finding aids where "populate" means updating a data store with information mapping a Who's On First ID to its corresponding repository name.
 
 ### Providers
 
-### Iterators
+Providers implement the `provider.Provider` interface and are used to generate a list of iterator URIs for crawling by a producer.
 
 ## Tools
 
