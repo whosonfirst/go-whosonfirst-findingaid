@@ -74,7 +74,7 @@ func main() {
 		col, err := gc_dynamodb.OpenCollection(client, table_name, partition_key, "", nil)
 
 		if err != nil {
-			log.Fatalf("Failed to open collection, %v", err)
+			log.Fatalf("Failed to open collection for %s (%s), %v", table_name, partition_key, err)
 		}
 
 		collection = col
@@ -84,7 +84,7 @@ func main() {
 		col, err := gc_docstore.OpenCollection(ctx, *docstore_uri)
 
 		if err != nil {
-			log.Fatalf("Failed to create database for '%s', %v", *docstore_uri, err)
+			log.Fatalf("Failed to create collection for '%s', %v", *docstore_uri, err)
 		}
 
 		collection = col
