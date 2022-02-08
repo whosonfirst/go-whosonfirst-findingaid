@@ -138,6 +138,23 @@ $> ./bin/populate \
 
 ```
 
+### resolverd
+
+resolverd provides an HTTP server endpoint for resolving Who's On First URIs to their corresponding repository name using a go-whosonfirst-findingaid/v2/resolver.Resolver instance.
+
+For example:
+
+_This assumes a DynamoDB findingaid populated with the [csv2docstore](https://github.com/whosonfirst/go-whosonfirst-findingaid/tree/main/cmd/csv2docstore) or [populate](https://github.com/whosonfirst/go-whosonfirst-findingaid/tree/main/cmd/populate) tools which are part of the `whosonfirst/go-whosonfirst-findingaid` package._
+
+```
+$> java -Djava.library.path=./DynamoDBLocal_lib -jar DynamoDBLocal.jar -sharedDb
+
+$> ./bin/resolverd -resolver-uri 'awsdynamodb:///findingaid?region=local&endpoint=http://localhost:8000&credentials=static:local:local:local&partition_key=id'
+2021/11/06 16:37:48 Listening for requests on http://localhost:8080
+
+$> curl http://localhost:8080/1678780019
+sfomuseum-data-flights-2018
+```
 
 ### sources
 
