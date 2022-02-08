@@ -6,11 +6,13 @@ require (
 	github.com/aaronland/go-artisanal-integers v0.1.1
 	github.com/aaronland/go-aws-dynamodb v0.0.3
 	github.com/aaronland/go-brooklynintegers-api v1.2.4
+	github.com/aaronland/go-http-server v0.0.7
 	github.com/aaronland/go-roster v0.0.2
 	github.com/aws/aws-sdk-go v1.42.47
 	github.com/jtacoma/uritemplates v1.0.0
 	github.com/mattn/go-sqlite3 v1.14.11
 	github.com/sfomuseum/go-csvdict v1.0.0
+	github.com/sfomuseum/go-flags v0.8.2
 	github.com/sfomuseum/go-timings v0.0.1
 	github.com/tidwall/gjson v1.14.0
 	github.com/whosonfirst/go-whosonfirst-feature v0.0.18

@@ -29,6 +29,9 @@ github.com/aaronland/go-aws-session
 # github.com/aaronland/go-brooklynintegers-api v1.2.4
 ## explicit
 github.com/aaronland/go-brooklynintegers-api
+# github.com/aaronland/go-http-server v0.0.7
+## explicit
+github.com/aaronland/go-http-server
 # github.com/aaronland/go-json-query v0.1.1
 github.com/aaronland/go-json-query
 # github.com/aaronland/go-roster v0.0.2
@@ -40,6 +43,12 @@ github.com/aaronland/go-string/dsn
 github.com/acomagu/bufpipe
 # github.com/andres-erbsen/clock v0.0.0-20160526145045-9e14626cd129
 github.com/andres-erbsen/clock
+# github.com/aws/aws-lambda-go v1.10.0
+github.com/aws/aws-lambda-go/events
+github.com/aws/aws-lambda-go/lambda
+github.com/aws/aws-lambda-go/lambda/handlertrace
+github.com/aws/aws-lambda-go/lambda/messages
+github.com/aws/aws-lambda-go/lambdacontext
 # github.com/aws/aws-sdk-go v1.42.47
 ## explicit
 github.com/aws/aws-sdk-go/aws
@@ -253,6 +262,9 @@ github.com/sergi/go-diff/diffmatchpatch
 github.com/sfomuseum/go-csvdict
 # github.com/sfomuseum/go-edtf v0.3.1
 github.com/sfomuseum/go-edtf
+# github.com/sfomuseum/go-flags v0.8.2
+## explicit
+github.com/sfomuseum/go-flags/flagset
 # github.com/sfomuseum/go-timings v0.0.1
 ## explicit
 github.com/sfomuseum/go-timings
@@ -263,6 +275,8 @@ github.com/tidwall/gjson
 github.com/tidwall/match
 # github.com/tidwall/pretty v1.2.0
 github.com/tidwall/pretty
+# github.com/whosonfirst/algnhsa v0.1.0
+github.com/whosonfirst/algnhsa
 # github.com/whosonfirst/go-ioutil v1.0.1
 github.com/whosonfirst/go-ioutil
 # github.com/whosonfirst/go-whosonfirst-crawl v0.2.1
