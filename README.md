@@ -135,12 +135,38 @@ $> du -h admin.db
 ### populate
 
 ```
+$> ./bin/populate -h
+Usage of ./bin/populate:
+  -atomic
+    	Produce atomic findingaids for each item in a source list. If true then -producer URI must be a valid URI template containing a '{source}' variable to expand with findingaid name.
+  -iterator-uri string
+    	A valid whosonfirst/go-whosonfirst-iterate/v2 URI. (default "repo://")
+  -producer-uri string
+    	A valid whosonfirst/go-whosonfirst-findingaid/v2/producer URI. (default "csv://?archive=archive.tar.gz")
+  -provider-uri string
+    	An optional whosonfirst/go-whosonfirst-findingaid/v2/provider URI to use for deriving additional sources.
+```
+
+For example:
+
+```
 $> ./bin/populate \
 	-iterator-uri git:///tmp \
 	-provider-uri 'github://sfomuseum-data?prefix=sfomuseum-data-&exclude=sfomuseum-data-flights&exclude=sfomuseum-data-faa&exclude=sfomuseum-data-garages&exclude=sfomuseum-data-checkpoints' \
 	-producer-uri 'csv://?archive=archive.tar.gz'
 
 ```
+
+Or to create atomic findingaids for each item in a list of sources:
+
+```
+$> ./bin/populate \
+	-iterator-uri git:///tmp -provider-uri 'github://sfomuseum-data?prefix=sfomuseum-data-flights-&exclude=sfomuseum-data-flights-YYYY-MM&exclude=sfomuseum-data-flights-2022'\
+	-producer-uri 'csv://?archive={source}.tar.gz' \
+	-atomic
+```
+
+This would create separate findingaids for `sfomuseum-data-flights-2019-01`, `sfomuseum-data-flights-2019-02` and so on.
 
 ### resolverd
 

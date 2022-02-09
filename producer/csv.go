@@ -12,6 +12,7 @@ import (
 	"github.com/whosonfirst/go-whosonfirst-uri"
 	"io"
 	"io/ioutil"
+	_ "log"
 	"net/url"
 	"os"
 	"path/filepath"

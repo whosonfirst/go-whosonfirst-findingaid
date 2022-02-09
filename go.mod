@@ -8,7 +8,7 @@ require (
 	github.com/aaronland/go-brooklynintegers-api v1.2.4
 	github.com/aaronland/go-http-server v0.0.7
 	github.com/aaronland/go-roster v0.0.2
-	github.com/aws/aws-sdk-go v1.42.47
+	github.com/aws/aws-sdk-go v1.42.50
 	github.com/jtacoma/uritemplates v1.0.0
 	github.com/mattn/go-sqlite3 v1.14.11
 	github.com/sfomuseum/go-csvdict v1.0.0
