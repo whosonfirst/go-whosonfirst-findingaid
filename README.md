@@ -103,6 +103,10 @@ Producers implement the `producer.Producer` interface and are used to populate f
 
 Providers implement the `provider.Provider` interface and are used to generate a list of iterator URIs for crawling by a producer.
 
+### Resolvers
+
+resolvers implement the `resolver.Resolver` interfave and are used for retrieving repository data from a variety of storage systems.
+
 ## Tools
 
 ### csv2sql
