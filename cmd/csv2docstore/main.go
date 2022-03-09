@@ -36,7 +36,7 @@ func main() {
 	monitor, err := timings.NewCounterMonitor(ctx, d)
 
 	if err != nil {
-		log.Fatalf("Failed to create timings monitor, %w", err)
+		log.Fatalf("Failed to create timings monitor, %v", err)
 	}
 
 	monitor.Start(ctx, os.Stdout)
@@ -109,7 +109,7 @@ func processArchive(ctx context.Context, path string, collection *gc_docstore.Co
 	f, err := os.Open(path)
 
 	if err != nil {
-		return fmt.Errorf("Failed to open archive %s, %w", path, err)
+		return fmt.Errorf("Failed to open archive %s, %v", path, err)
 	}
 
 	defer f.Close()
@@ -210,7 +210,7 @@ func processArchiveWithReader(ctx context.Context, r io.Reader, collection *gc_d
 	lookup, err := processSources(ctx, sources_r)
 
 	if err != nil {
-		return fmt.Errorf("Failed to derive sources lookup, %w")
+		return fmt.Errorf("Failed to derive sources lookup, %w", err)
 	}
 
 	catalog_r, err := os.Open(catalog_tmp)
