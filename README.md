@@ -113,7 +113,7 @@ Resolve findingaids using a `gocloud.dev/docstore` compatible storage endpoint.
 
 ### HTTP
 
-Resolve findingaids using a HTTP(S) endpoint. For example, an instance of the [cmd/resolverd](https://github.com/whosonfirst/go-whosonfirst-findingaid/#resolverd) tool.
+Resolve findingaids using a HTTP(S) endpoint. For example, an instance of the [cmd/resolverd](https://github.com/whosonfirst/go-whosonfirst-findingaid/#resolverd) tool which is itself just a thin (HTTP) layer on top of another database-backed resolver.
 
 ### SQL
 
