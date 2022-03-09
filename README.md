@@ -113,11 +113,7 @@ Resolve findingaids using a `gocloud.dev/docstore` compatible storage endpoint.
 
 ### HTTP
 
-Resolve findingaids using a HTTP(S) endpoint. For example:
-
-```
-findingaid://https/static.sfomuseum.org/findingaid/
-```
+Resolve findingaids using a HTTP(S) endpoint. For example, an instance of the [cmd/resolverd](https://github.com/whosonfirst/go-whosonfirst-findingaid/#resolverd) tool.
 
 ### SQL
 
