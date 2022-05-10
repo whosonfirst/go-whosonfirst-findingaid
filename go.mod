@@ -15,6 +15,7 @@ require (
 	github.com/sfomuseum/go-flags v0.8.2
 	github.com/sfomuseum/go-timings v0.0.1
 	github.com/tidwall/gjson v1.14.1
+	github.com/whosonfirst/go-reader v0.11.0
 	github.com/whosonfirst/go-whosonfirst-feature v0.0.23
 	github.com/whosonfirst/go-whosonfirst-github v0.5.0
 	github.com/whosonfirst/go-whosonfirst-iterate-git/v2 v2.1.0

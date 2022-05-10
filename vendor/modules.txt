@@ -281,8 +281,11 @@ github.com/tidwall/gjson
 github.com/tidwall/match
 # github.com/tidwall/pretty v1.2.0
 github.com/tidwall/pretty
-# github.com/whosonfirst/go-ioutil v1.0.1
+# github.com/whosonfirst/go-ioutil v1.0.2
 github.com/whosonfirst/go-ioutil
+# github.com/whosonfirst/go-reader v0.11.0
+## explicit
+github.com/whosonfirst/go-reader
 # github.com/whosonfirst/go-whosonfirst-crawl v0.2.1
 github.com/whosonfirst/go-whosonfirst-crawl
 # github.com/whosonfirst/go-whosonfirst-feature v0.0.23
