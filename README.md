@@ -107,19 +107,15 @@ Providers implement the `provider.Provider` interface and are used to generate a
 
 resolvers implement the `resolver.Resolver` interfave and are used for retrieving repository data from a variety of storage systems.
 
-### Docstore
+#### Docstore
 
 Resolve findingaids using a `gocloud.dev/docstore` compatible storage endpoint.
 
-### HTTP
+#### HTTP
 
-Resolve findingaids using a HTTP(S) endpoint. For example:
+Resolve findingaids using a HTTP(S) endpoint. For example, an instance of the [cmd/resolverd](https://github.com/whosonfirst/go-whosonfirst-findingaid/#resolverd) tool which is itself just a thin (HTTP) layer on top of another database-backed resolver.
 
-```
-findingaid://https/static.sfomuseum.org/findingaid/
-```
-
-### SQL
+#### SQL
 
 Resolve findingaids using a `database/sql` compatible database.
 
