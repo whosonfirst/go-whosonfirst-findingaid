@@ -14,6 +14,7 @@ require (
 	github.com/sfomuseum/go-csvdict v1.0.0
 	github.com/sfomuseum/go-flags v0.8.3
 	github.com/sfomuseum/go-timings v1.0.0
+	github.com/sfomuseum/iso8601duration v1.0.0
 	github.com/tidwall/gjson v1.14.3
 	github.com/whosonfirst/go-reader v1.0.1
 	github.com/whosonfirst/go-whosonfirst-feature v0.0.24
@@ -21,7 +22,6 @@ require (
 	github.com/whosonfirst/go-whosonfirst-iterate-git/v2 v2.1.1
 	github.com/whosonfirst/go-whosonfirst-iterate/v2 v2.1.0
 	github.com/whosonfirst/go-whosonfirst-uri v1.2.0
-	github.com/whosonfirst/iso8601duration v0.0.0-20220708182951-0b0a40a48a3d
 	gocloud.dev v0.26.0
 	google.golang.org/protobuf v1.28.1
 )
@@ -67,7 +67,6 @@ require (
 	github.com/paulmach/orb v0.7.1 // indirect
 	github.com/sergi/go-diff v1.1.0 // indirect
 	github.com/sfomuseum/go-edtf v1.1.1 // indirect
-	github.com/sfomuseum/iso8601duration v1.0.0 // indirect
 	github.com/tidwall/match v1.1.1 // indirect
 	github.com/tidwall/pretty v1.2.0 // indirect
 	github.com/whosonfirst/go-ioutil v1.0.2 // indirect

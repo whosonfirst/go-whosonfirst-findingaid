@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"github.com/jtacoma/uritemplates"
 	"github.com/whosonfirst/go-whosonfirst-github/organizations"
-	"github.com/whosonfirst/iso8601duration"
+	"github.com/sfomuseum/iso8601duration"
 	"net/url"
 	"regexp"
 	"strconv"
