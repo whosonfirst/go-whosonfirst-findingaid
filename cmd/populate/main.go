@@ -18,7 +18,6 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
-	"time"
 )
 
 func main() {
@@ -97,7 +96,7 @@ func main() {
 
 	}
 
-	d := time.Second * 60
+	d := "PT60S"
 	monitor, err := timings.NewCounterMonitor(ctx, d)
 
 	if err != nil {

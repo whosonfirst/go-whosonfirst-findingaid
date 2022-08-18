@@ -20,7 +20,6 @@ import (
 	"net/url"
 	"os"
 	"strconv"
-	"time"
 )
 
 func main() {
@@ -32,7 +31,7 @@ func main() {
 
 	ctx := context.Background()
 
-	d := time.Second * 60
+	d := "PT60S"
 	monitor, err := timings.NewCounterMonitor(ctx, d)
 
 	if err != nil {

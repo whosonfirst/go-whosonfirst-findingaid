@@ -3,8 +3,8 @@ package findingaid
 import (
 	"context"
 	"fmt"
-	"github.com/aaronland/go-artisanal-integers"
-	"github.com/aaronland/go-brooklynintegers-api"
+	"github.com/aaronland/go-artisanal-integers/client"
+	_ "github.com/aaronland/go-brooklynintegers-api"
 	"github.com/tidwall/gjson"
 	"github.com/whosonfirst/go-whosonfirst-feature/properties"
 	"io"
@@ -20,14 +20,21 @@ type FindingAidRepo struct {
 var repo_sources *sync.Map
 var repo_mu *sync.RWMutex
 
-var bi_client artisanalinteger.Client
+var bi_client client.Client
 
 func init() {
 
 	repo_sources = new(sync.Map)
 	repo_mu = new(sync.RWMutex)
 
-	bi_client = api.NewAPIClient()
+	ctx := context.Background()
+	cl, err := client.NewClient(ctx, "brooklyn://")
+
+	if err != nil {
+		panic(err)
+	}
+
+	bi_client = cl
 }
 
 func GetRepoWithReader(ctx context.Context, r io.ReadSeeker) (*FindingAidRepo, bool, error) {
@@ -80,7 +87,7 @@ func GetRepo(ctx context.Context, repo_name string) (*FindingAidRepo, bool, erro
 		// But we do need something that will be reliably unique across
 		// disparate runs.
 
-		new_id, err := bi_client.NextInt()
+		new_id, err := bi_client.NextInt(ctx)
 
 		if err != nil {
 			return nil, false, fmt.Errorf("Failed to create ID for repo, %w", err)
