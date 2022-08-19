@@ -64,6 +64,8 @@ func main() {
 				return
 			}
 
+			defer r.Close()
+			
 			gr, err := gzip.NewReader(r)
 
 			if err != nil {
