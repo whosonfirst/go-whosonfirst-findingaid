@@ -2,15 +2,15 @@ package resolver
 
 import (
 	"context"
-	"testing"
 	"fmt"
 	"path/filepath"
+	"testing"
 )
 
 func TestReaderResolver(t *testing.T) {
 
 	ctx := context.Background()
-	
+
 	fixtures := "../fixtures"
 	abs_path, err := filepath.Abs(fixtures)
 
@@ -36,6 +36,6 @@ func TestReaderResolver(t *testing.T) {
 	if repo != "whosonfirst-data-admin-ca" {
 		t.Fatalf("Invalid repo: %s", repo)
 	}
-	
+
 	fmt.Printf(repo)
 }
