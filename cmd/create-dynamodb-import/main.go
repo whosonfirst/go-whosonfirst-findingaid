@@ -34,7 +34,7 @@ func main() {
 
 	fieldnames := []string{
 		"id",
-		"repo",
+		"repo_name",
 	}
 
 	csv_wr, err := csvdict.NewWriter(wr, fieldnames)
@@ -170,7 +170,7 @@ func main() {
 				repo_id := row["repo_id"]
 				repo_name := sources_map[repo_id]
 
-				row_ch <- map[string]string{"id": row["id"], "repo": repo_name}
+				row_ch <- map[string]string{"id": row["id"], "repo_name": repo_name}
 			}
 
 		}(path)
