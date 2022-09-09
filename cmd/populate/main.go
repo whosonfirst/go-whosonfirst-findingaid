@@ -96,8 +96,7 @@ func main() {
 
 	}
 
-	d := "PT60S"
-	monitor, err := timings.NewCounterMonitor(ctx, d)
+	monitor, err := timings.NewMonitor(ctx, "counter://PT60S")
 
 	if err != nil {
 		log.Fatalf("Failed to create timings monitor, %v", err)
