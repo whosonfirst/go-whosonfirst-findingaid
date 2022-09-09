@@ -2,3 +2,5 @@
 bin
 *.zip
 *.tar.gz
+*.csv
+*.csv.gz
