@@ -2,11 +2,36 @@
 
 ## DynamoDB
 
-Table called "findingaid" with a partition key of "id" which is a number ("N").
+See `Populate` section below.
 
 ## Populate
 
-## Sync
+The easiest way to populate the findingaid is to use the `create-dynamodb-import` tool to create a CSV file of all the findingaid pointers which can be used to create (and populate) a new "findingaid" table in DynamoDB.
+
+```
+$> /bin/create-dynamodb-import /usr/local/data/whosonfirst-findingaids/data/* > findingaid.csv
+$> gzip findingaid.csv
+$> aws --profile {PROFILE} s3 cp findingaid.csv.gz s3://{BUCKET}
+```
+
+Follow the instructions for importing the CSV file, specifying a new table called "findingaid" with a partition key of "id" which is a number ("N").
+
+* https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/S3DataImport.Requesting.html#S3DataImport.Requesting.Console
+
+_To do: Add notes about populating a standalone instance of DynamoDB outside of AWS._
+
+## Sync / update
+
+```
+$> cd /usr/local/whosonfirst/whosonfirst-findingaids
+$> make docker
+
+### ECS
+
+### IAM
+
+### 
+```
 
 ## Resolver(d)
 

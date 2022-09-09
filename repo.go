@@ -28,7 +28,7 @@ func init() {
 	repo_mu = new(sync.RWMutex)
 
 	ctx := context.Background()
-	cl, err := client.NewClient(ctx, "brooklyn://")
+	cl, err := client.NewClient(ctx, "brooklynintegers://")
 
 	if err != nil {
 		panic(err)
