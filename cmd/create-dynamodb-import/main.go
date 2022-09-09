@@ -43,6 +43,12 @@ func main() {
 		log.Fatalf("Failed to create CSV writer, %w", err)
 	}
 
+	err = csv_wr.WriteHeader()
+
+	if err != nil {
+		log.Fatalf("Failed to write CSV header, %w", err)
+	}
+
 	paths := flag.Args()
 
 	done_ch := make(chan bool)
@@ -65,7 +71,7 @@ func main() {
 			}
 
 			defer r.Close()
-			
+
 			gr, err := gzip.NewReader(r)
 
 			if err != nil {
