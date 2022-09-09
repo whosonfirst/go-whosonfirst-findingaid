@@ -4,17 +4,17 @@ go 1.18
 
 require (
 	github.com/aaronland/go-artisanal-integers v0.9.1
-	github.com/aaronland/go-aws-dynamodb v0.0.3
+	github.com/aaronland/go-aws-dynamodb v0.0.4
 	github.com/aaronland/go-brooklynintegers-api v1.2.6
 	github.com/aaronland/go-http-server v1.0.0
 	github.com/aaronland/go-roster v1.0.0
-	github.com/aws/aws-sdk-go v1.44.80
+	github.com/aws/aws-sdk-go v1.44.94
 	github.com/jtacoma/uritemplates v1.0.0
 	github.com/mattn/go-sqlite3 v1.14.15
 	github.com/sfomuseum/go-csvdict v1.0.0
-	github.com/sfomuseum/go-flags v0.8.3
+	github.com/sfomuseum/go-flags v0.9.0
 	github.com/sfomuseum/go-timings v1.0.0
-	github.com/sfomuseum/iso8601duration v1.0.0
+	github.com/sfomuseum/iso8601duration v1.1.0
 	github.com/tidwall/gjson v1.14.3
 	github.com/whosonfirst/go-reader v1.0.1
 	github.com/whosonfirst/go-whosonfirst-feature v0.0.24
