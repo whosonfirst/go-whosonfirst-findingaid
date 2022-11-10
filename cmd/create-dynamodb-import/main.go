@@ -40,13 +40,13 @@ func main() {
 	csv_wr, err := csvdict.NewWriter(wr, fieldnames)
 
 	if err != nil {
-		log.Fatalf("Failed to create CSV writer, %w", err)
+		log.Fatalf("Failed to create CSV writer, %v", err)
 	}
 
 	err = csv_wr.WriteHeader()
 
 	if err != nil {
-		log.Fatalf("Failed to write CSV header, %w", err)
+		log.Fatalf("Failed to write CSV header, %v", err)
 	}
 
 	paths := flag.Args()

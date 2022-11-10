@@ -149,7 +149,7 @@ func (em *GitEmitter) WalkURI(ctx context.Context, index_cb emitter.EmitterCallb
 		return fmt.Errorf("Failed to derive commit tree, %w", err)
 	}
 
-	tree.Files().ForEach(func(f *object.File) error {
+	err = tree.Files().ForEach(func(f *object.File) error {
 
 		switch filepath.Ext(f.Name) {
 		case ".geojson":
@@ -193,6 +193,10 @@ func (em *GitEmitter) WalkURI(ctx context.Context, index_cb emitter.EmitterCallb
 
 		return index_cb(ctx, f.Name, fh)
 	})
+
+	if err != nil {
+		return fmt.Errorf("Failed to iterate through tree, %w", err)
+	}
 
 	return nil
 }
