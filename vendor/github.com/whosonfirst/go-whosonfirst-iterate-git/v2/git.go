@@ -172,6 +172,8 @@ func (em *GitEmitter) WalkURI(ctx context.Context, index_cb emitter.EmitterCallb
 			return fmt.Errorf("Failed to create ReadSeekCloser for %s, %w", f.Name, err)
 		}
 
+		defer fh.Close()
+		
 		if em.filters != nil {
 
 			ok, err := em.filters.Apply(ctx, fh)
