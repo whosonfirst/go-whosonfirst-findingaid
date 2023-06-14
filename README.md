@@ -121,13 +121,24 @@ Resolve findingaids using a `database/sql` compatible database.
 
 ## Tools
 
-### csv2sql
+```
+$> make cli
+go build -mod vendor -ldflags="-s -w" -o bin/wof-findingaid-populate cmd/wof-findingaid-populate/main.go
+go build -mod vendor -ldflags="-s -w" -o bin/wof-findingaid-sources cmd/wof-findingaid-sources/main.go
+go build -mod vendor -ldflags="-s -w" -o bin/wof-findingaid-csv2sql cmd/wof-findingaid-csv2sql/main.go
+go build -mod vendor -ldflags="-s -w" -o bin/wof-findingaid-csv2docstore cmd/wof-findingaid-csv2docstore/main.go
+go build -mod vendor -ldflags="-s -w" -o bin/wof-findingaid-create-dynamodb-tables cmd/wof-findingaid-create-dynamodb-tables/main.go
+go build -mod vendor -ldflags="-s -w" -o bin/wof-findingaid-create-dynamodb-import cmd/wof-findingaid-create-dynamodb-import/main.go
+go build -mod vendor -ldflags="-s -w" -o bin/wof-findingaid-resolverd cmd/wof-findingaid-resolverd/main.go
+```
+
+### wof-findingaid-csv2sql
 
 ```
 $> du -h -d 1 /usr/local/data/findingaid/csv/
 15M     /usr/local/data/findingaid/csv/
 
-$> time ./bin/csv2sql -database-uri 'sql://sqlite3?dsn=admin.db' /usr/local/data/findingaid/csv/*.gz
+$> time ./bin/wof-findingaid-csv2sql -database-uri 'sql://sqlite3?dsn=admin.db' /usr/local/data/findingaid/csv/*.gz
 
 real	1m49.170s
 user	1m31.838s
@@ -144,11 +155,11 @@ $> du -h admin.db
 81M   admin.db
 ```
 
-### populate
+### wof-findingaid-populate
 
 ```
-$> ./bin/populate -h
-Usage of ./bin/populate:
+$> ./bin/wof-findingaid-populate -h
+Usage of ./bin/wof-findingaid-populate:
   -atomic
     	Produce atomic findingaids for each item in a source list. If true then -producer URI must be a valid URI template containing a '{source}' variable to expand with findingaid name.
   -iterator-uri string
@@ -162,7 +173,7 @@ Usage of ./bin/populate:
 For example:
 
 ```
-$> ./bin/populate \
+$> ./bin/wof-findingaid-populate \
 	-iterator-uri git:///tmp \
 	-provider-uri 'github://sfomuseum-data?prefix=sfomuseum-data-&exclude=sfomuseum-data-flights&exclude=sfomuseum-data-faa&exclude=sfomuseum-data-garages&exclude=sfomuseum-data-checkpoints' \
 	-producer-uri 'csv://?archive=archive.tar.gz'
@@ -172,7 +183,7 @@ $> ./bin/populate \
 Or to create atomic findingaids for each item in a list of sources:
 
 ```
-$> ./bin/populate \
+$> ./bin/wof-findingaid-populate \
 	-iterator-uri git:///tmp -provider-uri 'github://sfomuseum-data?prefix=sfomuseum-data-flights-&exclude=sfomuseum-data-flights-YYYY-MM&exclude=sfomuseum-data-flights-2022'\
 	-producer-uri 'csv://?archive={source}.tar.gz' \
 	-atomic
@@ -180,7 +191,7 @@ $> ./bin/populate \
 
 This would create separate findingaids for `sfomuseum-data-flights-2019-01`, `sfomuseum-data-flights-2019-02` and so on.
 
-### resolverd
+### wof-findingaid-resolverd
 
 resolverd provides an HTTP server endpoint for resolving Who's On First URIs to their corresponding repository name using a go-whosonfirst-findingaid/v2/resolver.Resolver instance.
 
@@ -191,7 +202,7 @@ _This assumes a DynamoDB findingaid populated with the [csv2docstore](https://gi
 ```
 $> java -Djava.library.path=./DynamoDBLocal_lib -jar DynamoDBLocal.jar -sharedDb
 
-$> ./bin/resolverd -resolver-uri 'awsdynamodb:///findingaid?region=local&endpoint=http://localhost:8000&credentials=static:local:local:local&partition_key=id'
+$> ./bin/wof-findingaid-resolverd -resolver-uri 'awsdynamodb:///findingaid?region=local&endpoint=http://localhost:8000&credentials=static:local:local:local&partition_key=id'
 2021/11/06 16:37:48 Listening for requests on http://localhost:8080
 
 $> curl http://localhost:8080/1678780019
