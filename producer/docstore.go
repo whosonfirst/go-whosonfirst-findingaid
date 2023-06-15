@@ -3,6 +3,10 @@ package producer
 import (
 	"context"
 	"fmt"
+	"io"
+	"net/url"
+	"sync"
+
 	"github.com/aaronland/go-aws-dynamodb"
 	"github.com/sfomuseum/go-timings"
 	"github.com/whosonfirst/go-whosonfirst-findingaid/v2"
@@ -11,9 +15,6 @@ import (
 	"github.com/whosonfirst/go-whosonfirst-uri"
 	gc_docstore "gocloud.dev/docstore"
 	gc_dynamodb "gocloud.dev/docstore/awsdynamodb"
-	"io"
-	"net/url"
-	"sync"
 )
 
 /*

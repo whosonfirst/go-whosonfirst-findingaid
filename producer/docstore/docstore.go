@@ -3,8 +3,8 @@ package docstore
 import (
 	"context"
 	"fmt"
+
 	gc_docstore "gocloud.dev/docstore"
-	_ "log"
 )
 
 type CatalogRecord struct {
@@ -21,12 +21,11 @@ func AddToCatalog(ctx context.Context, collection *gc_docstore.Collection, id in
 
 	err := collection.Get(ctx, test_doc)
 
-	if err != nil {
-		return fmt.Errorf("Failed to get record for %d, %w", id, err)
-	}
+	if err == nil {
 
-	if test_doc["repo_name"] == repo_name {
-		return nil
+		if test_doc["repo_name"] == repo_name {
+			return nil
+		}
 	}
 
 	doc := &CatalogRecord{
