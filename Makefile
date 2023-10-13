@@ -1,5 +1,7 @@
 GOMOD=vendor
 
+GOMOD=$(shell test -f "go.work" && echo "readonly" || echo "vendor")
+
 proto:
 	protoc -I=./producer/protobuf --go_out=./ ./producer/protobuf/findingaid.proto
 
@@ -17,9 +19,9 @@ lambda:
 	@make lambda-resolverd
 
 lambda-resolverd:
-	if test -f main; then rm -f main; fi
+	if test -f bootstrap; then rm -f bootstrap; fi
 	if test -f resolverd.zip; then rm -f resolverd.zip; fi
-	GOOS=linux go build -mod $(GOMOD) -ldflags="-s -w" -o main cmd/wof-findingaid-resolverd/main.go
-	zip resolverd.zip main
-	rm -f main
+	GOARCH=arm64 GOOS=linux go build -mod $(GOMOD) -ldflags="-s -w" -tags lambda.norpc -o bootstrap cmd/wof-findingaid-resolverd/main.go
+	zip resolverd.zip bootstrap
+	rm -f bootstrap
 
