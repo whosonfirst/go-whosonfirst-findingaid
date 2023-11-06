@@ -4,8 +4,9 @@
 package x448
 
 import (
-	fp "github.com/cloudflare/circl/math/fp448"
 	"golang.org/x/sys/cpu"
+
+	fp "github.com/cloudflare/circl/math/fp448"
 )
 
 var hasBmi2Adx = cpu.X86.HasBMI2 && cpu.X86.HasADX
