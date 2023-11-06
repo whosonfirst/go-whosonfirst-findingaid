@@ -6,11 +6,11 @@ require (
 	github.com/aaronland/go-artisanal-integers v0.9.1
 	github.com/aaronland/go-aws-dynamodb v0.0.6
 	github.com/aaronland/go-brooklynintegers-api v1.2.7
-	github.com/aaronland/go-http-server v1.2.0
+	github.com/aaronland/go-http-server v1.3.0
 	github.com/aaronland/go-roster v1.0.0
-	github.com/aws/aws-sdk-go v1.45.25
+	github.com/aws/aws-sdk-go v1.47.3
 	github.com/jtacoma/uritemplates v1.0.0
-	github.com/mattn/go-sqlite3 v1.14.17
+	github.com/mattn/go-sqlite3 v1.14.18
 	github.com/sfomuseum/go-csvdict v1.0.0
 	github.com/sfomuseum/go-flags v0.10.0
 	github.com/sfomuseum/go-timings v1.2.1
@@ -34,7 +34,7 @@ require (
 	github.com/aaronland/go-string v1.0.0 // indirect
 	github.com/acomagu/bufpipe v1.0.3 // indirect
 	github.com/akrylysov/algnhsa v1.0.0 // indirect
-	github.com/aws/aws-lambda-go v1.37.0 // indirect
+	github.com/aws/aws-lambda-go v1.41.0 // indirect
 	github.com/aws/aws-sdk-go-v2 v1.20.0 // indirect
 	github.com/aws/aws-sdk-go-v2/config v1.18.32 // indirect
 	github.com/aws/aws-sdk-go-v2/credentials v1.13.31 // indirect
@@ -82,11 +82,11 @@ require (
 	github.com/xanzy/ssh-agent v0.3.3 // indirect
 	go.opencensus.io v0.24.0 // indirect
 	go.uber.org/ratelimit v0.3.0 // indirect
-	golang.org/x/crypto v0.11.0 // indirect
-	golang.org/x/net v0.13.0 // indirect
+	golang.org/x/crypto v0.14.0 // indirect
+	golang.org/x/net v0.17.0 // indirect
 	golang.org/x/oauth2 v0.10.0 // indirect
-	golang.org/x/sys v0.10.0 // indirect
-	golang.org/x/text v0.11.0 // indirect
+	golang.org/x/sys v0.13.0 // indirect
+	golang.org/x/text v0.13.0 // indirect
 	golang.org/x/xerrors v0.0.0-20220907171357-04be3eba64a2 // indirect
 	google.golang.org/api v0.134.0 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
