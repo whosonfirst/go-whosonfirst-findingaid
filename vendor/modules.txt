@@ -389,7 +389,7 @@ github.com/whosonfirst/go-whosonfirst-feature/properties
 ## explicit; go 1.16
 github.com/whosonfirst/go-whosonfirst-flags
 github.com/whosonfirst/go-whosonfirst-flags/existential
-# github.com/whosonfirst/go-whosonfirst-github v0.6.0
+# github.com/whosonfirst/go-whosonfirst-github v0.5.4
 ## explicit; go 1.18
 github.com/whosonfirst/go-whosonfirst-github/organizations
 github.com/whosonfirst/go-whosonfirst-github/util
@@ -515,7 +515,7 @@ google.golang.org/appengine/urlfetch
 google.golang.org/genproto/googleapis/rpc/code
 google.golang.org/genproto/googleapis/rpc/errdetails
 google.golang.org/genproto/googleapis/rpc/status
-# google.golang.org/grpc v1.57.0
+# google.golang.org/grpc v1.57.1
 ## explicit; go 1.17
 google.golang.org/grpc
 google.golang.org/grpc/attributes
