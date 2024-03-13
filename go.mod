@@ -23,7 +23,7 @@ require (
 	github.com/whosonfirst/go-whosonfirst-iterate/v2 v2.3.4
 	github.com/whosonfirst/go-whosonfirst-uri v1.3.0
 	gocloud.dev v0.34.0
-	google.golang.org/protobuf v1.31.0
+	google.golang.org/protobuf v1.33.0
 )
 
 require (
