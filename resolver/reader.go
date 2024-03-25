@@ -3,12 +3,13 @@ package resolver
 import (
 	"context"
 	"fmt"
-	"github.com/tidwall/gjson"
-	"github.com/whosonfirst/go-reader"
-	"github.com/whosonfirst/go-whosonfirst-uri"
 	"io"
 	_ "log"
 	"net/url"
+
+	"github.com/tidwall/gjson"
+	"github.com/whosonfirst/go-reader"
+	"github.com/whosonfirst/go-whosonfirst-uri"
 )
 
 // type ReaderResolver implements the `Resolver` interface for data that can be resolved using a whosonfirst/go-reader.Reader instance.

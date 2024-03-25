@@ -3,8 +3,9 @@ package producer
 import (
 	"context"
 	"fmt"
-	"github.com/sfomuseum/go-timings"
 	"net/url"
+
+	"github.com/sfomuseum/go-timings"
 )
 
 type MultiProducer struct {

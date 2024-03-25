@@ -4,14 +4,15 @@ import (
 	"context"
 	gosql "database/sql"
 	"fmt"
+	"io"
+	"net/url"
+	"sync"
+
 	"github.com/sfomuseum/go-timings"
 	"github.com/whosonfirst/go-whosonfirst-findingaid/v2"
 	"github.com/whosonfirst/go-whosonfirst-findingaid/v2/producer/sql"
 	"github.com/whosonfirst/go-whosonfirst-iterate/v2/iterator"
 	"github.com/whosonfirst/go-whosonfirst-uri"
-	"io"
-	"net/url"
-	"sync"
 )
 
 type SQLProducer struct {

@@ -5,11 +5,6 @@ import (
 	"compress/gzip"
 	"context"
 	"fmt"
-	"github.com/sfomuseum/go-csvdict"
-	"github.com/sfomuseum/go-timings"
-	"github.com/whosonfirst/go-whosonfirst-findingaid/v2"
-	"github.com/whosonfirst/go-whosonfirst-iterate/v2/iterator"
-	"github.com/whosonfirst/go-whosonfirst-uri"
 	"io"
 	"io/ioutil"
 	_ "log"
@@ -20,6 +15,12 @@ import (
 	"strconv"
 	"strings"
 	"sync"
+
+	"github.com/sfomuseum/go-csvdict"
+	"github.com/sfomuseum/go-timings"
+	"github.com/whosonfirst/go-whosonfirst-findingaid/v2"
+	"github.com/whosonfirst/go-whosonfirst-iterate/v2/iterator"
+	"github.com/whosonfirst/go-whosonfirst-uri"
 )
 
 type CSVProducer struct {

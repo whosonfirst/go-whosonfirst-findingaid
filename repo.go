@@ -3,12 +3,13 @@ package findingaid
 import (
 	"context"
 	"fmt"
+	"io"
+	"sync"
+
 	"github.com/aaronland/go-artisanal-integers/client"
 	_ "github.com/aaronland/go-brooklynintegers-api"
 	"github.com/tidwall/gjson"
 	"github.com/whosonfirst/go-whosonfirst-feature/properties"
-	"io"
-	"sync"
 )
 
 // type FindingAidRepo is an internal representation of a WOF-style repository guaranteed to have a unique ID.

@@ -10,14 +10,15 @@ import (
 import (
 	"context"
 	"flag"
-	"github.com/jtacoma/uritemplates"
-	"github.com/sfomuseum/go-timings"
-	"github.com/whosonfirst/go-whosonfirst-findingaid/v2/producer"
-	"github.com/whosonfirst/go-whosonfirst-findingaid/v2/provider"
 	"log"
 	"os"
 	"path/filepath"
 	"strings"
+
+	"github.com/jtacoma/uritemplates"
+	"github.com/sfomuseum/go-timings"
+	"github.com/whosonfirst/go-whosonfirst-findingaid/v2/producer"
+	"github.com/whosonfirst/go-whosonfirst-findingaid/v2/provider"
 )
 
 func main() {

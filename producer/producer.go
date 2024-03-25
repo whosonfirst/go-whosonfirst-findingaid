@@ -3,9 +3,10 @@ package producer
 
 import (
 	"context"
+	"net/url"
+
 	"github.com/aaronland/go-roster"
 	"github.com/sfomuseum/go-timings"
-	"net/url"
 )
 
 // Producer provides an interfaces used to populate a finding aid where "populate" means updating a data store with information mapping a Who's On First ID to its corresponding repository name.

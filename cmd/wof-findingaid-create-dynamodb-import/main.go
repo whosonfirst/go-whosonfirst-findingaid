@@ -12,11 +12,12 @@ import (
 	"compress/gzip"
 	"flag"
 	"fmt"
-	"github.com/sfomuseum/go-csvdict"
 	"io"
 	"log"
 	"os"
 	"sync"
+
+	"github.com/sfomuseum/go-csvdict"
 )
 
 const sources_csv string = "sources.csv"

@@ -2,9 +2,10 @@ package sql
 
 import (
 	"context"
-	gosql "database/sql"
 	"fmt"
 	"net/url"
+
+	gosql "database/sql"
 )
 
 func CreateDB(ctx context.Context, uri string) (*gosql.DB, string, error) {

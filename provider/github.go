@@ -3,13 +3,14 @@ package provider
 import (
 	"context"
 	"fmt"
-	"github.com/jtacoma/uritemplates"
-	"github.com/sfomuseum/iso8601duration"
-	"github.com/whosonfirst/go-whosonfirst-github/organizations"
 	"net/url"
 	"regexp"
 	"strconv"
 	"time"
+
+	"github.com/jtacoma/uritemplates"
+	"github.com/sfomuseum/iso8601duration"
+	"github.com/whosonfirst/go-whosonfirst-github/organizations"
 )
 
 type GitHubProvider struct {

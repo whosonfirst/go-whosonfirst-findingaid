@@ -11,12 +11,13 @@ import (
 	gosql "database/sql"
 	"flag"
 	"fmt"
-	"github.com/sfomuseum/go-csvdict"
-	"github.com/whosonfirst/go-whosonfirst-findingaid/v2/producer/sql"
 	"io"
 	"log"
 	"os"
 	"strconv"
+
+	"github.com/sfomuseum/go-csvdict"
+	"github.com/whosonfirst/go-whosonfirst-findingaid/v2/producer/sql"
 )
 
 func main() {

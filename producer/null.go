@@ -2,6 +2,7 @@ package producer
 
 import (
 	"context"
+
 	"github.com/sfomuseum/go-timings"
 )
 

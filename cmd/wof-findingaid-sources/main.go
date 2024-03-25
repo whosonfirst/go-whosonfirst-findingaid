@@ -4,8 +4,9 @@ import (
 	"context"
 	"flag"
 	"fmt"
-	"github.com/whosonfirst/go-whosonfirst-findingaid/v2/provider"
 	"log"
+
+	"github.com/whosonfirst/go-whosonfirst-findingaid/v2/provider"
 )
 
 func main() {

@@ -3,11 +3,12 @@ package main
 import (
 	"context"
 	"flag"
+	"log"
+	"net/url"
+
 	"github.com/aaronland/go-aws-dynamodb"
 	"github.com/aws/aws-sdk-go/aws"
 	aws_dynamodb "github.com/aws/aws-sdk-go/service/dynamodb"
-	"log"
-	"net/url"
 )
 
 /*

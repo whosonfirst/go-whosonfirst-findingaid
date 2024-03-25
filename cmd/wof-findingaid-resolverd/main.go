@@ -19,12 +19,13 @@ $> ./bin/read -reader-uri 'findingaid://http/localhost:8080?template=https://raw
 
 import (
 	"context"
+	"log"
+	"net/http"
+
 	"github.com/aaronland/go-http-server"
 	"github.com/sfomuseum/go-flags/flagset"
 	"github.com/whosonfirst/go-whosonfirst-findingaid/v2/resolver"
 	"github.com/whosonfirst/go-whosonfirst-uri"
-	"log"
-	"net/http"
 )
 
 func handler(r resolver.Resolver) (http.Handler, error) {

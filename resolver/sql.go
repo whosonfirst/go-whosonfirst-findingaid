@@ -4,8 +4,9 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
-	_ "github.com/mattn/go-sqlite3"
 	"net/url"
+
+	_ "github.com/mattn/go-sqlite3"
 )
 
 // type SQLiteResolver implements the `Resolver` interface for data stored in a SQLite database..

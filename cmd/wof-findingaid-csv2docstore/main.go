@@ -8,18 +8,19 @@ import (
 	"context"
 	"flag"
 	"fmt"
-	"github.com/aaronland/go-aws-dynamodb"
-	"github.com/sfomuseum/go-csvdict"
-	"github.com/sfomuseum/go-timings"
-	"github.com/whosonfirst/go-whosonfirst-findingaid/v2/producer/docstore"
-	gc_docstore "gocloud.dev/docstore"
-	gc_dynamodb "gocloud.dev/docstore/awsdynamodb"
 	"io"
 	"io/ioutil"
 	"log"
 	"net/url"
 	"os"
 	"strconv"
+
+	"github.com/aaronland/go-aws-dynamodb"
+	"github.com/sfomuseum/go-csvdict"
+	"github.com/sfomuseum/go-timings"
+	"github.com/whosonfirst/go-whosonfirst-findingaid/v2/producer/docstore"
+	gc_docstore "gocloud.dev/docstore"
+	gc_dynamodb "gocloud.dev/docstore/awsdynamodb"
 )
 
 func main() {
