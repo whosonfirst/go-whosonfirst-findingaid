@@ -1,8 +1,8 @@
 module github.com/whosonfirst/go-whosonfirst-findingaid/v2
 
-go 1.22
+go 1.22.1
 
-toolchain go1.22.1
+toolchain go1.22.2
 
 require (
 	github.com/aaronland/go-artisanal-integers v0.9.1
@@ -10,7 +10,7 @@ require (
 	github.com/aaronland/go-brooklynintegers-api v1.2.7
 	github.com/aaronland/go-http-server v1.4.1
 	github.com/aaronland/go-roster v1.0.0
-	github.com/aws/aws-sdk-go v1.51.6
+	github.com/aws/aws-sdk-go v1.51.15
 	github.com/jtacoma/uritemplates v1.0.0
 	github.com/mattn/go-sqlite3 v1.14.22
 	github.com/sfomuseum/go-csvdict v1.0.0
@@ -20,7 +20,7 @@ require (
 	github.com/tidwall/gjson v1.17.1
 	github.com/whosonfirst/go-reader v1.0.2
 	github.com/whosonfirst/go-whosonfirst-feature v0.0.27
-	github.com/whosonfirst/go-whosonfirst-github v0.6.1
+	github.com/whosonfirst/go-whosonfirst-github v0.6.2
 	github.com/whosonfirst/go-whosonfirst-iterate-git/v2 v2.1.4
 	github.com/whosonfirst/go-whosonfirst-iterate/v2 v2.3.4
 	github.com/whosonfirst/go-whosonfirst-uri v1.3.0

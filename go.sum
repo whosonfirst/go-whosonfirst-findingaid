@@ -40,8 +40,8 @@ github.com/armon/go-socks5 v0.0.0-20160902184237-e75332964ef5 h1:0CwZNZbxp69SHPd
 github.com/armon/go-socks5 v0.0.0-20160902184237-e75332964ef5/go.mod h1:wHh0iHkYZB8zMSxRWpUBQtwG5a7fFgvEO+odwuTv2gs=
 github.com/aws/aws-lambda-go v1.46.0 h1:UWVnvh2h2gecOlFhHQfIPQcD8pL/f7pVCutmFl+oXU8=
 github.com/aws/aws-lambda-go v1.46.0/go.mod h1:dpMpZgvWx5vuQJfBt0zqBha60q7Dd7RfgJv23DymV8A=
-github.com/aws/aws-sdk-go v1.51.6 h1:Ld36dn9r7P9IjU8WZSaswQ8Y/XUCRpewim5980DwYiU=
-github.com/aws/aws-sdk-go v1.51.6/go.mod h1:LF8svs817+Nz+DmiMQKTO3ubZ/6IaTpq3TjupRn3Eqk=
+github.com/aws/aws-sdk-go v1.51.15 h1:rxRcn4hmkhxUfIQrmnFfOOW4NQRiRve7GlgQcor13JE=
+github.com/aws/aws-sdk-go v1.51.15/go.mod h1:LF8svs817+Nz+DmiMQKTO3ubZ/6IaTpq3TjupRn3Eqk=
 github.com/aws/aws-sdk-go-v2 v1.25.3 h1:xYiLpZTQs1mzvz5PaI6uR0Wh57ippuEthxS4iK5v0n0=
 github.com/aws/aws-sdk-go-v2 v1.25.3/go.mod h1:35hUlJVYd+M++iLI3ALmVwMOyRYMmRqUXpTtRGW+K9I=
 github.com/aws/aws-sdk-go-v2/config v1.27.7 h1:JSfb5nOQF01iOgxFI5OIKWwDiEXWTyTgg1Mm1mHi0A4=
@@ -244,8 +244,8 @@ github.com/whosonfirst/go-whosonfirst-feature v0.0.27 h1:8RoiadvQEo8RFq8HFezq/Mw
 github.com/whosonfirst/go-whosonfirst-feature v0.0.27/go.mod h1:vAtQysyMODE/ynMxSrHJ2eCBJRNFj9xUszrURnOy9Xc=
 github.com/whosonfirst/go-whosonfirst-flags v0.5.1 h1:kRzXK7WZlEK1hNw+CECEdnWNtEDbWbjWdEg0imu1mGE=
 github.com/whosonfirst/go-whosonfirst-flags v0.5.1/go.mod h1:VgXcWNtsCZGy/Xnt9bpSUTKJ3nYeqXqvLD3NrE6kzZg=
-github.com/whosonfirst/go-whosonfirst-github v0.6.1 h1:rolSOrj7lTKt3oEU36p3TPPjCe/p/lD2RWLONSz95PU=
-github.com/whosonfirst/go-whosonfirst-github v0.6.1/go.mod h1:ocrWVozvxgJESEGK8XIi3WNWkPSFTBmTg4A6YcQ0T8U=
+github.com/whosonfirst/go-whosonfirst-github v0.6.2 h1:924EIDAePOFxON0H9Q1CMX2IgF1x1HPUR8I/tySfPNc=
+github.com/whosonfirst/go-whosonfirst-github v0.6.2/go.mod h1:waXGZRtbKCrNdukzw9kOXmFCIvtcsyWxot9Kp0M7/8s=
 github.com/whosonfirst/go-whosonfirst-iterate-git/v2 v2.1.4 h1:h/+T5wSLrCu0X9A4/q5r6sUOw9MfVPFvmt2xJJExplc=
 github.com/whosonfirst/go-whosonfirst-iterate-git/v2 v2.1.4/go.mod h1:1kxlkGvHg96HTJWfmvkP39VsuXbh4v0nB35MAD+pg0E=
 github.com/whosonfirst/go-whosonfirst-iterate/v2 v2.3.4 h1:fEhr0jwqxXvG7Nb7id4Q26ucdBZD51TcFNIiU+VNopM=
