@@ -35,7 +35,7 @@ func main() {
 
 	ctx := context.Background()
 
-	client, err := dynamodb.NewClientWithURI(ctx, *dynamodb_uri)
+	client, err := dynamodb.NewClient(ctx, *dynamodb_uri)
 
 	if err != nil {
 		log.Fatalf("Failed to create client, %v", err)
@@ -52,7 +52,7 @@ func main() {
 	default:
 		aws_billing_mode = aws_dynamodb_types.BillingModeProvisioned
 	}
-	
+
 	tables := map[string]*aws_dynamodb.CreateTableInput{
 		table_name: &aws_dynamodb.CreateTableInput{
 			AttributeDefinitions: []aws_dynamodb_types.AttributeDefinition{
@@ -77,7 +77,7 @@ func main() {
 		Refresh: *refresh,
 	}
 
-	err = dynamodb.CreateTables(client, opts)
+	err = dynamodb.CreateTables(ctx, client, opts)
 
 	if err != nil {
 		log.Fatalf("Failed to create tables, %v", err)

@@ -57,13 +57,13 @@ func init() {
 func NewDocstoreResolver(ctx context.Context, uri string) (Resolver, error) {
 
 	/*
-	u, err := url.Parse(uri)
+		u, err := url.Parse(uri)
 
-	if err != nil {
-		return nil, fmt.Errorf("Failed to parse URL, %w", err)
-	}
+		if err != nil {
+			return nil, fmt.Errorf("Failed to parse URL, %w", err)
+		}
 	*/
-	
+
 	collection, err := aa_docstore.OpenCollection(ctx, uri)
 
 	if err != nil {

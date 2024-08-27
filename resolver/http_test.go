@@ -15,7 +15,7 @@ func TestHTTPResolver(t *testing.T) {
 		t.Fatalf("Failed to create new resolver, %v", err)
 	}
 
-	id := int64(102527513)
+	id := int64(102528325)
 	repo, err := r.GetRepo(ctx, id)
 
 	if err != nil {
