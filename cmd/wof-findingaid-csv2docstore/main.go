@@ -11,16 +11,17 @@ import (
 	"io"
 	"io/ioutil"
 	"log"
-	"net/url"
+	// "net/url"
 	"os"
 	"strconv"
 
-	"github.com/aaronland/go-aws-dynamodb"
+	// "github.com/aaronland/go-aws-dynamodb"
+	aa_docstore "github.com/aaronland/gocloud-docstore"
 	"github.com/sfomuseum/go-csvdict"
 	"github.com/sfomuseum/go-timings"
 	"github.com/whosonfirst/go-whosonfirst-findingaid/v2/producer/docstore"
 	gc_docstore "gocloud.dev/docstore"
-	gc_dynamodb "gocloud.dev/docstore/awsdynamodb"
+	// gc_dynamodb "gocloud.dev/docstore/awsdynamodb"
 )
 
 func main() {
@@ -42,55 +43,11 @@ func main() {
 	monitor.Start(ctx, os.Stdout)
 	defer monitor.Stop(ctx)
 
-	// START OF put me in a package function or something
-
-	var collection *gc_docstore.Collection
-
-	u, err := url.Parse(*docstore_uri)
+	collection, err := aa_docstore.OpenCollection(ctx, *docstore_uri)
 
 	if err != nil {
-		log.Fatalf("Failed to parse URI, %v", err)
+		log.Fatalf("Failed to open collection, %v", err)
 	}
-
-	q := u.Query()
-
-	if u.Scheme == "awsdynamodb" {
-
-		// Connect local dynamodb using Golang
-		// https://gist.github.com/Tamal/02776c3e2db7eec73c001225ff52e827
-		// https://gocloud.dev/howto/docstore/#dynamodb-ctor
-
-		client, err := dynamodb.NewClientWithURI(ctx, *docstore_uri)
-
-		if err != nil {
-			log.Fatalf("Failed to create client, %v", err)
-		}
-
-		u, _ := url.Parse(*docstore_uri)
-		table_name := u.Host
-
-		partition_key := q.Get("partition_key")
-
-		col, err := gc_dynamodb.OpenCollection(client, table_name, partition_key, "", nil)
-
-		if err != nil {
-			log.Fatalf("Failed to open collection for %s (%s), %v", table_name, partition_key, err)
-		}
-
-		collection = col
-
-	} else {
-
-		col, err := gc_docstore.OpenCollection(ctx, *docstore_uri)
-
-		if err != nil {
-			log.Fatalf("Failed to create collection for '%s', %v", *docstore_uri, err)
-		}
-
-		collection = col
-	}
-
-	// END OF put me in a package function or something
 
 	for _, path := range archives {
 
