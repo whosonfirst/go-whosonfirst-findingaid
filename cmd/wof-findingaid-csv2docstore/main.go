@@ -11,17 +11,17 @@ import (
 	"io"
 	"io/ioutil"
 	"log"
-	"net/url"
+	// "net/url"
 	"os"
 	"strconv"
 
-	"github.com/aaronland/go-aws-dynamodb"
-	aa_docstore "github.com/aaronland/gocloud-docstore"	
+	// "github.com/aaronland/go-aws-dynamodb"
+	aa_docstore "github.com/aaronland/gocloud-docstore"
 	"github.com/sfomuseum/go-csvdict"
 	"github.com/sfomuseum/go-timings"
 	"github.com/whosonfirst/go-whosonfirst-findingaid/v2/producer/docstore"
 	gc_docstore "gocloud.dev/docstore"
-	gc_dynamodb "gocloud.dev/docstore/awsdynamodb"
+	// gc_dynamodb "gocloud.dev/docstore/awsdynamodb"
 )
 
 func main() {

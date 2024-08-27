@@ -9,7 +9,7 @@ import (
 	"github.com/aaronland/go-aws-dynamodb"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	aws_dynamodb "github.com/aws/aws-sdk-go-v2/service/dynamodb"
-	aws_dynamodb_types "github.com/aws/aws-sdk-go-v2/service/dynamodb/types"	
+	aws_dynamodb_types "github.com/aws/aws-sdk-go-v2/service/dynamodb/types"
 )
 
 /*
@@ -44,21 +44,30 @@ func main() {
 	u, _ := url.Parse(*dynamodb_uri)
 	table_name := u.Host
 
+	var aws_billing_mode aws_dynamodb_types.BillingMode
+
+	switch *billing_mode {
+	case "PAY_PER_REQUEST":
+		aws_billing_mode = aws_dynamodb_types.BillingModePayPerRequest
+	default:
+		aws_billing_mode = aws_dynamodb_types.BillingModeProvisioned
+	}
+	
 	tables := map[string]*aws_dynamodb.CreateTableInput{
 		table_name: &aws_dynamodb.CreateTableInput{
-			AttributeDefinitions: []*aws_dynamodb_types.AttributeDefinition{
+			AttributeDefinitions: []aws_dynamodb_types.AttributeDefinition{
 				{
 					AttributeName: aws.String("id"),
-					AttributeType: aws.String("N"),
+					AttributeType: "N",
 				},
 			},
-			KeySchema: []*aws_dynamodb.KeySchemaElement{
+			KeySchema: []aws_dynamodb_types.KeySchemaElement{
 				{
 					AttributeName: aws.String("id"),
-					KeyType:       aws.String("HASH"),
+					KeyType:       "HASH",
 				},
 			},
-			BillingMode: aws.String(*billing_mode),
+			BillingMode: aws_billing_mode,
 			TableName:   aws.String(table_name),
 		},
 	}

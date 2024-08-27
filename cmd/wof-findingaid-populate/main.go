@@ -12,7 +12,7 @@ import (
 	_ "github.com/whosonfirst/go-whosonfirst-iterate-git/v2"
 	_ "gocloud.dev/docstore/awsdynamodb"
 	_ "gocloud.dev/docstore/memdocstore"
-	
+
 	"github.com/jtacoma/uritemplates"
 	"github.com/sfomuseum/go-timings"
 	"github.com/whosonfirst/go-whosonfirst-findingaid/v2/producer"

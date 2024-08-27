@@ -7,14 +7,15 @@ import (
 	"net/url"
 	"sync"
 
-	"github.com/aaronland/go-aws-dynamodb"
+	// "github.com/aaronland/go-aws-dynamodb"
+	aa_docstore "github.com/aaronland/gocloud-docstore"
 	"github.com/sfomuseum/go-timings"
 	"github.com/whosonfirst/go-whosonfirst-findingaid/v2"
 	"github.com/whosonfirst/go-whosonfirst-findingaid/v2/producer/docstore"
 	"github.com/whosonfirst/go-whosonfirst-iterate/v2/iterator"
 	"github.com/whosonfirst/go-whosonfirst-uri"
 	gc_docstore "gocloud.dev/docstore"
-	gc_dynamodb "gocloud.dev/docstore/awsdynamodb"
+	// gc_dynamodb "gocloud.dev/docstore/awsdynamodb"
 )
 
 /*
@@ -70,72 +71,10 @@ func NewDocstoreProducer(ctx context.Context, uri string) (Producer, error) {
 
 	uri = u.String()
 
-	// START OF put me in a package function or something
-
-	var collection *gc_docstore.Collection
-
-	if u.Scheme == "awsdynamodb" {
-
-		// Connect local dynamodb using Golang
-		// https://gist.github.com/Tamal/02776c3e2db7eec73c001225ff52e827
-		// https://gocloud.dev/howto/docstore/#dynamodb-ctor
-
-		client, err := dynamodb.NewClientWithURI(ctx, uri)
-
-		if err != nil {
-			return nil, fmt.Errorf("Failed to create client, %v", err)
-		}
-
-		u, _ := url.Parse(uri)
-		table_name := u.Host
-
-		partition_key := q.Get("partition_key")
-
-		/*
-
-			// START OF necessary for order by created/lastupdate dates
-			// https://pkg.go.dev/gocloud.dev@v0.23.0/docstore/awsdynamodb#InMemorySortFallback
-
-			create_func := func() interface{} {
-				return new(map[string]interface{})
-			}
-
-			fallback_func := aws_dynamodb.InMemorySortFallback(create_func)
-
-			opts := &aws_dynamodb.Options{
-				AllowScans:       true,
-				RunQueryFallback: fallback_func,
-			}
-
-			// END OF necessary for order by created/lastupdate dates
-
-			col, err := gc_dynamodb.OpenCollection(dynamodb.New(sess), table, partition_key, "", opts)
-
-		*/
-
-		col, err := gc_dynamodb.OpenCollection(client, table_name, partition_key, "", nil)
-
-		if err != nil {
-			return nil, fmt.Errorf("Failed to open collection, %w", err)
-		}
-
-		collection = col
-
-	} else {
-
-		col, err := gc_docstore.OpenCollection(ctx, uri)
-
-		if err != nil {
-			return nil, fmt.Errorf("Failed to create database for '%s', %w", uri, err)
-		}
-
-		collection = col
-	}
-
-	// END OF put me in a package function or something
+	collection, err := aa_docstore.OpenCollection(ctx, uri)
 
 	if err != nil {
-		return nil, fmt.Errorf("Failed to create collection, %w", err)
+		return nil, fmt.Errorf("Failed to open collection, %w", err)
 	}
 
 	p := &DocstoreProducer{
