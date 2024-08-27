@@ -7,8 +7,9 @@ import (
 	"net/url"
 
 	"github.com/aaronland/go-aws-dynamodb"
-	"github.com/aws/aws-sdk-go/aws"
-	aws_dynamodb "github.com/aws/aws-sdk-go/service/dynamodb"
+	"github.com/aws/aws-sdk-go-v2/aws"
+	aws_dynamodb "github.com/aws/aws-sdk-go-v2/service/dynamodb"
+	aws_dynamodb_types "github.com/aws/aws-sdk-go-v2/service/dynamodb/types"	
 )
 
 /*
@@ -45,7 +46,7 @@ func main() {
 
 	tables := map[string]*aws_dynamodb.CreateTableInput{
 		table_name: &aws_dynamodb.CreateTableInput{
-			AttributeDefinitions: []*aws_dynamodb.AttributeDefinition{
+			AttributeDefinitions: []*aws_dynamodb_types.AttributeDefinition{
 				{
 					AttributeName: aws.String("id"),
 					AttributeType: aws.String("N"),

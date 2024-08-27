@@ -1,13 +1,6 @@
 package main
 
 import (
-	_ "github.com/mattn/go-sqlite3"
-	_ "github.com/whosonfirst/go-whosonfirst-iterate-git/v2"
-	_ "gocloud.dev/docstore/awsdynamodb"
-	_ "gocloud.dev/docstore/memdocstore"
-)
-
-import (
 	"context"
 	"flag"
 	"log"
@@ -15,6 +8,11 @@ import (
 	"path/filepath"
 	"strings"
 
+	_ "github.com/mattn/go-sqlite3"
+	_ "github.com/whosonfirst/go-whosonfirst-iterate-git/v2"
+	_ "gocloud.dev/docstore/awsdynamodb"
+	_ "gocloud.dev/docstore/memdocstore"
+	
 	"github.com/jtacoma/uritemplates"
 	"github.com/sfomuseum/go-timings"
 	"github.com/whosonfirst/go-whosonfirst-findingaid/v2/producer"
