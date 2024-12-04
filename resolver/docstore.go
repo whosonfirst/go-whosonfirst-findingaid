@@ -19,14 +19,9 @@ $> make cli && ./bin/read -reader-uri 'findingaid://awsdynamodb/findingaid?regio
 import (
 	"context"
 	"fmt"
-	_ "log"
-	// "net/url"
-	// "strings"
-
-	// "github.com/aaronland/go-aws-dynamodb"
+	
 	aa_docstore "github.com/aaronland/gocloud-docstore"
 	"gocloud.dev/docstore"
-	// gc_dynamodb "gocloud.dev/docstore/awsdynamodb"
 )
 
 // type DocstoreResolver implements the `Resolver` interface for data stored in a gocloud.dev/docstore compatible collection.
