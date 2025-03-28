@@ -37,5 +37,5 @@ func TestReaderResolver(t *testing.T) {
 		t.Fatalf("Invalid repo: %s", repo)
 	}
 
-	fmt.Printf(repo)
+	fmt.Println(repo)
 }
