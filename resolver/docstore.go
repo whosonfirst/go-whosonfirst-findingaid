@@ -19,10 +19,10 @@ $> make cli && ./bin/read -reader-uri 'findingaid://awsdynamodb/findingaid?regio
 import (
 	"context"
 	"fmt"
-	"log/slog"
-	
+
 	aa_docstore "github.com/aaronland/gocloud-docstore"
 	"gocloud.dev/docstore"
+	"gocloud.dev/gcerrors"
 )
 
 // type DocstoreResolver implements the `Resolver` interface for data stored in a gocloud.dev/docstore compatible collection.
@@ -78,9 +78,15 @@ func (r *DocstoreResolver) GetRepo(ctx context.Context, id int64) (string, error
 	err := r.collection.Get(ctx, doc)
 
 	if err != nil {
-		slog.Info("ERROR", "type", fmt.Sprintf("%T", err))
-		
-		return "", fmt.Errorf("Failed to get record for %d, %w", id, err)
+
+		err_code := gcerrors.Code(err)
+
+		switch err_code {
+		case gcerrors.NotFound:
+			return "", ErrNotFound
+		default:
+			return "", fmt.Errorf("Failed to get record for %d, %w", id, err)
+		}
 	}
 
 	repo := doc["repo_name"].(string)

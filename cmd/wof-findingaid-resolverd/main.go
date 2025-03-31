@@ -20,6 +20,7 @@ $> ./bin/read -reader-uri 'findingaid://http/localhost:8080?template=https://raw
 import (
 	"context"
 	"log"
+	"log/slog"
 	"net/http"
 
 	"github.com/aaronland/go-http-server"
@@ -36,17 +37,31 @@ func handler(r resolver.Resolver) (http.Handler, error) {
 
 		path := req.URL.Path
 
+		logger := slog.Default()
+		logger = logger.With("path", path)
+
 		id, _, err := uri.ParseURI(path)
 
 		if err != nil {
-			http.Error(rsp, err.Error(), http.StatusBadRequest)
+			logger.Error("Failed to derive ID", "error", err)
+			http.Error(rsp, "Failed to derive ID from path", http.StatusBadRequest)
 			return
 		}
+
+		logger = logger.With("id", id)
 
 		repo, err := r.GetRepo(ctx, id)
 
 		if err != nil {
-			http.Error(rsp, err.Error(), http.StatusInternalServerError)
+
+			switch err {
+			case resolver.ErrNotFound:
+				http.Error(rsp, "Not found", http.StatusNotFound)
+			default:
+				logger.Error("Failed to derive repo", "error", err)
+				http.Error(rsp, "Internal server error", http.StatusInternalServerError)
+			}
+
 			return
 		}
 
