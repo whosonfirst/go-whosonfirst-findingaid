@@ -13,7 +13,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/dynamodb v1.42.0
 	github.com/jtacoma/uritemplates v1.0.0
 	github.com/mattn/go-sqlite3 v1.14.24
-	github.com/sfomuseum/go-csvdict v1.0.0
+	github.com/sfomuseum/go-csvdict/v2 v2.0.1
 	github.com/sfomuseum/go-flags v0.10.0
 	github.com/sfomuseum/go-timings v1.4.0
 	github.com/sfomuseum/iso8601duration v1.1.0

@@ -7,16 +7,14 @@ import (
 	"fmt"
 	"io"
 	"io/ioutil"
-	_ "log"
 	"net/url"
 	"os"
 	"path/filepath"
-	"sort"
 	"strconv"
 	"strings"
 	"sync"
 
-	"github.com/sfomuseum/go-csvdict"
+	"github.com/sfomuseum/go-csvdict/v2"
 	"github.com/sfomuseum/go-timings"
 	"github.com/whosonfirst/go-whosonfirst-findingaid/v2"
 	"github.com/whosonfirst/go-whosonfirst-iterate/v2/iterator"
@@ -132,24 +130,10 @@ func (p *CSVProducer) PopulateWithIterator(ctx context.Context, monitor timings.
 
 			if sources_csv_wr == nil {
 
-				fieldnames := make([]string, 0)
-
-				for k, _ := range row {
-					fieldnames = append(fieldnames, k)
-				}
-
-				sort.Strings(fieldnames)
-
-				w, err := csvdict.NewWriter(p.sources_writer, fieldnames)
+				w, err := csvdict.NewWriter(p.sources_writer)
 
 				if err != nil {
 					return fmt.Errorf("Failed to create CSV writer, %w", err)
-				}
-
-				err = w.WriteHeader()
-
-				if err != nil {
-					return fmt.Errorf("Failed to write CSV header, %w", err)
 				}
 
 				sources_csv_wr = w
@@ -172,24 +156,10 @@ func (p *CSVProducer) PopulateWithIterator(ctx context.Context, monitor timings.
 
 		if catalog_csv_wr == nil {
 
-			fieldnames := make([]string, 0)
-
-			for k, _ := range row {
-				fieldnames = append(fieldnames, k)
-			}
-
-			sort.Strings(fieldnames)
-
-			w, err := csvdict.NewWriter(p.catalog_writer, fieldnames)
+			w, err := csvdict.NewWriter(p.catalog_writer)
 
 			if err != nil {
 				return fmt.Errorf("Failed to create CSV writer, %w", err)
-			}
-
-			err = w.WriteHeader()
-
-			if err != nil {
-				return fmt.Errorf("Failed to write CSV header, %w", err)
 			}
 
 			catalog_csv_wr = w

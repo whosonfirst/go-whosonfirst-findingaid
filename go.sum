@@ -218,8 +218,8 @@ github.com/rogpeppe/go-internal v1.12.0 h1:exVL4IDcn6na9z1rAb56Vxr+CgyK3nn3O+epU
 github.com/rogpeppe/go-internal v1.12.0/go.mod h1:E+RYuTGaKKdloAfM02xzb0FW3Paa99yedzYV+kq4uf4=
 github.com/sergi/go-diff v1.3.2-0.20230802210424-5b0b94c5c0d3 h1:n661drycOFuPLCN3Uc8sB6B/s6Z4t2xvBgU1htSHuq8=
 github.com/sergi/go-diff v1.3.2-0.20230802210424-5b0b94c5c0d3/go.mod h1:A0bzQcvG0E7Rwjx0REVgAGH58e96+X0MeOfepqsbeW4=
-github.com/sfomuseum/go-csvdict v1.0.0 h1:ECLdgya7eXmJ8oJpk8JKmiUmQhahgXehHPWIC+bTUc0=
-github.com/sfomuseum/go-csvdict v1.0.0/go.mod h1:cXhcPaOj1q//WQpkcH1HEXeAdNd0N/P+EniPVNfnBxs=
+github.com/sfomuseum/go-csvdict/v2 v2.0.1 h1:jeiidDN5722R7MBvUk5zn6oywKWTPXv2JKuRwP46CHA=
+github.com/sfomuseum/go-csvdict/v2 v2.0.1/go.mod h1:ZZR7Ez7cDu/jOilHhFc1GFOs1scCuV5kUqRINkHV60I=
 github.com/sfomuseum/go-edtf v1.1.1 h1:R5gElndHGDaK/rGSh2X+ulaLtlcHCdQA1cTzB8e9wv8=
 github.com/sfomuseum/go-edtf v1.1.1/go.mod h1:1rP0EJZ/84j3HO80vGcnG2T9MFBDAFyTNtjrr8cv3T4=
 github.com/sfomuseum/go-flags v0.8.3/go.mod h1:VXOnnX1/yxQpX2yiwHaBV6aCmhtszQOL5bL1/nNo3co=

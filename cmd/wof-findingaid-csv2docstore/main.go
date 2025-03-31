@@ -11,17 +11,14 @@ import (
 	"io"
 	"io/ioutil"
 	"log"
-	// "net/url"
 	"os"
 	"strconv"
 
-	// "github.com/aaronland/go-aws-dynamodb"
 	aa_docstore "github.com/aaronland/gocloud-docstore"
-	"github.com/sfomuseum/go-csvdict"
+	"github.com/sfomuseum/go-csvdict/v2"
 	"github.com/sfomuseum/go-timings"
 	"github.com/whosonfirst/go-whosonfirst-findingaid/v2/producer/docstore"
 	gc_docstore "gocloud.dev/docstore"
-	// gc_dynamodb "gocloud.dev/docstore/awsdynamodb"
 )
 
 func main() {
@@ -195,12 +192,7 @@ func processCatalog(ctx context.Context, r io.Reader, lookup map[int64]string, c
 		return fmt.Errorf("Failed to create CSV reader, %w", err)
 	}
 
-	for {
-		row, err := csv_r.Read()
-
-		if err == io.EOF {
-			break
-		}
+	for row, err := range csv_r.Iterate() {
 
 		if err != nil {
 			return fmt.Errorf("Failed to read row, %w", err)
@@ -258,12 +250,7 @@ func processSources(ctx context.Context, r io.Reader) (map[int64]string, error) 
 		return nil, fmt.Errorf("Failed to create CSV reader, %w", err)
 	}
 
-	for {
-		row, err := csv_r.Read()
-
-		if err == io.EOF {
-			break
-		}
+	for row, err := range csv_r.Iterate() {
 
 		if err != nil {
 			return nil, fmt.Errorf("Failed to read row, %w", err)
