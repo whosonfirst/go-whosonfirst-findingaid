@@ -17,7 +17,7 @@ import (
 	"os"
 	"sync"
 
-	"github.com/sfomuseum/go-csvdict"
+	"github.com/sfomuseum/go-csvdict/v2"
 )
 
 const sources_csv string = "sources.csv"
@@ -33,21 +33,10 @@ func main() {
 
 	wr := io.MultiWriter(writers...)
 
-	fieldnames := []string{
-		"id",
-		"repo_name",
-	}
-
-	csv_wr, err := csvdict.NewWriter(wr, fieldnames)
+	csv_wr, err := csvdict.NewWriter(wr)
 
 	if err != nil {
 		log.Fatalf("Failed to create CSV writer, %v", err)
-	}
-
-	err = csv_wr.WriteHeader()
-
-	if err != nil {
-		log.Fatalf("Failed to write CSV header, %v", err)
 	}
 
 	paths := flag.Args()

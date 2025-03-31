@@ -16,7 +16,7 @@ import (
 	"os"
 	"strconv"
 
-	"github.com/sfomuseum/go-csvdict"
+	"github.com/sfomuseum/go-csvdict/v2"
 	"github.com/whosonfirst/go-whosonfirst-findingaid/v2/producer/sql"
 )
 
@@ -111,12 +111,7 @@ func processCatalog(ctx context.Context, r io.Reader, db *gosql.DB) error {
 		return fmt.Errorf("Failed to create CSV reader, %w", err)
 	}
 
-	for {
-		row, err := csv_r.Read()
-
-		if err == io.EOF {
-			break
-		}
+	for row, err := range csv_r.Iterate() {
 
 		if err != nil {
 			return fmt.Errorf("Failed to read row, %w", err)
@@ -164,12 +159,7 @@ func processSources(ctx context.Context, r io.Reader, db *gosql.DB) error {
 		return fmt.Errorf("Failed to create CSV reader, %w", err)
 	}
 
-	for {
-		row, err := csv_r.Read()
-
-		if err == io.EOF {
-			break
-		}
+	for row, err := range csv_r.Iterate() {
 
 		if err != nil {
 			return fmt.Errorf("Failed to read row, %w", err)

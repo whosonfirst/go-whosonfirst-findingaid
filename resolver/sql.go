@@ -60,7 +60,13 @@ func (r *SQLiteResolver) GetRepo(ctx context.Context, id int64) (string, error) 
 	err := row.Scan(&repo)
 
 	if err != nil {
-		return "", fmt.Errorf("Failed to scan row, %w", err)
+
+		switch err {
+		case sql.ErrNoRows:
+			return "", ErrNotFound
+		default:
+			return "", fmt.Errorf("Failed to scan row, %w", err)
+		}
 	}
 
 	return repo, nil

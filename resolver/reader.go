@@ -110,6 +110,11 @@ func (r *ReaderResolver) GetRepo(ctx context.Context, id int64) (string, error) 
 	body, err := io.ReadAll(fh)
 
 	if err != nil {
+
+		// To do: Determine if the reason we can't read this is because the file
+		// doesn't exist. TBD: Does go-reader need an Exists() method or a NotFound
+		// error or both.
+
 		return "", fmt.Errorf("Failed to read body, %w", err)
 	}
 
