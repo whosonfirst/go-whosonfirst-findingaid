@@ -50,6 +50,7 @@ github.com/aaronland/go-brooklynintegers-api
 # github.com/aaronland/go-http-server v1.5.0
 ## explicit; go 1.22
 github.com/aaronland/go-http-server
+github.com/aaronland/go-http-server/handler
 # github.com/aaronland/go-json-query v0.1.5
 ## explicit; go 1.22
 github.com/aaronland/go-json-query

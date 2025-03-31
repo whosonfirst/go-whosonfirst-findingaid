@@ -24,12 +24,13 @@ import (
 	"net/http"
 
 	"github.com/aaronland/go-http-server"
+	"github.com/aaronland/go-http-server/handler"
 	"github.com/sfomuseum/go-flags/flagset"
 	"github.com/whosonfirst/go-whosonfirst-findingaid/v2/resolver"
 	"github.com/whosonfirst/go-whosonfirst-uri"
 )
 
-func handler(r resolver.Resolver) (http.Handler, error) {
+func repo_handler(r resolver.Resolver) (http.Handler, error) {
 
 	fn := func(rsp http.ResponseWriter, req *http.Request) {
 
@@ -78,7 +79,7 @@ func main() {
 	fs := flagset.NewFlagSet("resolver")
 
 	server_uri := fs.String("server-uri", "http://localhost:8080", "A valid aaronland/go-http-server URI")
-	resolver_uri := fs.String("resolver-uri", "", "...")
+	resolver_uri := fs.String("resolver-uri", "", "A registered whosonfirst/go-whosonfirst-findingaid/v2/resolver.Resolver URI.")
 
 	flagset.Parse(fs)
 
@@ -96,14 +97,18 @@ func main() {
 		log.Fatalf("Failed to create new resolver, %v", err)
 	}
 
-	h, err := handler(r)
+	mux := http.NewServeMux()
+
+	null_h := handler.NullHandler()
+	mux.Handle("/favicon.ico", null_h)
+
+	repo_h, err := repo_handler(r)
 
 	if err != nil {
 		log.Fatalf("Failed to create new handler, %v", err)
 	}
 
-	mux := http.NewServeMux()
-	mux.Handle("/", h)
+	mux.Handle("/", repo_h)
 
 	s, err := server.NewServer(ctx, *server_uri)
 
