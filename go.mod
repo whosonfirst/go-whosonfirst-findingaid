@@ -1,6 +1,6 @@
 module github.com/whosonfirst/go-whosonfirst-findingaid/v2
 
-go 1.24.0
+go 1.24.2
 
 require (
 	github.com/aaronland/go-artisanal-integers v0.9.1
@@ -8,7 +8,7 @@ require (
 	github.com/aaronland/go-brooklynintegers-api v1.2.9
 	github.com/aaronland/go-http-server v1.5.0
 	github.com/aaronland/go-roster v1.0.0
-	github.com/aaronland/gocloud-docstore v0.0.8
+	github.com/aaronland/gocloud-docstore v0.0.9
 	github.com/aws/aws-sdk-go-v2 v1.36.3
 	github.com/aws/aws-sdk-go-v2/service/dynamodb v1.42.0
 	github.com/jtacoma/uritemplates v1.0.0

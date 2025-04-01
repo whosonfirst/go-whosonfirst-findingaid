@@ -36,8 +36,8 @@ github.com/aaronland/go-roster v1.0.0 h1:FRDGrTqsYySKjWnAhbBGXyeGlI/o5/t9FZYCbUm
 github.com/aaronland/go-roster v1.0.0/go.mod h1:KIsYZgrJlAsyb9LsXSCvlqvbcCBVjCSqcQiZx42i9ro=
 github.com/aaronland/go-string v1.0.0 h1:fPHmC1i9JhGzgi4qdCSXKc4xTCaLLe0uvlJMu9dHhco=
 github.com/aaronland/go-string v1.0.0/go.mod h1:URh3Au/fNbM0++WjBseurE3QTp875wiJ9ImrecD+7tI=
-github.com/aaronland/gocloud-docstore v0.0.8 h1:3blGgx5V4XPHDXS80HP6kYPog9LRvK8DuB2p6v0+AYY=
-github.com/aaronland/gocloud-docstore v0.0.8/go.mod h1:JXzNfps81ELs1VIDwwGEx5T5yMZY5fRfDbp+7Jnd+VM=
+github.com/aaronland/gocloud-docstore v0.0.9 h1:xHmg+sXMMeDgwswWu4PihV6po1yBMYbjG+c81xLl6ZU=
+github.com/aaronland/gocloud-docstore v0.0.9/go.mod h1:vpJnJwGucR261PS1ow+7l2NuXTMQId2X5jFCZY8gaBE=
 github.com/akrylysov/algnhsa v1.1.0 h1:G0SoP16tMRyiism7VNc3JFA0wq/cVgEkp/ExMVnc6PQ=
 github.com/akrylysov/algnhsa v1.1.0/go.mod h1:+bOweRs/WBu5awl+ifCoSYAuKVPAmoTk8XOMrZ1xwiw=
 github.com/anmitsu/go-shlex v0.0.0-20200514113438-38f4b401e2be h1:9AeTilPcZAjCFIImctFaOjnTIavg87rW78vTPkQqLI8=
