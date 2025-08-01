@@ -18,11 +18,11 @@ require (
 	github.com/sfomuseum/go-timings v1.4.0
 	github.com/sfomuseum/iso8601duration v1.1.0
 	github.com/tidwall/gjson v1.18.0
-	github.com/whosonfirst/go-reader v1.1.0
+	github.com/whosonfirst/go-reader/v2 v2.0.0
 	github.com/whosonfirst/go-whosonfirst-feature v0.0.29
 	github.com/whosonfirst/go-whosonfirst-github v0.9.1
-	github.com/whosonfirst/go-whosonfirst-iterate-git/v2 v2.2.0
-	github.com/whosonfirst/go-whosonfirst-iterate/v2 v2.8.0
+	github.com/whosonfirst/go-whosonfirst-iterate-git/v3 v3.0.1
+	github.com/whosonfirst/go-whosonfirst-iterate/v3 v3.1.0
 	github.com/whosonfirst/go-whosonfirst-uri v1.3.0
 	gocloud.dev v0.43.0
 	google.golang.org/protobuf v1.36.6
@@ -62,7 +62,7 @@ require (
 	github.com/emirpasic/gods v1.18.1 // indirect
 	github.com/go-git/gcfg v1.5.1-0.20230307220236-3a3c6141e376 // indirect
 	github.com/go-git/go-billy/v5 v5.6.2 // indirect
-	github.com/go-git/go-git/v5 v5.16.0 // indirect
+	github.com/go-git/go-git/v5 v5.16.2 // indirect
 	github.com/go-ini/ini v1.67.0 // indirect
 	github.com/go-logr/logr v1.4.3 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect
@@ -85,10 +85,8 @@ require (
 	github.com/tidwall/match v1.1.1 // indirect
 	github.com/tidwall/pretty v1.2.0 // indirect
 	github.com/whosonfirst/go-ioutil v1.0.2 // indirect
-	github.com/whosonfirst/go-whosonfirst-crawl v0.2.2 // indirect
 	github.com/whosonfirst/go-whosonfirst-flags v0.5.2 // indirect
 	github.com/whosonfirst/go-whosonfirst-sources v0.1.0 // indirect
-	github.com/whosonfirst/walk v0.0.2 // indirect
 	github.com/xanzy/ssh-agent v0.3.3 // indirect
 	go.opentelemetry.io/auto/sdk v1.1.0 // indirect
 	go.opentelemetry.io/otel v1.37.0 // indirect

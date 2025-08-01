@@ -9,7 +9,7 @@ import (
 
 	"github.com/sfomuseum/go-timings"
 	"github.com/whosonfirst/go-whosonfirst-findingaid/v2"
-	"github.com/whosonfirst/go-whosonfirst-iterate/v2/iterator"
+	"github.com/whosonfirst/go-whosonfirst-iterate/v3"
 	"github.com/whosonfirst/go-whosonfirst-uri"
 )
 
@@ -32,12 +32,24 @@ func (p *StdoutProducer) PopulateWithIterator(ctx context.Context, monitor timin
 
 	mu := new(sync.RWMutex)
 
-	iter_cb := func(ctx context.Context, path string, fh io.ReadSeeker, args ...interface{}) error {
+	iter, err := iterate.NewIterator(ctx, iterator_uri)
 
-		id, uri_args, err := uri.ParseURI(path)
+	if err != nil {
+		return fmt.Errorf("Failed to create iterator, %w", err)
+	}
+
+	for rec, err := range iter.Iterate(ctx, iterator_sources...) {
 
 		if err != nil {
-			return fmt.Errorf("Failed to parse %s, %w", path, err)
+			return err
+		}
+
+		defer rec.Body.Close()
+
+		id, uri_args, err := uri.ParseURI(rec.Path)
+
+		if err != nil {
+			return fmt.Errorf("Failed to parse %s, %w", rec.Path, err)
 		}
 
 		if uri_args.IsAlternate {
@@ -46,10 +58,10 @@ func (p *StdoutProducer) PopulateWithIterator(ctx context.Context, monitor timin
 
 		// Get wof:repo
 
-		body, err := io.ReadAll(fh)
+		body, err := io.ReadAll(rec.Body)
 
 		if err != nil {
-			return fmt.Errorf("Failed to read %s, %w", path, err)
+			return fmt.Errorf("Failed to read %s, %w", rec.Path, err)
 		}
 
 		mu.Lock()
@@ -58,7 +70,7 @@ func (p *StdoutProducer) PopulateWithIterator(ctx context.Context, monitor timin
 		repo, _, err := findingaid.GetRepoWithBytes(ctx, body)
 
 		if err != nil {
-			return fmt.Errorf("Failed to retrieve repo for %s, %w", path, err)
+			return fmt.Errorf("Failed to retrieve repo for %s, %w", rec.Path, err)
 		}
 
 		repo_name := repo.Name
@@ -66,23 +78,10 @@ func (p *StdoutProducer) PopulateWithIterator(ctx context.Context, monitor timin
 		fmt.Fprintf(os.Stdout, "%d %s\n", id, repo_name)
 
 		if err != nil {
-			return fmt.Errorf("Failed to store %s, %w", path, err)
+			return fmt.Errorf("Failed to store %s, %w", rec.Path, err)
 		}
 
 		go monitor.Signal(ctx)
-		return nil
-	}
-
-	iter, err := iterator.NewIterator(ctx, iterator_uri, iter_cb)
-
-	if err != nil {
-		return fmt.Errorf("Failed to create iterator, %w", err)
-	}
-
-	err = iter.IterateURIs(ctx, iterator_sources...)
-
-	if err != nil {
-		return fmt.Errorf("Failed to iterate sources, %w", err)
 	}
 
 	return nil

@@ -9,7 +9,7 @@ import (
 	"strings"
 
 	_ "github.com/mattn/go-sqlite3"
-	_ "github.com/whosonfirst/go-whosonfirst-iterate-git/v2"
+	_ "github.com/whosonfirst/go-whosonfirst-iterate-git/v3"
 	_ "gocloud.dev/docstore/awsdynamodb"
 	_ "gocloud.dev/docstore/memdocstore"
 
@@ -21,7 +21,7 @@ import (
 
 func main() {
 
-	iterator_uri := flag.String("iterator-uri", "repo://", "A valid whosonfirst/go-whosonfirst-iterate/v2 URI.")
+	iterator_uri := flag.String("iterator-uri", "repo://", "A valid whosonfirst/go-whosonfirst-iterate/v3.Iterator URI.")
 
 	provider_uri := flag.String("provider-uri", "", "An optional whosonfirst/go-whosonfirst-findingaid/v2/provider URI to use for deriving additional sources.")
 
