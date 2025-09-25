@@ -17,7 +17,7 @@ package main
 
 import (
 	_ "github.com/mattn/go-sqlite3"
-	_ "github.com/whosonfirst/go-whosonfirst-iterate-git/v2"
+	_ "github.com/whosonfirst/go-whosonfirst-iterate-git/v3"
 )
 
 import (
@@ -130,6 +130,7 @@ go build -mod vendor -ldflags="-s -w" -o bin/wof-findingaid-csv2docstore cmd/wof
 go build -mod vendor -ldflags="-s -w" -o bin/wof-findingaid-create-dynamodb-tables cmd/wof-findingaid-create-dynamodb-tables/main.go
 go build -mod vendor -ldflags="-s -w" -o bin/wof-findingaid-create-dynamodb-import cmd/wof-findingaid-create-dynamodb-import/main.go
 go build -mod vendor -ldflags="-s -w" -o bin/wof-findingaid-resolverd cmd/wof-findingaid-resolverd/main.go
+go build -mod vendor -ldflags="-s -w" -o bin/wof-findingaid-resolve cmd/wof-findingaid-resolve/main.go
 ```
 
 ### wof-findingaid-csv2sql
@@ -191,6 +192,36 @@ $> ./bin/wof-findingaid-populate \
 
 This would create separate findingaids for `sfomuseum-data-flights-2019-01`, `sfomuseum-data-flights-2019-02` and so on.
 
+### wof-findingaid-resolve
+
+Command line tool for resolving one or more Who's On First style identifiers to their corresponding repository name using a go-whosonfirst-findingaid/v2/resolver.Resolver instance.
+
+```
+$> ./bin/wof-findingaid-resolve -h
+  -id value
+    	One or more IDs to resolve
+  -resolver-uri string
+    	A registered whosonfirst/go-whosonfirst-findingaid/v2/resolver.Resolver URI.
+  -verbose
+    	Enable verbose (debug) logging.
+```
+
+For example:
+
+```
+$> ./bin/wof-findingaid-resolve \
+	-resolver-uri 'awsdynamodb://findingaid?partition_key=id&region=us-east-1&credentials=session' \
+	-id 1511947225 \
+	-id 404529563 \
+	-verbose
+	
+2025/09/25 10:55:53 DEBUG Verbose logging enabled
+2025/09/25 10:55:58 DEBUG Get repo id=1511947225
+1511947225	sfomuseum-data-collection
+2025/09/25 10:55:58 DEBUG Get repo id=404529563
+2025/09/25 10:55:58 Failed to run resolve tool, Failed to derive repo for 404529563, Not found
+```
+
 ### wof-findingaid-resolverd
 
 resolverd provides an HTTP server endpoint for resolving Who's On First URIs to their corresponding repository name using a go-whosonfirst-findingaid/v2/resolver.Resolver instance.
@@ -208,6 +239,7 @@ $> ./bin/wof-findingaid-resolverd -resolver-uri 'awsdynamodb:///findingaid?regio
 $> curl http://localhost:8080/1678780019
 sfomuseum-data-flights-2018
 ```
+
 
 ### sources
 
