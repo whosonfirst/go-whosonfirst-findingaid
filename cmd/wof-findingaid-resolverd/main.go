@@ -23,8 +23,8 @@ import (
 	"log/slog"
 	"net/http"
 
-	"github.com/aaronland/go-http/v3/server"
 	"github.com/aaronland/go-http/v3/handlers"
+	"github.com/aaronland/go-http/v3/server"
 	"github.com/sfomuseum/go-flags/flagset"
 	"github.com/whosonfirst/go-whosonfirst-findingaid/v2/resolver"
 	"github.com/whosonfirst/go-whosonfirst-uri"
