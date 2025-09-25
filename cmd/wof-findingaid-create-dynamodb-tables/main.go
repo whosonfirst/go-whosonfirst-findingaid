@@ -6,7 +6,7 @@ import (
 	"log"
 	"net/url"
 
-	"github.com/aaronland/go-aws-dynamodb"
+	"github.com/aaronland/go-aws/v3/dynamodb"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	aws_dynamodb "github.com/aws/aws-sdk-go-v2/service/dynamodb"
 	aws_dynamodb_types "github.com/aws/aws-sdk-go-v2/service/dynamodb/types"
