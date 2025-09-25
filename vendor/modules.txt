@@ -414,6 +414,7 @@ github.com/sfomuseum/go-edtf
 # github.com/sfomuseum/go-flags v0.11.0
 ## explicit; go 1.22
 github.com/sfomuseum/go-flags/flagset
+github.com/sfomuseum/go-flags/multi
 # github.com/sfomuseum/go-timings v1.4.0
 ## explicit; go 1.22
 github.com/sfomuseum/go-timings
