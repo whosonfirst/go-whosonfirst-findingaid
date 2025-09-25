@@ -6,8 +6,9 @@ import (
 	"io"
 	"sync"
 
-	"github.com/aaronland/go-artisanal-integers/client"
 	_ "github.com/aaronland/go-brooklynintegers-api"
+
+	"github.com/aaronland/go-artisanal-integers/client"
 	"github.com/tidwall/gjson"
 	"github.com/whosonfirst/go-whosonfirst-feature/properties"
 )

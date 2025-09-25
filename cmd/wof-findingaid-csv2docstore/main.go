@@ -14,7 +14,7 @@ import (
 	"os"
 	"strconv"
 
-	aa_docstore "github.com/aaronland/gocloud-docstore"
+	aa_docstore "github.com/aaronland/gocloud/docstore"
 	"github.com/sfomuseum/go-csvdict/v2"
 	"github.com/sfomuseum/go-timings"
 	"github.com/whosonfirst/go-whosonfirst-findingaid/v2/producer/docstore"

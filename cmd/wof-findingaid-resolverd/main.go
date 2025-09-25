@@ -23,8 +23,8 @@ import (
 	"log/slog"
 	"net/http"
 
-	"github.com/aaronland/go-http-server"
-	"github.com/aaronland/go-http-server/handler"
+	"github.com/aaronland/go-http/v3/server"
+	"github.com/aaronland/go-http/v3/handlers"
 	"github.com/sfomuseum/go-flags/flagset"
 	"github.com/whosonfirst/go-whosonfirst-findingaid/v2/resolver"
 	"github.com/whosonfirst/go-whosonfirst-uri"
@@ -99,7 +99,7 @@ func main() {
 
 	mux := http.NewServeMux()
 
-	null_h := handler.NullHandler()
+	null_h := handlers.NullHandler()
 	mux.Handle("/favicon.ico", null_h)
 
 	repo_h, err := repo_handler(r)
