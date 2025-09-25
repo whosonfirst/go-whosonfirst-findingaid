@@ -4,7 +4,9 @@ import (
 	"context"
 	"fmt"
 	"io"
+	"log/slog"
 	"net/url"
+	"strings"
 	"sync"
 
 	aa_docstore "github.com/aaronland/gocloud/docstore"
@@ -31,7 +33,7 @@ CorsParams:	*
 
 type DocstoreProducer struct {
 	Producer
-	engine     string
+	scheme     string
 	collection *gc_docstore.Collection
 	path_repo  string
 }
@@ -76,6 +78,7 @@ func NewDocstoreProducer(ctx context.Context, uri string) (Producer, error) {
 	}
 
 	p := &DocstoreProducer{
+		scheme:     u.Scheme,
 		collection: collection,
 		path_repo:  path_repo,
 	}
@@ -108,6 +111,13 @@ func (p *DocstoreProducer) PopulateWithIterator(ctx context.Context, monitor tim
 		}
 
 		if uri_args.IsAlternate {
+			continue
+		}
+
+		// Sigh...
+
+		if id == 0 && strings.Contains(p.scheme, "dynamodb") {
+			slog.Warn("Skipping ID 0 because it makes DynamoDB sad")
 			continue
 		}
 
