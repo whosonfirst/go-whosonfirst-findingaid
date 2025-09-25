@@ -10,7 +10,9 @@ import (
 
 	_ "github.com/mattn/go-sqlite3"
 	_ "github.com/whosonfirst/go-whosonfirst-iterate-git/v3"
-	_ "gocloud.dev/docstore/awsdynamodb"
+	// Don't bother loading this because it gets loaded in a round-about
+	// kind of way by go-whosonfirst-findingaid/v2/producer
+	// _ "gocloud.dev/docstore/awsdynamodb"
 	_ "gocloud.dev/docstore/memdocstore"
 
 	"github.com/jtacoma/uritemplates"
