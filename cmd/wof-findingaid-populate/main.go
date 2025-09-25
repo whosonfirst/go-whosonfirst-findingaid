@@ -4,15 +4,14 @@ import (
 	"context"
 	"flag"
 	"log"
+	"log/slog"
 	"os"
 	"path/filepath"
 	"strings"
 
 	_ "github.com/mattn/go-sqlite3"
 	_ "github.com/whosonfirst/go-whosonfirst-iterate-git/v3"
-	// Don't bother loading this because it gets loaded in a round-about
-	// kind of way by go-whosonfirst-findingaid/v2/producer
-	// _ "gocloud.dev/docstore/awsdynamodb"
+	_ "gocloud.dev/docstore/awsdynamodb/v2"
 	_ "gocloud.dev/docstore/memdocstore"
 
 	"github.com/jtacoma/uritemplates"
@@ -23,6 +22,8 @@ import (
 
 func main() {
 
+	var verbose bool
+
 	iterator_uri := flag.String("iterator-uri", "repo://", "A valid whosonfirst/go-whosonfirst-iterate/v3.Iterator URI.")
 
 	provider_uri := flag.String("provider-uri", "", "An optional whosonfirst/go-whosonfirst-findingaid/v2/provider URI to use for deriving additional sources.")
@@ -31,7 +32,14 @@ func main() {
 
 	atomic := flag.Bool("atomic", false, "Produce atomic findingaids for each item in a source list. If true then -producer URI must be a valid URI template containing a '{source}' variable to expand with findingaid name.")
 
+	flag.BoolVar(&verbose, "verbose", false, "Enable verbose (debug) logging.")
+
 	flag.Parse()
+
+	if verbose {
+		slog.SetLogLoggerLevel(slog.LevelDebug)
+		slog.Debug("Verbose logging enabled")
+	}
 
 	ctx := context.Background()
 

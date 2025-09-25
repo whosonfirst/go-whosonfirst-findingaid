@@ -7,7 +7,6 @@ import (
 	"log/slog"
 	"net/url"
 	"strings"
-	"sync"
 
 	aa_docstore "github.com/aaronland/gocloud/docstore"
 	"github.com/sfomuseum/go-timings"
@@ -30,6 +29,22 @@ shouldDelayTransientStatuses:	false
 CorsParams:	*
 
 */
+
+func init() {
+
+	ctx := context.Background()
+
+	RegisterProducer(ctx, "awsdynamodb", NewDocstoreProducer)
+
+	for _, scheme := range gc_docstore.DefaultURLMux().CollectionSchemes() {
+
+		err := RegisterProducer(ctx, scheme, NewDocstoreProducer)
+
+		if err != nil {
+			panic(err)
+		}
+	}
+}
 
 type DocstoreProducer struct {
 	Producer
@@ -72,8 +87,6 @@ func NewDocstoreProducer(ctx context.Context, uri string) (Producer, error) {
 
 func (p *DocstoreProducer) PopulateWithIterator(ctx context.Context, monitor timings.Monitor, iterator_uri string, iterator_sources ...string) error {
 
-	mu := new(sync.RWMutex)
-
 	iter, err := iterate.NewIterator(ctx, iterator_uri)
 
 	if err != nil {
@@ -86,6 +99,9 @@ func (p *DocstoreProducer) PopulateWithIterator(ctx context.Context, monitor tim
 			return err
 		}
 
+		logger := slog.Default()
+		logger = logger.With("path", rec.Path)
+
 		defer rec.Body.Close()
 
 		id, uri_args, err := uri.ParseURI(rec.Path)
@@ -94,14 +110,17 @@ func (p *DocstoreProducer) PopulateWithIterator(ctx context.Context, monitor tim
 			return fmt.Errorf("Failed to parse %s, %w", rec.Path, err)
 		}
 
+		logger = logger.With("id", id)
+
 		if uri_args.IsAlternate {
+			logger.Debug("Is alternate file, skipping")
 			continue
 		}
 
 		// Sigh...
 
 		if id == 0 && strings.Contains(p.scheme, "dynamodb") {
-			slog.Warn("Skipping ID 0 because it makes DynamoDB sad")
+			logger.Warn("Skipping ID 0 because it makes DynamoDB sad")
 			continue
 		}
 
@@ -112,9 +131,6 @@ func (p *DocstoreProducer) PopulateWithIterator(ctx context.Context, monitor tim
 		if err != nil {
 			return fmt.Errorf("Failed to read %s, %w", rec.Path, err)
 		}
-
-		mu.Lock()
-		defer mu.Unlock()
 
 		var repo *findingaid.FindingAidRepo
 
@@ -129,6 +145,7 @@ func (p *DocstoreProducer) PopulateWithIterator(ctx context.Context, monitor tim
 		}
 
 		repo_name := repo.Name
+		logger = logger.With("repo", repo_name)
 
 		err = docstore.AddToCatalog(ctx, p.collection, id, repo_name)
 
@@ -136,6 +153,7 @@ func (p *DocstoreProducer) PopulateWithIterator(ctx context.Context, monitor tim
 			return fmt.Errorf("Failed to store %s, %w", rec.Path, err)
 		}
 
+		logger.Debug("Stored record")
 		go monitor.Signal(ctx)
 	}
 
