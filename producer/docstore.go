@@ -38,22 +38,6 @@ type DocstoreProducer struct {
 	path_repo  string
 }
 
-func init() {
-
-	ctx := context.Background()
-
-	RegisterProducer(ctx, "awsdynamodb", NewDocstoreProducer)
-
-	for _, scheme := range gc_docstore.DefaultURLMux().CollectionSchemes() {
-
-		err := RegisterProducer(ctx, scheme, NewDocstoreProducer)
-
-		if err != nil {
-			panic(err)
-		}
-	}
-}
-
 func NewDocstoreProducer(ctx context.Context, uri string) (Producer, error) {
 
 	u, err := url.Parse(uri)
