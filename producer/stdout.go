@@ -46,10 +46,12 @@ func (p *StdoutProducer) PopulateWithIterator(ctx context.Context, monitor timin
 		id, uri_args, err := uri.ParseURI(rec.Path)
 
 		if err != nil {
+			rec.Body.Close()
 			return fmt.Errorf("Failed to parse %s, %w", rec.Path, err)
 		}
 
 		if uri_args.IsAlternate {
+			rec.Body.Close()
 			return nil
 		}
 
@@ -58,12 +60,14 @@ func (p *StdoutProducer) PopulateWithIterator(ctx context.Context, monitor timin
 		body, err := io.ReadAll(rec.Body)
 
 		if err != nil {
+			rec.Body.Close()
 			return fmt.Errorf("Failed to read %s, %w", rec.Path, err)
 		}
 
 		repo, _, err := findingaid.GetRepoWithBytes(ctx, body)
 
 		if err != nil {
+			rec.Body.Close()
 			return fmt.Errorf("Failed to retrieve repo for %s, %w", rec.Path, err)
 		}
 
@@ -72,10 +76,12 @@ func (p *StdoutProducer) PopulateWithIterator(ctx context.Context, monitor timin
 		fmt.Fprintf(os.Stdout, "%d %s\n", id, repo_name)
 
 		if err != nil {
+			rec.Body.Close()
 			return fmt.Errorf("Failed to store %s, %w", rec.Path, err)
 		}
 
 		go monitor.Signal(ctx)
+		rec.Body.Close()
 	}
 
 	return nil

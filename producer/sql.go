@@ -63,15 +63,15 @@ func (p *SQLProducer) PopulateWithIterator(ctx context.Context, monitor timings.
 			return err
 		}
 
-		defer rec.Body.Close()
-
 		id, uri_args, err := uri.ParseURI(rec.Path)
 
 		if err != nil {
+			rec.Body.Close()
 			return fmt.Errorf("Failed to parse %s, %w", rec.Path, err)
 		}
 
 		if uri_args.IsAlternate {
+			rec.Body.Close()
 			return nil
 		}
 
@@ -80,6 +80,7 @@ func (p *SQLProducer) PopulateWithIterator(ctx context.Context, monitor timings.
 		body, err := io.ReadAll(rec.Body)
 
 		if err != nil {
+			rec.Body.Close()
 			return fmt.Errorf("Failed to read %s, %w", rec.Path, err)
 		}
 
@@ -93,6 +94,7 @@ func (p *SQLProducer) PopulateWithIterator(ctx context.Context, monitor timings.
 		}
 
 		if err != nil {
+			rec.Body.Close()
 			return fmt.Errorf("Failed to retrieve repo for %s, %w", rec.Path, err)
 		}
 
@@ -104,15 +106,19 @@ func (p *SQLProducer) PopulateWithIterator(ctx context.Context, monitor timings.
 			err = sql.AddToSources(ctx, p.db, repo_name, repo_id)
 
 			if err != nil {
+				rec.Body.Close()
 				return fmt.Errorf("Failed to store %s, %w", repo_name, err)
 			}
 		}
 
 		err = sql.AddToCatalog(ctx, p.db, id, repo_id)
+
 		if err != nil {
+			rec.Body.Close()
 			return fmt.Errorf("Failed to store %s, %w", rec.Path, err)
 		}
 
+		rec.Body.Close()
 		go monitor.Signal(ctx)
 	}
 

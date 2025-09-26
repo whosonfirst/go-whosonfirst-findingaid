@@ -75,15 +75,15 @@ func (p *ProtobufProducer) PopulateWithIterator(ctx context.Context, monitor tim
 			return err
 		}
 
-		defer rec.Body.Close()
-
 		id, uri_args, err := uri.ParseURI(rec.Path)
 
 		if err != nil {
+			rec.Body.Close()
 			return fmt.Errorf("Failed to parse %s, %w", rec.Path, err)
 		}
 
 		if uri_args.IsAlternate {
+			rec.Body.Close()
 			continue
 		}
 
@@ -92,6 +92,7 @@ func (p *ProtobufProducer) PopulateWithIterator(ctx context.Context, monitor tim
 		body, err := io.ReadAll(rec.Body)
 
 		if err != nil {
+			rec.Body.Close()
 			return fmt.Errorf("Failed to read %s, %w", rec.Path, err)
 		}
 
@@ -105,6 +106,7 @@ func (p *ProtobufProducer) PopulateWithIterator(ctx context.Context, monitor tim
 		}
 
 		if err != nil {
+			rec.Body.Close()
 			return fmt.Errorf("Failed to retrieve repo for %s, %w", rec.Path, err)
 		}
 
@@ -120,14 +122,15 @@ func (p *ProtobufProducer) PopulateWithIterator(ctx context.Context, monitor tim
 
 		// Store the record
 
-		rec := &protobuf.Record{
+		pb_rec := &protobuf.Record{
 			Id:   id,
 			Repo: repo.Id,
 		}
 
-		catalog.Records = append(catalog.Records, rec)
+		catalog.Records = append(catalog.Records, pb_rec)
 
 		go monitor.Signal(ctx)
+		rec.Body.Close()
 	}
 
 	fa := &protobuf.FindingAid{

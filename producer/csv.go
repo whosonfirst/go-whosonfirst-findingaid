@@ -91,18 +91,18 @@ func (p *CSVProducer) PopulateWithIterator(ctx context.Context, monitor timings.
 	for rec, err := range iter.Iterate(ctx, iterator_sources...) {
 
 		if err != nil {
-			return err
+			return fmt.Errorf("Iterator yielded an error, %w", err)
 		}
-
-		defer rec.Body.Close()
 
 		id, uri_args, err := uri.ParseURI(rec.Path)
 
 		if err != nil {
+			rec.Body.Close()
 			return fmt.Errorf("Failed to parse %s, %w", rec.Path, err)
 		}
 
 		if uri_args.IsAlternate {
+			rec.Body.Close()
 			continue
 		}
 
@@ -111,6 +111,7 @@ func (p *CSVProducer) PopulateWithIterator(ctx context.Context, monitor timings.
 		body, err := io.ReadAll(rec.Body)
 
 		if err != nil {
+			rec.Body.Close()
 			return fmt.Errorf("Failed to read %s, %w", rec.Path, err)
 		}
 
@@ -124,6 +125,7 @@ func (p *CSVProducer) PopulateWithIterator(ctx context.Context, monitor timings.
 		}
 
 		if err != nil {
+			rec.Body.Close()
 			return fmt.Errorf("Failed to retrieve repo for %s, %w", rec.Path, err)
 		}
 
@@ -139,6 +141,7 @@ func (p *CSVProducer) PopulateWithIterator(ctx context.Context, monitor timings.
 				w, err := csvdict.NewWriter(p.sources_writer)
 
 				if err != nil {
+					rec.Body.Close()
 					return fmt.Errorf("Failed to create CSV writer, %w", err)
 				}
 
@@ -165,6 +168,7 @@ func (p *CSVProducer) PopulateWithIterator(ctx context.Context, monitor timings.
 			w, err := csvdict.NewWriter(p.catalog_writer)
 
 			if err != nil {
+				rec.Body.Close()
 				return fmt.Errorf("Failed to create CSV writer, %w", err)
 			}
 
@@ -174,11 +178,12 @@ func (p *CSVProducer) PopulateWithIterator(ctx context.Context, monitor timings.
 		err = catalog_csv_wr.WriteRow(row)
 
 		if err != nil {
+			rec.Body.Close()
 			return fmt.Errorf("Failed to write row for %d, %w", id, err)
 		}
 
 		catalog_csv_wr.Flush()
-
+		rec.Body.Close()
 		go monitor.Signal(ctx)
 	}
 

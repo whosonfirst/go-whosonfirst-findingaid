@@ -102,11 +102,10 @@ func (p *DocstoreProducer) PopulateWithIterator(ctx context.Context, monitor tim
 		logger := slog.Default()
 		logger = logger.With("path", rec.Path)
 
-		defer rec.Body.Close()
-
 		id, uri_args, err := uri.ParseURI(rec.Path)
 
 		if err != nil {
+			rec.Body.Close()
 			return fmt.Errorf("Failed to parse %s, %w", rec.Path, err)
 		}
 
@@ -114,6 +113,7 @@ func (p *DocstoreProducer) PopulateWithIterator(ctx context.Context, monitor tim
 
 		if uri_args.IsAlternate {
 			logger.Debug("Is alternate file, skipping")
+			rec.Body.Close()
 			continue
 		}
 
@@ -121,6 +121,7 @@ func (p *DocstoreProducer) PopulateWithIterator(ctx context.Context, monitor tim
 
 		if id == 0 && strings.Contains(p.scheme, "dynamodb") {
 			logger.Warn("Skipping ID 0 because it makes DynamoDB sad")
+			rec.Body.Close()
 			continue
 		}
 
@@ -129,6 +130,7 @@ func (p *DocstoreProducer) PopulateWithIterator(ctx context.Context, monitor tim
 		body, err := io.ReadAll(rec.Body)
 
 		if err != nil {
+			rec.Body.Close()
 			return fmt.Errorf("Failed to read %s, %w", rec.Path, err)
 		}
 
@@ -141,6 +143,7 @@ func (p *DocstoreProducer) PopulateWithIterator(ctx context.Context, monitor tim
 		}
 
 		if err != nil {
+			rec.Body.Close()
 			return fmt.Errorf("Failed to retrieve repo for %s, %w", rec.Path, err)
 		}
 
@@ -150,10 +153,12 @@ func (p *DocstoreProducer) PopulateWithIterator(ctx context.Context, monitor tim
 		err = docstore.AddToCatalog(ctx, p.collection, id, repo_name)
 
 		if err != nil {
+			rec.Body.Close()
 			return fmt.Errorf("Failed to store %s, %w", rec.Path, err)
 		}
 
 		logger.Debug("Stored record")
+		rec.Body.Close()
 		go monitor.Signal(ctx)
 	}
 
