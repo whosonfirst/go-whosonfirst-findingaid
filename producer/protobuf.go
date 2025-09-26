@@ -6,7 +6,6 @@ import (
 	"io"
 	"net/url"
 	"os"
-	"sync"
 
 	"github.com/sfomuseum/go-timings"
 	"github.com/whosonfirst/go-whosonfirst-findingaid/v2"
@@ -64,8 +63,6 @@ func (p *ProtobufProducer) PopulateWithIterator(ctx context.Context, monitor tim
 	catalog := &protobuf.Catalog{}
 	sources := &protobuf.Sources{}
 
-	mu := new(sync.RWMutex)
-
 	iter, err := iterate.NewIterator(ctx, iterator_uri)
 
 	if err != nil {
@@ -110,9 +107,6 @@ func (p *ProtobufProducer) PopulateWithIterator(ctx context.Context, monitor tim
 		if err != nil {
 			return fmt.Errorf("Failed to retrieve repo for %s, %w", rec.Path, err)
 		}
-
-		mu.Lock()
-		defer mu.Unlock()
 
 		if !exists {
 

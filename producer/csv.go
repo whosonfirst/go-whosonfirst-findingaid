@@ -12,7 +12,6 @@ import (
 	"path/filepath"
 	"strconv"
 	"strings"
-	"sync"
 
 	"github.com/sfomuseum/go-csvdict/v2"
 	"github.com/sfomuseum/go-timings"
@@ -83,8 +82,6 @@ func (p *CSVProducer) PopulateWithIterator(ctx context.Context, monitor timings.
 	var catalog_csv_wr *csvdict.Writer
 	var sources_csv_wr *csvdict.Writer
 
-	mu := new(sync.RWMutex)
-
 	iter, err := iterate.NewIterator(ctx, iterator_uri)
 
 	if err != nil {
@@ -129,9 +126,6 @@ func (p *CSVProducer) PopulateWithIterator(ctx context.Context, monitor timings.
 		if err != nil {
 			return fmt.Errorf("Failed to retrieve repo for %s, %w", rec.Path, err)
 		}
-
-		mu.Lock()
-		defer mu.Unlock()
 
 		if !exists {
 

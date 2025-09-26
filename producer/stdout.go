@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"io"
 	"os"
-	"sync"
 
 	"github.com/sfomuseum/go-timings"
 	"github.com/whosonfirst/go-whosonfirst-findingaid/v2"
@@ -29,8 +28,6 @@ func NewStdoutProducer(ctx context.Context, uri string) (Producer, error) {
 }
 
 func (p *StdoutProducer) PopulateWithIterator(ctx context.Context, monitor timings.Monitor, iterator_uri string, iterator_sources ...string) error {
-
-	mu := new(sync.RWMutex)
 
 	iter, err := iterate.NewIterator(ctx, iterator_uri)
 
@@ -63,9 +60,6 @@ func (p *StdoutProducer) PopulateWithIterator(ctx context.Context, monitor timin
 		if err != nil {
 			return fmt.Errorf("Failed to read %s, %w", rec.Path, err)
 		}
-
-		mu.Lock()
-		defer mu.Unlock()
 
 		repo, _, err := findingaid.GetRepoWithBytes(ctx, body)
 

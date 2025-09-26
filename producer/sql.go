@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"io"
 	"net/url"
-	"sync"
 
 	"github.com/sfomuseum/go-timings"
 	"github.com/whosonfirst/go-whosonfirst-findingaid/v2"
@@ -51,8 +50,6 @@ func NewSQLProducer(ctx context.Context, uri string) (Producer, error) {
 }
 
 func (p *SQLProducer) PopulateWithIterator(ctx context.Context, monitor timings.Monitor, iterator_uri string, iterator_sources ...string) error {
-
-	mu := new(sync.RWMutex)
 
 	iter, err := iterate.NewIterator(ctx, iterator_uri)
 
@@ -101,9 +98,6 @@ func (p *SQLProducer) PopulateWithIterator(ctx context.Context, monitor timings.
 
 		repo_id := repo.Id
 		repo_name := repo.Name
-
-		mu.Lock()
-		defer mu.Unlock()
 
 		if !exists {
 
