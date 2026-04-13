@@ -1,7 +1,8 @@
-GOMOD=vendor
-
 GOMOD=$(shell test -f "go.work" && echo "readonly" || echo "vendor")
 LDFLAGS=-s -w
+
+vuln:
+	govulncheck -show verbose ./...
 
 proto:
 	protoc -I=./producer/protobuf --go_out=./ ./producer/protobuf/findingaid.proto

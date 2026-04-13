@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"log/slog"
+	"slices"
 	"time"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
@@ -138,15 +139,7 @@ func HasTable(ctx context.Context, client *aws_dynamodb.Client, table_name strin
 		return false, err
 	}
 
-	has_table := false
-
-	for _, name := range tables {
-
-		if name == table_name {
-			has_table = true
-			break
-		}
-	}
+	has_table := slices.Contains(tables, table_name)
 
 	return has_table, nil
 }
