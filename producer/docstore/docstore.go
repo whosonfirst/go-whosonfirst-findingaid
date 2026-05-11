@@ -14,7 +14,7 @@ type CatalogRecord struct {
 
 func AddToCatalog(ctx context.Context, collection *gc_docstore.Collection, id int64, repo_name string) error {
 
-	test_doc := map[string]interface{}{
+	test_doc := map[string]any{
 		"id":        id,
 		"repo_name": "",
 	}

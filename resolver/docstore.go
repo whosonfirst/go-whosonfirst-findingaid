@@ -70,7 +70,7 @@ func (r *DocstoreResolver) GetRepo(ctx context.Context, id int64) (string, error
 
 	// TBD: Import whosonfirst/go-whosonfirst-findingaid/producer/docstore CatalogRecord?
 
-	doc := map[string]interface{}{
+	doc := map[string]any{
 		"id":        id,
 		"repo_name": "",
 	}

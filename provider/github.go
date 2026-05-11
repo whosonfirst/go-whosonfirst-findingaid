@@ -145,7 +145,7 @@ func (p *GitHubProvider) IteratorSourcesWithURITemplate(ctx context.Context, str
 
 	for idx, name := range repos {
 
-		values := map[string]interface{}{
+		values := map[string]any{
 			"repo": name,
 		}
 

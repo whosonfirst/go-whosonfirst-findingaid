@@ -120,7 +120,7 @@ func main() {
 
 			n := filepath.Base(src)
 
-			values := map[string]interface{}{
+			values := map[string]any{
 				"source": n,
 			}
 
