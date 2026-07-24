@@ -1,5 +1,20 @@
 # go-whosonfirst-findingaid
 
+
+## Deprecation notice
+
+This package has been deprecated. Its functionality has been moved in to the [whosonfirst/go-whosonfirst](https://github.com/whosonfirst/go-whosonfirst) package. Efforts have been made to keep changes as minimal as possible. In most (but not all) cases update should be as simple as replacing:
+
+```
+import "github.com/whosonfirst/go-whosonfirst-findingaid`
+```
+
+With:
+
+```
+import "github.com/whosonfirst/go-whosonfirst/v4/findingaid"
+```
+
 ## Documentation
 
 Documentation is incomplete and will be updated shortly.
